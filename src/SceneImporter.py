@@ -1,3 +1,5 @@
+import numpy as np
+
 from Scene import Scene, Sphere
 
 def loadFromJson(json):
@@ -6,7 +8,7 @@ def loadFromJson(json):
 	scene = Scene()
 
 	scene.cameraLookAt = _validateDirectionVector(json.get("cameraLookAt"), errorPrefix=f"{errorPrefix}.cameraLookAt")
-	scene.cameraLookFrom = _validateDirectionVector(json.get("cameraLookFrom"), errorPrefix=f"{errorPrefix}.cameraLookFrom")
+	scene.cameraLookFrom = _validatePositionVector(json.get("cameraLookFrom"), errorPrefix=f"{errorPrefix}.cameraLookFrom")
 	scene.cameraLookUp = _validateDirectionVector(json.get("cameraLookUp"), errorPrefix=f"{errorPrefix}.cameraLookUp")
 
 	# TODO assert cameraLookAt and cameraLookFrom are opposite
@@ -48,7 +50,7 @@ def _validatePositionVector(jsonValue, errorPrefix="Position"):
 	for i in jsonValue:
 		_validateNumber(i, errorPrefix=f"{errorPrefix} element")
 		
-	return jsonValue
+	return np.array(jsonValue)
 
 
 def _validateDirectionVector(jsonValue, errorPrefix="Direction"):
@@ -71,7 +73,7 @@ def _validateDirectionVector(jsonValue, errorPrefix="Direction"):
 	length = vectorLength(jsonValue)
 	assert length == 1 or length == 0, f"{errorPrefix} must be normalized with length of 0 or 1, not length of {length}"
 		
-	return jsonValue
+	return np.array(jsonValue)
 
 
 def _validateColorVector(jsonValue, errorPrefix="Color"):
@@ -79,7 +81,7 @@ def _validateColorVector(jsonValue, errorPrefix="Color"):
 	for i in jsonValue:
 		_validateNumber(i, min=0, max=1, errorPrefix=f"{errorPrefix} element")
 
-	return jsonValue
+	return np.array(jsonValue)
 
 
 def _loadObjects(jsonValue, errorPrefix="Objects"):
