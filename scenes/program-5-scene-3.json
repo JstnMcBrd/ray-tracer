@@ -1,0 +1,11 @@
+{
+	"cameraLookAt": [0, 0, 0],
+	"cameraLookFrom": [0, 0, 0],
+	"cameraLookUp": [0, 0, 0],
+	"fieldOfView": 0,
+	"directionToLight": [0.0, 0.0, 0.0],
+	"lightColor": [0.0, 0.0, 0.0],
+	"ambientLightColor": [0.0, 0.0, 0.0],
+	"backgroundColor": [0.0, 0.0, 0.0],
+	"objects": []
+}

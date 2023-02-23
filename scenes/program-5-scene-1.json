@@ -1,0 +1,24 @@
+{
+	"cameraLookAt": [0, 0, 0],
+	"cameraLookFrom": [0, 0, 1],
+	"cameraLookUp": [0, 1, 0],
+	"fieldOfView": 90,
+	"directionToLight": [0.0, 1.0, 0.0],
+	"lightColor": [1.0, 1.0, 1.0],
+	"ambientLightColor": [0.0, 0.0, 0.0],
+	"backgroundColor": [0.2, 0.2, 0.2],
+	"objects": [
+		{
+			"name": "purple sphere",
+			"type": "sphere",
+			"center": [0.0, 0.0, 0.0],
+			"radius": 0.4,
+			"kd": 0.7,
+			"ks": 0.2,
+			"ka": 0.1,
+			"od": [1.0, 0.0, 1.0],
+			"os": [1.0, 1.0, 1.0],
+			"kgls": 16.0
+		}
+	]
+}

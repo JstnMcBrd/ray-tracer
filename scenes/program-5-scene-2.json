@@ -1,0 +1,59 @@
+{
+	"cameraLookAt": [0, 0, 0],
+	"cameraLookFrom": [0, 0, 1],
+	"cameraLookUp": [0, 1, 0],
+	"fieldOfView": 90,
+	"directionToLight": [1.0, 1.0, 1.0],
+	"lightColor": [1.0, 1.0, 1.0],
+	"ambientLightColor": [0.1, 0.1, 0.1],
+	"backgroundColor": [0.2, 0.2, 0.2],
+	"objects": [
+		{
+			"name": "white sphere",
+			"type": "sphere",
+			"center": [0.45, 0.0, -0.15],
+	  		"radius": 0.15,
+	  		"kd": 0.8,
+	  		"ks": 0.1,
+	  		"ka": 0.3,
+	  		"od": [1.0, 1.0, 1.0],
+	  		"os": [1.0, 1.0, 1.0],
+	  		"kgls": 4.0
+		},
+		{
+			"name": "red sphere",
+			"type": "sphere",
+			"center": [0.0, 0.0, -0.1],
+			"radius": 0.2,
+			"kd": 0.6,
+			"ks": 0.3,
+			"ka": 0.1,
+			"od": [1.0, 0.0, 0.0],
+			"os": [1.0, 1.0, 1.0],
+			"kgls": 32.0
+		},
+		{
+			"name": "green sphere",
+			"type": "sphere",
+			"center": [-0.6, 0.0, 0.0],
+			"radius": 0.3,
+			"kd": 0.7,
+			"ks": 0.2,
+			"ka": 0.1,
+			"od": [0.0, 1.0, 0.0],
+			"os": [0.5, 1.0, 0.5],
+			"kgls": 64.0
+		},
+		{
+			"name": "blue sphere",
+			"type": "sphere",
+			"radius": 10000.0,
+			"kd": 0.9,
+			"ks": 0.0,
+			"ka": 0.1,
+			"od": [0.0, 0.0, 1.0],
+			"os": [1.0, 1.0, 1.0],
+			"kgls": 16.0
+		}
+	]
+}
