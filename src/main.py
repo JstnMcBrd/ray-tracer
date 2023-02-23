@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import json
 from os import getenv
 
-from Scene import Scene
+from SceneImporter import loadFromJson
 
 
 def loadScene(filePath):
@@ -23,8 +23,8 @@ def loadScene(filePath):
 
 	scene = None
 	try:
-		scene = Scene.loadFromJson(jsonData)
-	except Exception as err:
+		scene = loadFromJson(jsonData)
+	except AssertionError as err:
 		print(f"\"{filePath}\" is improperly formatted\n\t{err}")
 		exit(1)
 
@@ -40,5 +40,7 @@ if __name__ == "__main__":
 	
 	# Arguments
 	sceneFilePath = parsed.scene
+
+	# Load Scene
 	scene = loadScene(sceneFilePath)
 	

@@ -47,6 +47,7 @@
 		{
 			"name": "blue sphere",
 			"type": "sphere",
+			"center": [0.0, -10000.5, 0.0],
 			"radius": 10000.0,
 			"kd": 0.9,
 			"ks": 0.0,
