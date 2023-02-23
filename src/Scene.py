@@ -28,15 +28,12 @@ class Sphere:
 		self.center = np.array([0, 0, 0])
 		self.radius = 0
 
-		self.kd = 0
-		self.ks = 0
-		self.ka = 0
-		self.od = np.array([0, 0, 0])
-		self.os = np.array([0, 0, 0])
-		self.kgls = 0
-
-	def color(self) -> np.ndarray:
-		return self.od
+		self.ambientCoefficient = 0
+		self.diffuseCoefficient = 0
+		self.specularCoefficient = 0
+		self.diffuseColor = np.array([0, 0, 0])
+		self.specularColor = np.array([0, 0, 0])
+		self.glossCoefficient = 0
 
 	def normal(self, point: np.ndarray) -> np.ndarray:
 		if self.radius != 0:

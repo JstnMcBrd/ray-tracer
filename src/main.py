@@ -132,9 +132,9 @@ def shading(scene: Scene, obj: Sphere, surfaceNormal: np.ndarray, viewDirection:
 	NdotL = np.dot(surfaceNormal, scene.directionToLight)
 	reflected = 2 * surfaceNormal * NdotL - scene.directionToLight
 
-	ambient = obj.ka * scene.ambientLightColor * obj.od
-	diffuse = obj.kd * scene.lightColor * obj.od * max(0, NdotL)
-	specular = obj.ks * scene.lightColor * obj.os * max(0, np.dot(viewDirection, reflected))**obj.kgls
+	ambient = obj.ambientCoefficient * scene.ambientLightColor * obj.diffuseColor
+	diffuse = obj.diffuseCoefficient * scene.lightColor * obj.diffuseColor * max(0, NdotL)
+	specular = obj.specularCoefficient * scene.lightColor * obj.specularColor * max(0, np.dot(viewDirection, reflected))**obj.glossCoefficient
 	return ambient + diffuse + specular
 
 if __name__ == "__main__":

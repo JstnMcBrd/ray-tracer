@@ -13,12 +13,12 @@
 			"type": "sphere",
 			"center": [0.0, 0.0, 0.0],
 			"radius": 0.4,
-			"kd": 0.7,
-			"ks": 0.2,
-			"ka": 0.1,
-			"od": [1.0, 0.0, 1.0],
-			"os": [1.0, 1.0, 1.0],
-			"kgls": 16.0
+			"ambientCoefficient": 0.1,
+			"diffuseCoefficient": 0.7,
+			"specularCoefficient": 0.2,
+			"diffuseColor": [1.0, 0.0, 1.0],
+			"specularColor": [1.0, 1.0, 1.0],
+			"glossCoefficient": 16.0
 		}
 	]
 }

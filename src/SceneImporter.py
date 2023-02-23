@@ -118,12 +118,12 @@ def _loadObject(jsonValue, errorPrefix="Object"):
 		assert type(name) is str, f"{errorPrefix}.name must be type string, not {type(name)}"
 	obj.name = name
 
-	obj.kd = _validateNumber(jsonValue.get("kd"), errorPrefix=f"{errorPrefix}.kd")
-	obj.ks = _validateNumber(jsonValue.get("ks"), errorPrefix=f"{errorPrefix}.ks")
-	obj.ka = _validateNumber(jsonValue.get("ka"), errorPrefix=f"{errorPrefix}.ka")
-	obj.od = _validateColorVector(jsonValue.get("od"), errorPrefix=f"{errorPrefix}.od")
-	obj.os = _validateColorVector(jsonValue.get("os"), errorPrefix=f"{errorPrefix}.os")
-	obj.kgls = _validateNumber(jsonValue.get("kgls"), errorPrefix=f"{errorPrefix}.kgls")
+	obj.ambientCoefficient = _validateNumber(jsonValue.get("ambientCoefficient"), errorPrefix=f"{errorPrefix}.ambientCoefficient")
+	obj.diffuseCoefficient = _validateNumber(jsonValue.get("diffuseCoefficient"), errorPrefix=f"{errorPrefix}.diffuseCoefficient")
+	obj.specularCoefficient = _validateNumber(jsonValue.get("specularCoefficient"), errorPrefix=f"{errorPrefix}.specularCoefficient")
+	obj.diffuseColor = _validateColorVector(jsonValue.get("diffuseColor"), errorPrefix=f"{errorPrefix}.diffuseColor")
+	obj.specularColor = _validateColorVector(jsonValue.get("specularColor"), errorPrefix=f"{errorPrefix}.specularColor")
+	obj.glossCoefficient = _validateNumber(jsonValue.get("glossCoefficient"), errorPrefix=f"{errorPrefix}.glossCoefficient")
 
 	return obj
 
