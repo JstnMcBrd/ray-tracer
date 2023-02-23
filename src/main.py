@@ -48,42 +48,55 @@ def writeToPPM(screen: np.ndarray, outputFilePath: str, maxColor: float):
 
 def raytrace(scene: Scene, width: int, height: int) -> np.ndarray:
 	screen = np.zeros((width, height, 3))
+
+	# Calculate screen sizes
 	viewportSize = np.array([width, height])
 	windowSize = calculateWindowSize(viewportSize, scene.cameraLookAt, scene.cameraLookFrom, scene.fieldOfView)
 
+	# Save time by pre-calcuating constant values
+	windowViewportSizeRatio = windowSize/viewportSize
+	halfWindowSize = windowSize/2
+	rayOrigin = scene.cameraLookFrom
+
+	# Get camera axises
+	cameraForward = scene.cameraForward()
+	cameraUp = scene.cameraUp()
+	cameraRight = scene.cameraRight()
+
+	# For each pixel on the screen...
 	for x in range(len(screen)):
 		for y in range(len(screen[x])):
+			# Find the world point of the pixel
 			viewportPoint = np.array([x, y])
-			windowPoint = viewportToWindow(viewportPoint, viewportSize, windowSize)
-			worldPoint = windowToWorld(windowPoint, scene.cameraForward(), scene.cameraUp(), scene.cameraRight())
+			windowPoint = viewportToWindow(viewportPoint, windowViewportSizeRatio, halfWindowSize)
+			worldPoint = windowToWorld(windowPoint, cameraForward, cameraUp, cameraRight)
 
-			rayOrigin = scene.cameraLookFrom
+			# Find the direction the ray is pointing
 			rayDirection = normalize(worldPoint - scene.cameraLookFrom)
 
+			# Find the closest object that intersects with the ray
+			closestObject = None
+			closestIntersection = None
 			closestDistance = float("inf")
 			closestDirection = None
-			closestObject = None
-			closestNormal = None
 			for obj in scene.objects:
-				intersection = None
-				if type(obj) is Sphere:
-					intersection = raySphereIntersection(rayOrigin, rayDirection, obj)
-				# TODO add support for more kinds of objects
-				else:
-					raise f"Invalid object class of {type(obj)}"
-
+				intersection = obj.rayIntersection(rayOrigin, rayDirection)
 				if not type(intersection) is type(None):
 					direction = scene.cameraLookFrom - intersection
 					distance = magnitude(direction)
 					if distance < closestDistance:
+						closestObject = obj
+						closestIntersection = intersection
 						closestDistance = distance
 						closestDirection = direction
-						closestObject = obj
-						closestNormal = sphereNormal(obj, intersection)
 
+			# Shade the pixel using the closest object
 			if closestObject != None:
 				viewDirection = closestDirection / closestDistance
-				screen[x,y] = shading(scene, closestObject, closestNormal, viewDirection)
+				normal = closestObject.normal(closestIntersection)
+				screen[x,y] = shading(scene, closestObject, normal, viewDirection)
+			
+			# If no object collided, use the background
 			else:
 				screen[x,y] = scene.backgroundColor
 
@@ -106,41 +119,13 @@ def calculateWindowSize(viewportSize: np.ndarray, cameraLookAt: np.ndarray, came
 	return np.array([x, y])
 
 
-def viewportToWindow(viewportPoint: np.ndarray, viewportSize: np.ndarray, windowSize: np.ndarray) -> np.ndarray:
-	windowPoint = viewportPoint * windowSize/viewportSize - windowSize/2
+def viewportToWindow(viewportPoint: np.ndarray, windowViewportSizeRatio: np.ndarray, halfWindowSize: np.ndarray) -> np.ndarray:
+	windowPoint = viewportPoint * windowViewportSizeRatio - halfWindowSize
 	return np.array([windowPoint[0], windowPoint[1]*-1, 0]) # The -1 seems necessary to orient it correctly
 
 
 def windowToWorld(windowPoint: np.ndarray, cameraForward: np.ndarray, cameraUp: np.ndarray, cameraRight: np.ndarray) -> np.ndarray:
 	return scene.cameraLookAt + windowPoint[0]*cameraRight + windowPoint[1]*cameraUp + windowPoint[2]*cameraForward
-
-
-def raySphereIntersection(rayOrigin: np.ndarray, rayDirection: np.ndarray, sphere: Sphere) -> np.ndarray:
-	dist = sphere.center - rayOrigin
-	dist_sqr = np.dot(dist, dist)
-	dist_mag = np.sqrt(dist_sqr)
-
-	outside = dist_mag >= sphere.radius
-
-	closestApproach = np.dot(rayDirection, dist)
-
-	if closestApproach < 0 and outside:
-		return None
-
-	closestApproachDistToSurface_sqr = sphere.radius**2 - dist_sqr + closestApproach**2
-
-	if closestApproachDistToSurface_sqr < 0:
-		return None
-	
-	closestApproachDistToSurface = closestApproachDistToSurface_sqr**0.5
-
-	t = closestApproach - closestApproachDistToSurface if outside else closestApproach + closestApproachDistToSurface
-
-	return rayOrigin + rayDirection*t
-
-
-def sphereNormal(sphere: Sphere, point: np.ndarray) -> np.ndarray:
-	return normalize((point - sphere.center)/sphere.radius)
 
 
 def shading(scene: Scene, obj: Sphere, surfaceNormal: np.ndarray, viewDirection: np.ndarray) -> np.ndarray:

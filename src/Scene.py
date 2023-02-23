@@ -35,5 +35,35 @@ class Sphere:
 		self.os = np.array([0, 0, 0])
 		self.kgls = 0
 
-	def color(self):
+	def color(self) -> np.ndarray:
 		return self.od
+
+	def normal(self, point: np.ndarray) -> np.ndarray:
+		if self.radius != 0:
+			N = (point - self.center)/self.radius
+			return N / np.sqrt(np.dot(N,N))
+		else:
+			return np.array([0,0,0])
+
+	def rayIntersection(self, rayOrigin, rayDirection) -> np.ndarray:
+		dist = self.center - rayOrigin
+		dist_sqr = np.dot(dist, dist)
+		dist_mag = np.sqrt(dist_sqr)
+
+		outside = dist_mag >= self.radius
+
+		closestApproach = np.dot(rayDirection, dist)
+
+		if closestApproach < 0 and outside:
+			return None
+
+		closestApproachDistToSurface_sqr = self.radius**2 - dist_sqr + closestApproach**2
+
+		if closestApproachDistToSurface_sqr < 0:
+			return None
+		
+		closestApproachDistToSurface = closestApproachDistToSurface_sqr**0.5
+
+		t = closestApproach - closestApproachDistToSurface if outside else closestApproach + closestApproachDistToSurface
+
+		return rayOrigin + rayDirection*t
