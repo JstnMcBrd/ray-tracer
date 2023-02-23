@@ -34,14 +34,14 @@ def loadScene(filePath: str) -> Scene:
 	return scene
 
 
-def writeToPPM(screen: np.ndarray, outputFilePath: str):
+def writeToPPM(screen: np.ndarray, outputFilePath: str, maxColor: float):
 	outputFile = open(outputFilePath, "w")
 	outputFile.write("P3\n")
 	outputFile.write(f"{len(screen)} {len(screen[0])}\n")
-	outputFile.write("1\n")
+	outputFile.write(f"{maxColor}\n")
 	for y in range(len(screen[0])):
 		for x in range(len(screen)):
-			pixel = screen[x,y]
+			pixel = screen[x,y]*maxColor
 			outputFile.write(f"{pixel[0]} {pixel[1]} {pixel[2]}     ")
 		outputFile.write("\n")
 
@@ -58,16 +58,44 @@ def raytrace(scene: Scene, width: int, height: int) -> np.ndarray:
 			worldPoint = windowToWorld(windowPoint, scene.cameraForward(), scene.cameraUp(), scene.cameraRight())
 
 			rayOrigin = scene.cameraLookFrom
-			rayDirection = worldPoint - scene.cameraLookFrom
-			rayDirection /= np.sqrt(np.dot(rayDirection,rayDirection)) # normalize
+			rayDirection = normalize(worldPoint - scene.cameraLookFrom)
 
+			closestDistance = float("inf")
+			closestDirection = None
+			closestObject = None
+			closestNormal = None
 			for obj in scene.objects:
+				intersection = None
 				if type(obj) is Sphere:
 					intersection = raySphereIntersection(rayOrigin, rayDirection, obj)
-					if not type(intersection) is type(None):
-						screen[x,y] = obj.color()
+				# TODO add support for more kinds of objects
+				else:
+					raise f"Invalid object class of {type(obj)}"
+
+				if not type(intersection) is type(None):
+					direction = scene.cameraLookFrom - intersection
+					distance = magnitude(direction)
+					if distance < closestDistance:
+						closestDistance = distance
+						closestDirection = direction
+						closestObject = obj
+						closestNormal = sphereNormal(obj, intersection)
+
+			if closestObject != None:
+				viewDirection = closestDirection / closestDistance
+				screen[x,y] = shading(scene, closestObject, closestNormal, viewDirection)
+			else:
+				screen[x,y] = scene.backgroundColor
 
 	return screen
+
+
+def magnitude(vector: np.ndarray) -> float:
+	return np.sqrt(np.dot(vector,vector))
+
+
+def normalize(vector: np.ndarray) -> np.ndarray:
+	return vector / magnitude(vector)
 
 
 def calculateWindowSize(viewportSize: np.ndarray, cameraLookAt: np.ndarray, cameraLookFrom: np.ndarray, fieldOfView: float) -> np.ndarray:
@@ -87,7 +115,7 @@ def windowToWorld(windowPoint: np.ndarray, cameraForward: np.ndarray, cameraUp: 
 	return scene.cameraLookAt + windowPoint[0]*cameraRight + windowPoint[1]*cameraUp + windowPoint[2]*cameraForward
 
 
-def raySphereIntersection(rayOrigin: np.ndarray, rayDirection: np.ndarray, sphere: Sphere):
+def raySphereIntersection(rayOrigin: np.ndarray, rayDirection: np.ndarray, sphere: Sphere) -> np.ndarray:
 	dist = sphere.center - rayOrigin
 	dist_sqr = np.dot(dist, dist)
 	dist_mag = np.sqrt(dist_sqr)
@@ -111,6 +139,19 @@ def raySphereIntersection(rayOrigin: np.ndarray, rayDirection: np.ndarray, spher
 	return rayOrigin + rayDirection*t
 
 
+def sphereNormal(sphere: Sphere, point: np.ndarray) -> np.ndarray:
+	return normalize((point - sphere.center)/sphere.radius)
+
+
+def shading(scene: Scene, obj: Sphere, surfaceNormal: np.ndarray, viewDirection: np.ndarray) -> np.ndarray:
+	NdotL = np.dot(surfaceNormal, scene.directionToLight)
+	reflected = 2 * surfaceNormal * NdotL - scene.directionToLight
+
+	ambient = obj.ka * scene.ambientLightColor * obj.od
+	diffuse = obj.kd * scene.lightColor * obj.od * max(0, NdotL)
+	specular = obj.ks * scene.lightColor * obj.os * max(0, np.dot(viewDirection, reflected))**obj.kgls
+	return ambient + diffuse + specular
+
 if __name__ == "__main__":
 	load_dotenv()
 
@@ -119,6 +160,7 @@ if __name__ == "__main__":
 	arg.add_argument("-o", "--output", type=str, help="Path to the output file", default=getenv("OUTPUT"), required=getenv("OUTPUT") == None)
 	arg.add_argument("-x", "--width", type=int, help="Width of the output image", default=getenv("WIDTH"), required=getenv("WIDTH") == None)
 	arg.add_argument("-y", "--height", type=int, help="Height of the output image", default=getenv("HEIGHT"), required=getenv("HEIGHT") == None)
+	arg.add_argument("-c", "--max-color", type=float, help="The maximum color of the ppm file", default=getenv("MAX_COLOR", default=255), required=getenv("MAX_COLOR", default=255) == None)
 	parsed = arg.parse_args()
 	
 	# Arguments
@@ -126,6 +168,7 @@ if __name__ == "__main__":
 	outputFilePath = parsed.output
 	width = parsed.width
 	height = parsed.height
+	maxColor = parsed.max_color
 
 	# Load Scene
 	scene = loadScene(sceneFilePath)
@@ -134,4 +177,4 @@ if __name__ == "__main__":
 	screen = raytrace(scene, width, height)
 
 	# Write to file
-	writeToPPM(screen, outputFilePath)
+	writeToPPM(screen, outputFilePath, maxColor)
