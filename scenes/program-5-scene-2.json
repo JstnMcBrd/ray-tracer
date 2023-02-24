@@ -1,0 +1,60 @@
+{
+	"cameraLookAt": [0, 0, 0],
+	"cameraLookFrom": [0, 0, 1],
+	"cameraLookUp": [0, 1, 0],
+	"fieldOfView": 60,
+	"directionToLight": [1.0, 1.0, 1.0],
+	"lightColor": [1.0, 1.0, 1.0],
+	"ambientLightColor": [0.1, 0.1, 0.1],
+	"backgroundColor": [0.2, 0.2, 0.2],
+	"objects": [
+		{
+			"name": "white sphere",
+			"type": "sphere",
+			"center": [0.45, 0.0, -0.15],
+	  		"radius": 0.15,
+	  		"ambientCoefficient": 0.3,
+	  		"diffuseCoefficient": 0.8,
+	  		"specularCoefficient": 0.1,
+	  		"diffuseColor": [1.0, 1.0, 1.0],
+	  		"specularColor": [1.0, 1.0, 1.0],
+	  		"glossCoefficient": 4.0
+		},
+		{
+			"name": "red sphere",
+			"type": "sphere",
+			"center": [0.0, 0.0, -0.1],
+			"radius": 0.2,
+			"ambientCoefficient": 0.1,
+			"diffuseCoefficient": 0.6,
+			"specularCoefficient": 0.3,
+			"diffuseColor": [1.0, 0.0, 0.0],
+			"specularColor": [1.0, 1.0, 1.0],
+			"glossCoefficient": 32.0
+		},
+		{
+			"name": "green sphere",
+			"type": "sphere",
+			"center": [-0.6, 0.0, 0.0],
+			"radius": 0.3,
+			"ambientCoefficient": 0.1,
+			"diffuseCoefficient": 0.7,
+			"specularCoefficient": 0.2,
+			"diffuseColor": [0.0, 1.0, 0.0],
+			"specularColor": [0.5, 1.0, 0.5],
+			"glossCoefficient": 64.0
+		},
+		{
+			"name": "blue sphere",
+			"type": "sphere",
+			"center": [0.0, -10000.5, 0.0],
+			"radius": 10000.0,
+			"ambientCoefficient": 0.1,
+			"diffuseCoefficient": 0.9,
+			"specularCoefficient": 0.0,
+			"diffuseColor": [0.0, 0.0, 1.0],
+			"specularColor": [1.0, 1.0, 1.0],
+			"glossCoefficient": 16.0
+		}
+	]
+}
