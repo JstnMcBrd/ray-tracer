@@ -1,11 +1,120 @@
 {
 	"cameraLookAt": [0, 0, 0],
-	"cameraLookFrom": [0, 0, 0],
-	"cameraLookUp": [0, 0, 0],
-	"fieldOfView": 0,
-	"directionToLight": [0.0, 0.0, 0.0],
-	"lightColor": [0.0, 0.0, 0.0],
-	"ambientLightColor": [0.0, 0.0, 0.0],
+	"cameraLookFrom": [0, 0, 1],
+	"cameraLookUp": [0, 1, 0],
+	"fieldOfView": 90,
+	"directionToLight": [0.0, 0.0, 1.0],
+	"lightColor": [1.0, 1.0, 1.0],
+	"ambientLightColor": [1.0, 1.0, 1.0],
 	"backgroundColor": [0.0, 0.0, 0.0],
-	"objects": []
+	"objects": [
+		{
+			"name": "red",
+			"type": "sphere",
+			"center": [0.5, 0.0, 0.0],
+			"radius": 0.25,
+			"ambientCoefficient": 0.1,
+			"diffuseCoefficient": 0.7,
+			"specularCoefficient": 0.2,
+			"diffuseColor": [1.0, 0.0, 0.0],
+			"specularColor": [1.0, 1.0, 1.0],
+			"glossCoefficient": 16.0
+		},
+		{
+			"name": "pink",
+			"type": "sphere",
+			"center": [0.35, 0.35, 0.0],
+			"radius": 0.25,
+			"ambientCoefficient": 0.1,
+			"diffuseCoefficient": 0.7,
+			"specularCoefficient": 0.2,
+			"diffuseColor": [1.0, 0.0, 0.6],
+			"specularColor": [1.0, 1.0, 1.0],
+			"glossCoefficient": 16.0
+		},
+		{
+			"name": "purple",
+			"type": "sphere",
+			"center": [0.0, 0.5, 0.0],
+			"radius": 0.25,
+			"ambientCoefficient": 0.1,
+			"diffuseCoefficient": 0.7,
+			"specularCoefficient": 0.2,
+			"diffuseColor": [0.5, 0.0, 1.0],
+			"specularColor": [1.0, 1.0, 1.0],
+			"glossCoefficient": 16.0
+		},
+		{
+			"name": "blue",
+			"type": "sphere",
+			"center": [-0.35, 0.35, 0.0],
+			"radius": 0.25,
+			"ambientCoefficient": 0.1,
+			"diffuseCoefficient": 0.7,
+			"specularCoefficient": 0.2,
+			"diffuseColor": [0.0, 0.0, 1.0],
+			"specularColor": [1.0, 1.0, 1.0],
+			"glossCoefficient": 16.0
+		},
+		{
+			"name": "aquamarine",
+			"type": "sphere",
+			"center": [-0.5, 0.0, 0.0],
+			"radius": 0.25,
+			"ambientCoefficient": 0.1,
+			"diffuseCoefficient": 0.7,
+			"specularCoefficient": 0.2,
+			"diffuseColor": [0.0, 1.0, 1.0],
+			"specularColor": [1.0, 1.0, 1.0],
+			"glossCoefficient": 16.0
+		},
+		{
+			"name": "green",
+			"type": "sphere",
+			"center": [-0.35, -0.35, 0.0],
+			"radius": 0.25,
+			"ambientCoefficient": 0.1,
+			"diffuseCoefficient": 0.7,
+			"specularCoefficient": 0.2,
+			"diffuseColor": [0.0, 1.0, 0.33],
+			"specularColor": [1.0, 1.0, 1.0],
+			"glossCoefficient": 16.0
+		},
+		{
+			"name": "lime",
+			"type": "sphere",
+			"center": [0.0, -0.5, 0.0],
+			"radius": 0.25,
+			"ambientCoefficient": 0.1,
+			"diffuseCoefficient": 0.7,
+			"specularCoefficient": 0.2,
+			"diffuseColor": [0.5, 1.0, 0.0],
+			"specularColor": [1.0, 1.0, 1.0],
+			"glossCoefficient": 16.0
+		},
+		{
+			"name": "yellow-orange",
+			"type": "sphere",
+			"center": [0.35, -0.35, 0.0],
+			"radius": 0.25,
+			"ambientCoefficient": 0.1,
+			"diffuseCoefficient": 0.7,
+			"specularCoefficient": 0.2,
+			"diffuseColor": [1.0, 0.75, 0.0],
+			"specularColor": [1.0, 1.0, 1.0],
+			"glossCoefficient": 16.0
+		},
+		{
+			"name": "middle sphere",
+			"type": "sphere",
+			"center": [0.0, 0.0, -0.1],
+			"radius": 0.4,
+			"ambientCoefficient": 0.1,
+			"diffuseCoefficient": 0.7,
+			"specularCoefficient": 0.2,
+			"diffuseColor": [1.0, 1.0, 1.0],
+			"specularColor": [1.0, 1.0, 1.0],
+			"glossCoefficient": 16.0
+		}
+	]
 }
