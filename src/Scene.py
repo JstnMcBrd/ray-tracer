@@ -22,11 +22,9 @@ class Scene:
 	def cameraRight(self):
 		return np.cross(self.cameraForward(), self.cameraUp())
 
-class Sphere:
+class Object:
 	def __init__(self):
 		self.name = ""
-		self.center = np.array([0, 0, 0])
-		self.radius = 0
 
 		self.ambientCoefficient = 0
 		self.diffuseCoefficient = 0
@@ -34,6 +32,18 @@ class Sphere:
 		self.diffuseColor = np.array([0, 0, 0])
 		self.specularColor = np.array([0, 0, 0])
 		self.glossCoefficient = 0
+
+	def normal(self, point: np.ndarray) -> np.ndarray:
+		NotImplemented
+
+	def rayIntersection(self, rayOrigin: np.ndarray, rayDirection: np.ndarray) -> np.ndarray:
+		NotImplemented
+
+class Sphere(Object):
+	def __init__(self):
+		super().__init__()
+		self.center = np.array([0, 0, 0])
+		self.radius = 0
 
 	def normal(self, point: np.ndarray) -> np.ndarray:
 		if self.radius != 0:
@@ -64,3 +74,5 @@ class Sphere:
 		t = closestApproach - closestApproachDistToSurface if outside else closestApproach + closestApproachDistToSurface
 
 		return rayOrigin + rayDirection*t
+
+# TODO add more types of objects

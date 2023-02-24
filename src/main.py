@@ -9,6 +9,12 @@ from SceneImporter import loadFromJson
 from Scene import Scene, Sphere
 
 
+# TODO shadows
+# TODO reflection
+# TODO refraction
+# TODO more than one light source
+
+
 def loadScene(filePath: str) -> Scene:
 	jsonFile = None
 	try:
