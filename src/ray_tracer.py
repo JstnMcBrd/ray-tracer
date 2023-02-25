@@ -2,6 +2,7 @@ from math import tan
 import numpy as np
 
 from Scene import Object, Scene
+from shader import shade
 
 def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:
 	screen = np.zeros((width, height, 3)) # TODO this is time/space intensive - maybe calculate + write values gradually?
@@ -58,7 +59,7 @@ def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:
 			if closest_object != None:
 				view_direction = closest_direction / closest_distance # Normalize
 				normal = closest_object.normal(closest_intersection)
-				screen[x,y] = shading(scene, closest_object, normal, view_direction)
+				screen[x,y] = shade(scene, closest_object, normal, view_direction)
 			
 			# If no object collided, use the background
 			else:
@@ -98,13 +99,3 @@ def viewport_to_window(viewport_point: np.ndarray, window_to_viewport_size_ratio
 
 def window_to_relative_world(window_point: np.ndarray, camera_look_at_relative: np.ndarray, camera_forward: np.ndarray, camera_up: np.ndarray, camera_right: np.ndarray) -> np.ndarray:
 	return camera_look_at_relative + window_point[0]*camera_right + window_point[1]*camera_up + window_point[2]*camera_forward
-
-
-def shading(scene: Scene, obj: Object, surface_normal: np.ndarray, view_direction: np.ndarray) -> np.ndarray:
-	N_dot_L = np.dot(surface_normal, scene.direction_to_light)
-	reflected = 2 * surface_normal * N_dot_L - scene.direction_to_light
-
-	ambient = obj.ambient_coefficient * scene.ambient_light_color * obj.diffuse_color
-	diffuse = obj.diffuse_coefficient * scene.light_color * obj.diffuse_color * max(0, N_dot_L)
-	specular = obj.specular_coefficient * scene.light_color * obj.specular_color * max(0, np.dot(view_direction, reflected))**obj.gloss_coefficient
-	return ambient + diffuse + specular
