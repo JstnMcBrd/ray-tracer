@@ -52,15 +52,15 @@ def writeToPPM(screen: np.ndarray, outputFilePath: str, maxColor: float):
 		outputFile.write("\n")
 
 
-def raytrace(scene: Scene, width: int, height: int) -> np.ndarray:
-	screen = np.zeros((width, height, 3))
+def rayTrace(scene: Scene, width: int, height: int) -> np.ndarray:
+	screen = np.zeros((width, height, 3)) # TODO this is time/space intensive - maybe calculate + write values gradually?
 
 	# Calculate screen sizes
 	viewportSize = np.array([width, height])
 	windowSize = calculateWindowSize(viewportSize, scene.cameraLookAt, scene.cameraLookFrom, scene.fieldOfView)
 
 	# Save time by pre-calcuating constant values
-	windowViewportSizeRatio = windowSize/viewportSize
+	windowToViewportSizeRatio = windowSize/viewportSize
 	halfWindowSize = windowSize/2
 	rayOrigin = scene.cameraLookFrom
 
@@ -74,7 +74,7 @@ def raytrace(scene: Scene, width: int, height: int) -> np.ndarray:
 		for y in range(len(screen[x])):
 			# Find the world point of the pixel
 			viewportPoint = np.array([x, y])
-			windowPoint = viewportToWindow(viewportPoint, windowViewportSizeRatio, halfWindowSize)
+			windowPoint = viewportToWindow(viewportPoint, windowToViewportSizeRatio, halfWindowSize)
 			worldPoint = windowToWorld(windowPoint, cameraForward, cameraUp, cameraRight)
 
 			# Find the direction the ray is pointing
@@ -125,8 +125,8 @@ def calculateWindowSize(viewportSize: np.ndarray, cameraLookAt: np.ndarray, came
 	return np.array([x, y])
 
 
-def viewportToWindow(viewportPoint: np.ndarray, windowViewportSizeRatio: np.ndarray, halfWindowSize: np.ndarray) -> np.ndarray:
-	windowPoint = viewportPoint * windowViewportSizeRatio - halfWindowSize
+def viewportToWindow(viewportPoint: np.ndarray, windowToViewportSizeRatio: np.ndarray, halfWindowSize: np.ndarray) -> np.ndarray:
+	windowPoint = viewportPoint * windowToViewportSizeRatio - halfWindowSize
 	return np.array([windowPoint[0], windowPoint[1]*-1, 0]) # The -1 seems necessary to orient it correctly
 
 
@@ -146,7 +146,7 @@ def shading(scene: Scene, obj: Sphere, surfaceNormal: np.ndarray, viewDirection:
 if __name__ == "__main__":
 	load_dotenv()
 
-	arg = argparse.ArgumentParser("CS 455 Ray Tracer")
+	arg = argparse.ArgumentParser("Ray Tracer")
 	arg.add_argument("-s", "--scene", type=str, help="Path to the scene file", default=getenv("SCENE"), required=getenv("SCENE") == None)
 	arg.add_argument("-o", "--output", type=str, help="Path to the output file", default=getenv("OUTPUT"), required=getenv("OUTPUT") == None)
 	arg.add_argument("-x", "--width", type=int, help="Width of the output image", default=getenv("WIDTH"), required=getenv("WIDTH") == None)
@@ -165,7 +165,7 @@ if __name__ == "__main__":
 	scene = loadScene(sceneFilePath)
 
 	# Raytrace
-	screen = raytrace(scene, width, height)
+	screen = rayTrace(scene, width, height)
 
 	# Write to file
 	writeToPPM(screen, outputFilePath, maxColor)
