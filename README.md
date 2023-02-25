@@ -1,8 +1,8 @@
-# CS-455-Ray-Tracer
+# ray-tracer
 
-A simple ray tracer written in [Python](https://www.python.org/).
+A simple [ray tracer](https://en.wikipedia.org/wiki/Ray_tracing_(graphics)) written in [Python](https://www.python.org/).
 
-![output](https://user-images.githubusercontent.com/28303477/221062912-4e55338d-c347-46fc-9588-7e2aef5c7d73.png)
+![example](https://user-images.githubusercontent.com/28303477/221353237-11327d55-0782-4e33-aa83-4f73434ee86a.png)
 
 ## Licensing
 
