@@ -1,8 +1,8 @@
 import numpy as np
 
-from Scene import Scene, Sphere
+from Scene import Object, Scene, Sphere
 
-def loadFromJson(json):
+def loadFromJson(json) -> Scene:
 	errorPrefix = "Scene"
 
 	scene = Scene()
@@ -25,7 +25,7 @@ def loadFromJson(json):
 	return scene
 
 
-def _validateNumber(jsonValue, min=None, max=None, errorPrefix="Number"):
+def _validateNumber(jsonValue, min=None, max=None, errorPrefix="Number") -> float|int:
 	assert jsonValue != None, f"{errorPrefix} must not be missing"
 	assert type(jsonValue) is float or type(jsonValue) is int, f"{errorPrefix} must be type float or int, not {type(jsonValue)}"
 	if min != None:
@@ -36,7 +36,7 @@ def _validateNumber(jsonValue, min=None, max=None, errorPrefix="Number"):
 	return jsonValue
 
 
-def _validateList(jsonValue, length=None, errorPrefix="List"):
+def _validateList(jsonValue, length=None, errorPrefix="List") -> list:
 	assert jsonValue != None, f"{errorPrefix} must not be missing"
 	assert type(jsonValue) is list, f"{errorPrefix} must be type list, not {type(jsonValue)}"
 	if length != None:
@@ -45,7 +45,7 @@ def _validateList(jsonValue, length=None, errorPrefix="List"):
 	return jsonValue
 
 
-def _validatePositionVector(jsonValue, errorPrefix="Position"):
+def _validatePositionVector(jsonValue, errorPrefix="Position") -> np.ndarray:
 	jsonValue = _validateList(jsonValue, length=3, errorPrefix=errorPrefix)
 	for i in jsonValue:
 		_validateNumber(i, errorPrefix=f"{errorPrefix} element")
@@ -53,7 +53,7 @@ def _validatePositionVector(jsonValue, errorPrefix="Position"):
 	return np.array(jsonValue)
 
 
-def _validateDirectionVector(jsonValue, errorPrefix="Direction"):
+def _validateDirectionVector(jsonValue, errorPrefix="Direction") -> np.ndarray:
 	jsonValue = _validateList(jsonValue, length=3, errorPrefix=errorPrefix)
 	for i in jsonValue:
 		_validateNumber(i, errorPrefix=f"{errorPrefix} element")
@@ -76,7 +76,7 @@ def _validateDirectionVector(jsonValue, errorPrefix="Direction"):
 	return np.array(jsonValue)
 
 
-def _validateColorVector(jsonValue, errorPrefix="Color"):
+def _validateColorVector(jsonValue, errorPrefix="Color") -> np.ndarray:
 	jsonValue = _validateList(jsonValue, length=3, errorPrefix=errorPrefix)
 	for i in jsonValue:
 		_validateNumber(i, min=0, max=1, errorPrefix=f"{errorPrefix} element")
@@ -84,7 +84,7 @@ def _validateColorVector(jsonValue, errorPrefix="Color"):
 	return np.array(jsonValue)
 
 
-def _loadObjects(jsonValue, errorPrefix="Objects"):
+def _loadObjects(jsonValue, errorPrefix="Objects") -> list:
 	objects = []
 
 	jsonValue = _validateList(jsonValue, errorPrefix=errorPrefix)
@@ -95,7 +95,7 @@ def _loadObjects(jsonValue, errorPrefix="Objects"):
 	return objects
 
 
-def _loadObject(jsonValue, errorPrefix="Object"):
+def _loadObject(jsonValue, errorPrefix="Object") -> Object:
 	obj = None
 
 	assert jsonValue != None, f"{errorPrefix} must not be missing"
@@ -128,7 +128,7 @@ def _loadObject(jsonValue, errorPrefix="Object"):
 	return obj
 
 
-def _loadSphere(jsonValue, errorPrefix="Sphere"):
+def _loadSphere(jsonValue, errorPrefix="Sphere") -> Sphere:
 	sphere = Sphere()
 
 	sphere.center = _validatePositionVector(jsonValue.get("center"), errorPrefix=f"{errorPrefix}.center")
