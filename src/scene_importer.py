@@ -1,4 +1,4 @@
-import json
+from json import loads as json_as_dict
 import numpy as np
 
 from objects.Object import Object
@@ -6,16 +6,16 @@ from objects.Sphere import Sphere
 from Scene import Scene
 
 def import_scene(file_path: str) -> Scene:
-	json_file = None
+	json_str = None
 	try:
-		json_file = open(file_path, "r")
+		json_str = open(file_path, "r").read()
 	except Exception as err:
 		print(f"\"{file_path}\" is not a valid path\n\t{err}")
 		exit(1)
 
 	json_data = None
 	try:
-		json_data = json.loads(json_file.read())
+		json_data = json_as_dict(json_str)
 	except Exception as err:
 		print(f"\"{file_path}\" is not a valid json file\n\t{err}")
 		exit(1)
@@ -35,6 +35,7 @@ def __load_from_json(json) -> Scene:
 
 	scene = Scene()
 
+	# Camera
 	scene.camera_look_at = __validate_direction_vector(json.get("camera_look_at"), error_prefix=f"{error_prefix}.camera_look_at")
 	scene.camera_look_from = __validate_position_vector(json.get("camera_look_from"), error_prefix=f"{error_prefix}.camera_look_from")
 	scene.camera_look_up = __validate_direction_vector(json.get("camera_look_up"), error_prefix=f"{error_prefix}.camera_look_up")
@@ -42,11 +43,14 @@ def __load_from_json(json) -> Scene:
 	# TODO assert camera_look_up is perpendicular to the normalized difference between camera_look_at and camera_look_from
 
 	scene.field_of_view = __validate_number(json.get("field_of_view"), min=0, max=360, error_prefix=f"{error_prefix}.field_of_view")
+	
+	# Lighting
 	scene.direction_to_light = __validate_direction_vector(json.get("direction_to_light"), error_prefix=f"{error_prefix}.direction_to_light")
 	scene.light_color = __validate_color_vector(json.get("light_color"), error_prefix=f"{error_prefix}.light_color")
 	scene.ambient_light_color = __validate_color_vector(json.get("ambient_light_color"), error_prefix=f"{error_prefix}.ambient_light_color")
 	scene.background_color = __validate_color_vector(json.get("background_color"), error_prefix=f"{error_prefix}.background_color")
 
+	# Objects
 	scene.objects = __load_objects(json.get("objects"), error_prefix=f"{error_prefix}.objects")
 
 	return scene
@@ -135,7 +139,7 @@ def __load_object(json_value, error_prefix="Object") -> Object:
 	# Load in object-type-specific values
 	if objType  == "sphere":
 		obj = _loadSphere(json_value, error_prefix=f"{error_prefix}<sphere>")
-	# TODO support for more object types later
+	# TODO support for more object types
 	else:
 		raise f"{error_prefix} must have valid type, not {objType}"
 		

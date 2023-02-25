@@ -9,13 +9,8 @@ from Scene import Scene
 from writers import write_to_ppm
 
 
-# TODO shadows
-# TODO reflection
-# TODO refraction
-# TODO more than one light source
-
-
 if __name__ == "__main__":
+	# Retrieve arguments
 	load_dotenv()
 
 	arg = argparse.ArgumentParser("Ray Tracer")
@@ -26,7 +21,6 @@ if __name__ == "__main__":
 	arg.add_argument("-c", "--max-color", type=float, help="The maximum color of the ppm file", default=getenv("MAX_COLOR", default=255), required=getenv("MAX_COLOR", default=255) == None)
 	parsed = arg.parse_args()
 	
-	# Arguments
 	scene_file_path = parsed.scene
 	output_file_path = parsed.output
 	width = parsed.width
@@ -51,4 +45,3 @@ if __name__ == "__main__":
 	pixels_per_second = (width*height) / elapsed.total_seconds()
 
 	print(f"Time elapsed:\t{elapsed}\t({int(pixels_per_second)} pixels/second)")
-	print

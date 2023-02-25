@@ -5,6 +5,13 @@ from objects.Object import Object
 from Scene import Scene
 from shader import shade
 
+
+# TODO shadows
+# TODO reflection
+# TODO refraction
+# TODO more than one light source
+
+
 def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:
 	screen = np.zeros((width, height, 3)) # TODO this is time/space intensive - maybe calculate + write values gradually?
 	num_pixels = width * height
