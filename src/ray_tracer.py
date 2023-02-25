@@ -5,6 +5,7 @@ from Scene import Object, Scene
 
 def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:
 	screen = np.zeros((width, height, 3)) # TODO this is time/space intensive - maybe calculate + write values gradually?
+	num_pixels = width * height
 
 	# Get camera axes and positions
 	camera_look_from = scene.camera_look_from
@@ -24,6 +25,9 @@ def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:
 	ray_origin = camera_look_from
 
 	# For each pixel on the screen...
+	pixel_num = 0
+	percent_progress = 0
+	one_row_progress = (width/num_pixels)*100
 	for x in range(len(screen)):
 		for y in range(len(screen[x])):
 			# Find the world point of the pixel, relative to the camera's position
@@ -60,6 +64,15 @@ def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:
 			else:
 				screen[x,y] = scene.background_color
 
+		# Report progress
+		pixel_num += width
+		percent_progress += one_row_progress
+		percent_progress_one_decimal = int(percent_progress*10)/10
+
+		print("\r", end="", flush=True) # Wipe the previous line of output
+		print(f"Progress:\t{percent_progress_one_decimal}%\t\t({pixel_num}/{num_pixels} pixels)", end="", flush=True)
+
+	print()
 	return screen
 
 
