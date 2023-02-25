@@ -2,7 +2,7 @@
 	"cameraLookAt": [0, 0, 0],
 	"cameraLookFrom": [0, 0, 1],
 	"cameraLookUp": [0, 1, 0],
-	"fieldOfView": 60,
+	"fieldOfView": 90,
 	"directionToLight": [1.0, 1.0, 1.0],
 	"lightColor": [1.0, 1.0, 1.0],
 	"ambientLightColor": [0.1, 0.1, 0.1],
