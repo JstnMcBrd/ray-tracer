@@ -1,10 +1,36 @@
+import json
 import numpy as np
 
 from objects.Object import Object
 from objects.Sphere import Sphere
 from Scene import Scene
 
-def load_from_json(json) -> Scene:
+def import_scene(file_path: str) -> Scene:
+	json_file = None
+	try:
+		json_file = open(file_path, "r")
+	except Exception as err:
+		print(f"\"{file_path}\" is not a valid path\n\t{err}")
+		exit(1)
+
+	json_data = None
+	try:
+		json_data = json.loads(json_file.read())
+	except Exception as err:
+		print(f"\"{file_path}\" is not a valid json file\n\t{err}")
+		exit(1)
+
+	scene = None
+	try:
+		scene = __load_from_json(json_data)
+	except AssertionError as err:
+		print(f"\"{file_path}\" is improperly formatted\n\t{err}")
+		exit(1)
+
+	return scene
+
+
+def __load_from_json(json) -> Scene:
 	error_prefix = "Scene"
 
 	scene = Scene()

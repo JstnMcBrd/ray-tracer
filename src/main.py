@@ -1,12 +1,11 @@
 import argparse
 from datetime import datetime
 from dotenv import load_dotenv
-import json
 import numpy as np
 from os import getenv
 
 from ray_tracer import ray_trace
-from scene_importer import load_from_json
+from scene_importer import import_scene
 from Scene import Scene
 
 
@@ -14,31 +13,6 @@ from Scene import Scene
 # TODO reflection
 # TODO refraction
 # TODO more than one light source
-
-
-def load_scene(file_path: str) -> Scene:
-	json_file = None
-	try:
-		json_file = open(file_path, "r")
-	except Exception as err:
-		print(f"\"{file_path}\" is not a valid path\n\t{err}")
-		exit(1)
-
-	json_data = None
-	try:
-		json_data = json.loads(json_file.read())
-	except Exception as err:
-		print(f"\"{file_path}\" is not a valid json file\n\t{err}")
-		exit(1)
-
-	scene = None
-	try:
-		scene = load_from_json(json_data)
-	except AssertionError as err:
-		print(f"\"{file_path}\" is improperly formatted\n\t{err}")
-		exit(1)
-
-	return scene
 
 
 def write_to_ppm(screen: np.ndarray, output_file_path: str, max_color: float):
@@ -74,8 +48,8 @@ if __name__ == "__main__":
 	# Start timer
 	start_time = datetime.now()
 
-	# Load Scene
-	scene = load_scene(scene_file_path)
+	# Import Scene
+	scene = import_scene(scene_file_path)
 
 	# Raytrace
 	screen = ray_trace(scene, width, height)
