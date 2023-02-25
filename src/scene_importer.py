@@ -7,17 +7,17 @@ def load_from_json(json) -> Scene:
 
 	scene = Scene()
 
-	scene.camera_look_at = __validate_direction_vector(json.get("cameraLookAt"), error_prefix=f"{error_prefix}.cameraLookAt")
-	scene.camera_look_from = __validate_position_vector(json.get("cameraLookFrom"), error_prefix=f"{error_prefix}.cameraLookFrom")
-	scene.camera_look_up = __validate_direction_vector(json.get("cameraLookUp"), error_prefix=f"{error_prefix}.cameraLookUp")
+	scene.camera_look_at = __validate_direction_vector(json.get("camera_look_at"), error_prefix=f"{error_prefix}.camera_look_at")
+	scene.camera_look_from = __validate_position_vector(json.get("camera_look_from"), error_prefix=f"{error_prefix}.camera_look_from")
+	scene.camera_look_up = __validate_direction_vector(json.get("camera_look_up"), error_prefix=f"{error_prefix}.camera_look_up")
 
-	# TODO assert cameraLookUp is perpendicular to the normalized difference between cameraLookAt and cameraLookFrom
+	# TODO assert camera_look_up is perpendicular to the normalized difference between camera_look_at and camera_look_from
 
-	scene.field_of_view = __validate_number(json.get("fieldOfView"), min=0, max=360, error_prefix=f"{error_prefix}.fieldOfView")
-	scene.direction_to_light = __validate_direction_vector(json.get("directionToLight"), error_prefix=f"{error_prefix}.directionToLight")
-	scene.light_color = __validate_color_vector(json.get("lightColor"), error_prefix=f"{error_prefix}.lightColor")
-	scene.ambient_light_color = __validate_color_vector(json.get("ambientLightColor"), error_prefix=f"{error_prefix}.ambientLightColor")
-	scene.background_color = __validate_color_vector(json.get("backgroundColor"), error_prefix=f"{error_prefix}.backgroundColor")
+	scene.field_of_view = __validate_number(json.get("field_of_view"), min=0, max=360, error_prefix=f"{error_prefix}.field_of_view")
+	scene.direction_to_light = __validate_direction_vector(json.get("direction_to_light"), error_prefix=f"{error_prefix}.direction_to_light")
+	scene.light_color = __validate_color_vector(json.get("light_color"), error_prefix=f"{error_prefix}.light_color")
+	scene.ambient_light_color = __validate_color_vector(json.get("ambient_light_color"), error_prefix=f"{error_prefix}.ambient_light_color")
+	scene.background_color = __validate_color_vector(json.get("background_color"), error_prefix=f"{error_prefix}.background_color")
 
 	scene.objects = __load_objects(json.get("objects"), error_prefix=f"{error_prefix}.objects")
 
@@ -117,12 +117,12 @@ def __load_object(json_value, error_prefix="Object") -> Object:
 		assert type(name) is str, f"{error_prefix}.name must be type string, not {type(name)}"
 	obj.name = name
 
-	obj.ambient_coefficient = __validate_number(json_value.get("ambientCoefficient"), error_prefix=f"{error_prefix}.ambientCoefficient")
-	obj.diffuse_coefficient = __validate_number(json_value.get("diffuseCoefficient"), error_prefix=f"{error_prefix}.diffuseCoefficient")
-	obj.specular_coefficient = __validate_number(json_value.get("specularCoefficient"), error_prefix=f"{error_prefix}.specularCoefficient")
-	obj.diffuse_color = __validate_color_vector(json_value.get("diffuseColor"), error_prefix=f"{error_prefix}.diffuseColor")
-	obj.specular_color = __validate_color_vector(json_value.get("specularColor"), error_prefix=f"{error_prefix}.specularColor")
-	obj.gloss_coefficient = __validate_number(json_value.get("glossCoefficient"), error_prefix=f"{error_prefix}.glossCoefficient")
+	obj.ambient_coefficient = __validate_number(json_value.get("ambient_coefficient"), error_prefix=f"{error_prefix}.ambient_coefficient")
+	obj.diffuse_coefficient = __validate_number(json_value.get("diffuse_coefficient"), error_prefix=f"{error_prefix}.diffuse_coefficient")
+	obj.specular_coefficient = __validate_number(json_value.get("specular_coefficient"), error_prefix=f"{error_prefix}.specular_coefficient")
+	obj.diffuse_color = __validate_color_vector(json_value.get("diffuse_color"), error_prefix=f"{error_prefix}.diffuse_color")
+	obj.specular_color = __validate_color_vector(json_value.get("specular_color"), error_prefix=f"{error_prefix}.specular_color")
+	obj.gloss_coefficient = __validate_number(json_value.get("gloss_coefficient"), error_prefix=f"{error_prefix}.gloss_coefficient")
 
 	return obj
 
