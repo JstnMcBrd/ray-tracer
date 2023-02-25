@@ -1,4 +1,5 @@
 import argparse
+from datetime import datetime
 from dotenv import load_dotenv
 import json
 import numpy as np
@@ -70,6 +71,9 @@ if __name__ == "__main__":
 	height = parsed.height
 	max_color = parsed.max_color
 
+	# Start timer
+	start_time = datetime.now()
+
 	# Load Scene
 	scene = load_scene(scene_file_path)
 
@@ -78,3 +82,11 @@ if __name__ == "__main__":
 
 	# Write to file
 	write_to_ppm(screen, output_file_path, max_color)
+
+	# Print timer
+	end_time = datetime.now()
+	elapsed = end_time - start_time
+	pixels_per_second = (width*height) / elapsed.total_seconds()
+
+	print(f"Time elapsed:\t{elapsed}\t({int(pixels_per_second)} pixels/second)")
+	print
