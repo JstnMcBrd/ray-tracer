@@ -1,6 +1,8 @@
 import numpy as np
 
-from Scene import Object, Scene, Sphere
+from objects.Object import Object
+from objects.Sphere import Sphere
+from Scene import Scene
 
 def load_from_json(json) -> Scene:
 	error_prefix = "Scene"

@@ -1,7 +1,8 @@
 from math import tan
 import numpy as np
 
-from Scene import Object, Scene
+from objects.Object import Object
+from Scene import Scene
 from shader import shade
 
 def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:

@@ -1,6 +1,7 @@
 import numpy as np
 
-from Scene import Object, Scene
+import objects.Object as Object
+from Scene import Scene
 
 def shade(scene: Scene, obj: Object, surface_normal: np.ndarray, view_direction: np.ndarray) -> np.ndarray:
 	N_dot_L = np.dot(surface_normal, scene.direction_to_light)
