@@ -13,25 +13,26 @@ def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:
 	camera_up = scene.camera_up()
 	camera_right = scene.camera_right()
 
-	# Calculate screen sizes
-	viewport_size = np.array([width, height])
-	window_size = calculate_window_size(viewport_size, camera_look_from, camera_look_at, scene.field_of_view)
-
 	# Save time by pre-calcuating constant values
+	camera_look_at_relative = camera_look_at - camera_look_from
+
+	viewport_size = np.array([width, height])
+	window_size = calculate_window_size(viewport_size, camera_look_at_relative, scene.field_of_view)
 	window_to_viewport_size_ratio = window_size/viewport_size
 	half_window_size = window_size/2
+
 	ray_origin = camera_look_from
 
 	# For each pixel on the screen...
 	for x in range(len(screen)):
 		for y in range(len(screen[x])):
-			# Find the world point of the pixel
+			# Find the world point of the pixel, relative to the camera's position
 			viewport_point = np.array([x, y])
 			window_point = viewport_to_window(viewport_point, window_to_viewport_size_ratio, half_window_size)
-			world_point = window_to_world(window_point, camera_look_at, camera_forward, camera_up, camera_right)
+			world_point_relative = window_to_relative_world(window_point, camera_look_at_relative, camera_forward, camera_up, camera_right)
 
 			# Find the direction the ray is pointing
-			ray_direction = normalize(world_point - camera_look_from)
+			ray_direction = normalize(world_point_relative)
 
 			# Find the closest object that intersects with the ray
 			closest_object: Object = None
@@ -70,8 +71,8 @@ def normalize(vector: np.ndarray) -> np.ndarray:
 	return vector / magnitude(vector)
 
 
-def calculate_window_size(viewport_size: np.ndarray, camera_look_from: np.ndarray, camera_look_at: np.ndarray, field_of_view: float) -> np.ndarray:
-	distance = magnitude(camera_look_at - camera_look_from)
+def calculate_window_size(viewport_size: np.ndarray, camera_look_at_relative: np.ndarray, field_of_view: float) -> np.ndarray:
+	distance = magnitude(camera_look_at_relative)
 	x = distance * tan(np.deg2rad(field_of_view/2)) * 2
 	y = x * viewport_size[1]/viewport_size[0]
 	return np.array([x, y])
@@ -82,8 +83,8 @@ def viewport_to_window(viewport_point: np.ndarray, window_to_viewport_size_ratio
 	return np.array([window_point[0], window_point[1]*-1, 0]) # The -1 seems necessary to orient it correctly
 
 
-def window_to_world(window_point: np.ndarray, camera_look_at: np.ndarray, camera_forward: np.ndarray, camera_up: np.ndarray, camera_right: np.ndarray) -> np.ndarray:
-	return camera_look_at + window_point[0]*camera_right + window_point[1]*camera_up + window_point[2]*camera_forward
+def window_to_relative_world(window_point: np.ndarray, camera_look_at_relative: np.ndarray, camera_forward: np.ndarray, camera_up: np.ndarray, camera_right: np.ndarray) -> np.ndarray:
+	return camera_look_at_relative + window_point[0]*camera_right + window_point[1]*camera_up + window_point[2]*camera_forward
 
 
 def shading(scene: Scene, obj: Object, surface_normal: np.ndarray, view_direction: np.ndarray) -> np.ndarray:
