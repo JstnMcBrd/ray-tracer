@@ -15,7 +15,7 @@ def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:
 
 	# Calculate screen sizes
 	viewport_size = np.array([width, height])
-	window_size = calculate_window_size(viewport_size, camera_look_at, camera_look_from, scene.field_of_view)
+	window_size = calculate_window_size(viewport_size, camera_look_from, camera_look_at, scene.field_of_view)
 
 	# Save time by pre-calcuating constant values
 	window_to_viewport_size_ratio = window_size/viewport_size
@@ -28,7 +28,7 @@ def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:
 			# Find the world point of the pixel
 			viewport_point = np.array([x, y])
 			window_point = viewport_to_window(viewport_point, window_to_viewport_size_ratio, half_window_size)
-			world_point = window_to_world(window_point, camera_forward, camera_look_at, camera_up, camera_right)
+			world_point = window_to_world(window_point, camera_look_at, camera_forward, camera_up, camera_right)
 
 			# Find the direction the ray is pointing
 			ray_direction = normalize(world_point - camera_look_from)
@@ -71,9 +71,8 @@ def normalize(vector: np.ndarray) -> np.ndarray:
 
 
 def calculate_window_size(viewport_size: np.ndarray, camera_look_from: np.ndarray, camera_look_at: np.ndarray, field_of_view: float) -> np.ndarray:
-	dist = camera_look_at - camera_look_from
-	dist_mag = magnitude(dist)
-	x = dist_mag * tan(np.deg2rad(field_of_view/2)) * 2
+	distance = magnitude(camera_look_at - camera_look_from)
+	x = distance * tan(np.deg2rad(field_of_view/2)) * 2
 	y = x * viewport_size[1]/viewport_size[0]
 	return np.array([x, y])
 
