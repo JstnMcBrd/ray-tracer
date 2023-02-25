@@ -1,24 +1,24 @@
 {
-	"cameraLookAt": [0, 0, 0],
-	"cameraLookFrom": [0, 0, 1],
-	"cameraLookUp": [0, 1, 0],
-	"fieldOfView": 90,
-	"directionToLight": [0.0, 1.0, 0.0],
-	"lightColor": [1.0, 1.0, 1.0],
-	"ambientLightColor": [0.0, 0.0, 0.0],
-	"backgroundColor": [0.2, 0.2, 0.2],
+	"camera_look_at": [0, 0, 0],
+	"camera_look_from": [0, 0, 1],
+	"camera_look_up": [0, 1, 0],
+	"field_of_view": 90,
+	"direction_to_light": [0.0, 1.0, 0.0],
+	"light_color": [1.0, 1.0, 1.0],
+	"ambient_light_color": [0.0, 0.0, 0.0],
+	"background_color": [0.2, 0.2, 0.2],
 	"objects": [
 		{
 			"name": "purple sphere",
 			"type": "sphere",
 			"center": [0.0, 0.0, 0.0],
 			"radius": 0.4,
-			"ambientCoefficient": 0.1,
-			"diffuseCoefficient": 0.7,
-			"specularCoefficient": 0.2,
-			"diffuseColor": [1.0, 0.0, 1.0],
-			"specularColor": [1.0, 1.0, 1.0],
-			"glossCoefficient": 16.0
+			"ambient_coefficient": 0.1,
+			"diffuse_coefficient": 0.7,
+			"specular_coefficient": 0.2,
+			"diffuse_color": [1.0, 0.0, 1.0],
+			"specular_color": [1.0, 1.0, 1.0],
+			"gloss_coefficient": 16.0
 		}
 	]
 }

@@ -2,77 +2,27 @@ import numpy as np
 
 class Scene:
 	def __init__(self):
-		self.cameraLookAt = np.array([0.0, 0.0, 0.0])
-		self.cameraLookFrom = np.array([0.0, 0.0, 0.0])
-		self.cameraLookUp = np.array([0.0, 0.0, 0.0])
-		self.fieldOfView = 0
-		self.directionToLight = np.array([0, 0, 0])
-		self.lightColor = np.array([0, 0, 0])
-		self.ambientLightColor = np.array([0, 0, 0])
-		self.backgroundColor = np.array([0, 0, 0])
+		# Camera
+		self.camera_look_at = np.array([0.0, 0.0, 0.0])
+		self.camera_look_from = np.array([0.0, 0.0, 0.0])
+		self.camera_look_up = np.array([0.0, 0.0, 0.0])
+		self.field_of_view = 0
+
+		# Lighting
+		self.direction_to_light = np.array([0, 0, 0])
+		self.light_color = np.array([0, 0, 0])
+		self.ambient_light_color = np.array([0, 0, 0])
+		self.background_color = np.array([0, 0, 0])
+
+		# Objects
 		self.objects = []
 
-	def cameraForward(self):
-		direction = self.cameraLookAt - self.cameraLookFrom
-		return direction / np.sqrt(np.dot(direction,direction))
+	def camera_forward(self):
+		direction = self.camera_look_at - self.camera_look_from
+		return direction / np.sqrt(np.dot(direction, direction)) # Normalize
 
-	def cameraUp(self):
-		return self.cameraLookUp
+	def camera_up(self):
+		return self.camera_look_up
 
-	def cameraRight(self):
-		return np.cross(self.cameraForward(), self.cameraUp())
-
-class Object:
-	def __init__(self):
-		self.name = ""
-
-		self.ambientCoefficient = 0
-		self.diffuseCoefficient = 0
-		self.specularCoefficient = 0
-		self.diffuseColor = np.array([0, 0, 0])
-		self.specularColor = np.array([0, 0, 0])
-		self.glossCoefficient = 0
-
-	def normal(self, point: np.ndarray) -> np.ndarray:
-		NotImplemented
-
-	def rayIntersection(self, rayOrigin: np.ndarray, rayDirection: np.ndarray) -> np.ndarray:
-		NotImplemented
-
-class Sphere(Object):
-	def __init__(self):
-		super().__init__()
-		self.center = np.array([0, 0, 0])
-		self.radius = 0
-
-	def normal(self, point: np.ndarray) -> np.ndarray:
-		if self.radius != 0:
-			N = (point - self.center)/self.radius
-			return N / np.sqrt(np.dot(N,N))
-		else:
-			return np.array([0,0,0])
-
-	def rayIntersection(self, rayOrigin, rayDirection) -> np.ndarray:
-		dist = self.center - rayOrigin
-		dist_sqr = np.dot(dist, dist)
-		dist_mag = np.sqrt(dist_sqr)
-
-		outside = dist_mag >= self.radius
-
-		closestApproach = np.dot(rayDirection, dist)
-
-		if closestApproach < 0 and outside:
-			return None
-
-		closestApproachDistToSurface_sqr = self.radius**2 - dist_sqr + closestApproach**2
-
-		if closestApproachDistToSurface_sqr < 0:
-			return None
-		
-		closestApproachDistToSurface = closestApproachDistToSurface_sqr**0.5
-
-		t = closestApproach - closestApproachDistToSurface if outside else closestApproach + closestApproachDistToSurface
-
-		return rayOrigin + rayDirection*t
-
-# TODO add more types of objects
+	def camera_right(self):
+		return np.cross(self.camera_forward(), self.camera_up())

@@ -1,60 +1,60 @@
 {
-	"cameraLookAt": [0, 0, 0],
-	"cameraLookFrom": [0, 0, 1],
-	"cameraLookUp": [0, 1, 0],
-	"fieldOfView": 60,
-	"directionToLight": [1.0, 1.0, 1.0],
-	"lightColor": [1.0, 1.0, 1.0],
-	"ambientLightColor": [0.1, 0.1, 0.1],
-	"backgroundColor": [0.2, 0.2, 0.2],
+	"camera_look_at": [0, 0, 0],
+	"camera_look_from": [0, 0, 1],
+	"camera_look_up": [0, 1, 0],
+	"field_of_view": 60,
+	"direction_to_light": [1.0, 1.0, 1.0],
+	"light_color": [1.0, 1.0, 1.0],
+	"ambient_light_color": [0.1, 0.1, 0.1],
+	"background_color": [0.2, 0.2, 0.2],
 	"objects": [
 		{
 			"name": "white sphere",
 			"type": "sphere",
 			"center": [0.45, 0.0, -0.15],
 	  		"radius": 0.15,
-	  		"ambientCoefficient": 0.3,
-	  		"diffuseCoefficient": 0.8,
-	  		"specularCoefficient": 0.1,
-	  		"diffuseColor": [1.0, 1.0, 1.0],
-	  		"specularColor": [1.0, 1.0, 1.0],
-	  		"glossCoefficient": 4.0
+	  		"ambient_coefficient": 0.3,
+	  		"diffuse_coefficient": 0.8,
+	  		"specular_coefficient": 0.1,
+	  		"diffuse_color": [1.0, 1.0, 1.0],
+	  		"specular_color": [1.0, 1.0, 1.0],
+	  		"gloss_coefficient": 4.0
 		},
 		{
 			"name": "red sphere",
 			"type": "sphere",
 			"center": [0.0, 0.0, -0.1],
 			"radius": 0.2,
-			"ambientCoefficient": 0.1,
-			"diffuseCoefficient": 0.6,
-			"specularCoefficient": 0.3,
-			"diffuseColor": [1.0, 0.0, 0.0],
-			"specularColor": [1.0, 1.0, 1.0],
-			"glossCoefficient": 32.0
+			"ambient_coefficient": 0.1,
+			"diffuse_coefficient": 0.6,
+			"specular_coefficient": 0.3,
+			"diffuse_color": [1.0, 0.0, 0.0],
+			"specular_color": [1.0, 1.0, 1.0],
+			"gloss_coefficient": 32.0
 		},
 		{
 			"name": "green sphere",
 			"type": "sphere",
 			"center": [-0.6, 0.0, 0.0],
 			"radius": 0.3,
-			"ambientCoefficient": 0.1,
-			"diffuseCoefficient": 0.7,
-			"specularCoefficient": 0.2,
-			"diffuseColor": [0.0, 1.0, 0.0],
-			"specularColor": [0.5, 1.0, 0.5],
-			"glossCoefficient": 64.0
+			"ambient_coefficient": 0.1,
+			"diffuse_coefficient": 0.7,
+			"specular_coefficient": 0.2,
+			"diffuse_color": [0.0, 1.0, 0.0],
+			"specular_color": [0.5, 1.0, 0.5],
+			"gloss_coefficient": 64.0
 		},
 		{
 			"name": "blue sphere",
 			"type": "sphere",
 			"center": [0.0, -10000.5, 0.0],
 			"radius": 10000.0,
-			"ambientCoefficient": 0.1,
-			"diffuseCoefficient": 0.9,
-			"specularCoefficient": 0.0,
-			"diffuseColor": [0.0, 0.0, 1.0],
-			"specularColor": [1.0, 1.0, 1.0],
-			"glossCoefficient": 16.0
+			"ambient_coefficient": 0.1,
+			"diffuse_coefficient": 0.9,
+			"specular_coefficient": 0.0,
+			"diffuse_color": [0.0, 0.0, 1.0],
+			"specular_color": [1.0, 1.0, 1.0],
+			"gloss_coefficient": 16.0
 		}
 	]
 }
