@@ -39,7 +39,7 @@ def __load_from_json(json) -> Scene:
 	scene = Scene()
 
 	# Camera
-	scene.camera_look_at = __validate_direction_vector(json.get("camera_look_at"), default=[0,0,0], error_prefix=f"{error_prefix}.camera_look_at")
+	scene.camera_look_at = __validate_position_vector(json.get("camera_look_at"), default=[0,0,0], error_prefix=f"{error_prefix}.camera_look_at")
 	scene.camera_look_from = __validate_position_vector(json.get("camera_look_from"), default=[0,0,1], error_prefix=f"{error_prefix}.camera_look_from")
 	scene.camera_look_up = __validate_direction_vector(json.get("camera_look_up"), default=[0,1,0], error_prefix=f"{error_prefix}.camera_look_up")
 
