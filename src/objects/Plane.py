@@ -12,7 +12,7 @@ class Plane(Object):
 		self.__point = point
 		self.__distance_from_origin = -1 * np.dot(normal, point)
 
-	def normal(self, point: np.ndarray) -> np.ndarray:
+	def normal(self, point: np.ndarray = None) -> np.ndarray:
 		return self.__normal
 
 	def ray_intersection(self, ray: Ray) -> Ray_Collision or None:

@@ -13,8 +13,8 @@ class Polygon(Object):
 
 		self.__vertices = vertices
 
-		v1 = normalized(vertices[0] - vertices[1])
-		v2 = normalized(vertices[2] - vertices[1])
+		v1 = normalized(vertices[2] - vertices[1])
+		v2 = normalized(vertices[0] - vertices[1])
 
 		self.__normal = np.cross(v1, v2)
 
