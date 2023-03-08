@@ -31,7 +31,7 @@
 			],
 			"ambient_coefficient": 0.1,
 			"diffuse_coefficient": 0.9,
-			"specular_coefficient": 0.1,
+			"specular_coefficient": 1.0,
 			"diffuse_color": [0.0, 0.0, 1.0],
 			"specular_color": [1.0, 1.0, 1.0],
 			"gloss_coefficient": 4.0,
