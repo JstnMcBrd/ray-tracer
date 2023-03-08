@@ -37,56 +37,64 @@ def __load_from_json(json) -> Scene:
 	scene = Scene()
 
 	# Camera
-	scene.camera_look_at = __validate_direction_vector(json.get("camera_look_at"), error_prefix=f"{error_prefix}.camera_look_at")
-	scene.camera_look_from = __validate_position_vector(json.get("camera_look_from"), error_prefix=f"{error_prefix}.camera_look_from")
-	scene.camera_look_up = __validate_direction_vector(json.get("camera_look_up"), error_prefix=f"{error_prefix}.camera_look_up")
+	scene.camera_look_at = __validate_direction_vector(json.get("camera_look_at"), default=[0,0,0], error_prefix=f"{error_prefix}.camera_look_at")
+	scene.camera_look_from = __validate_position_vector(json.get("camera_look_from"), default=[0,0,1], error_prefix=f"{error_prefix}.camera_look_from")
+	scene.camera_look_up = __validate_direction_vector(json.get("camera_look_up"), default=[0,1,0], error_prefix=f"{error_prefix}.camera_look_up")
 
 	# TODO assert camera_look_up is perpendicular to the normalized difference between camera_look_at and camera_look_from
 
-	scene.field_of_view = __validate_number(json.get("field_of_view"), min=0, max=360, error_prefix=f"{error_prefix}.field_of_view")
+	scene.field_of_view = __validate_number(json.get("field_of_view"), min=0, max=360, default=90, error_prefix=f"{error_prefix}.field_of_view")
 	
 	# Lighting
-	scene.direction_to_light = __validate_direction_vector(json.get("direction_to_light"), error_prefix=f"{error_prefix}.direction_to_light")
-	scene.light_color = __validate_color_vector(json.get("light_color"), error_prefix=f"{error_prefix}.light_color")
-	scene.ambient_light_color = __validate_color_vector(json.get("ambient_light_color"), error_prefix=f"{error_prefix}.ambient_light_color")
-	scene.background_color = __validate_color_vector(json.get("background_color"), error_prefix=f"{error_prefix}.background_color")
+	scene.direction_to_light = __validate_direction_vector(json.get("direction_to_light"), default=[0,1,0], error_prefix=f"{error_prefix}.direction_to_light")
+	scene.light_color = __validate_color_vector(json.get("light_color"), default=[1,1,1], error_prefix=f"{error_prefix}.light_color")
+	scene.ambient_light_color = __validate_color_vector(json.get("ambient_light_color"), default=[1,1,1], error_prefix=f"{error_prefix}.ambient_light_color")
+	scene.background_color = __validate_color_vector(json.get("background_color"), default=[0,0,0], error_prefix=f"{error_prefix}.background_color")
 
 	# Objects
-	scene.objects = __load_objects(json.get("objects"), error_prefix=f"{error_prefix}.objects")
+	scene.objects = __load_objects(json.get("objects"), default=[], error_prefix=f"{error_prefix}.objects")
 
 	return scene
 
 
-def __validate_number(json_value, min=None, max=None, error_prefix="Number") -> float|int:
-	assert json_value != None, f"{error_prefix} must not be missing"
+def __validate_number(json_value, min=None, max=None, default=None, error_prefix="Number") -> float or int:
+	if json_value is None and default is not None:
+		print(f"WARNING: {error_prefix} is missing, reverting to default value {default}")
+		return default
+
+	assert json_value is not None, f"{error_prefix} must not be missing"
 	assert type(json_value) is float or type(json_value) is int, f"{error_prefix} must be type float or int, not {type(json_value)}"
-	if min != None:
+	if min is not None:
 		assert json_value >= min, f"{error_prefix} must be greater than {min}, not {json_value}"
-	if max != None:
+	if max is not None:
 		assert json_value <= max, f"{error_prefix} must be less than {max}, not {json_value}"
 
 	return json_value
 
 
-def __validate_list(json_value, length=None, error_prefix="List") -> list:
-	assert json_value != None, f"{error_prefix} must not be missing"
+def __validate_list(json_value, length=None, default=None, error_prefix="List") -> list:
+	if json_value is None and default is not None:
+		print(f"WARNING: {error_prefix} is missing, reverting to default value {default}")
+		return default
+
+	assert json_value is not None, f"{error_prefix} must not be missing"
 	assert type(json_value) is list, f"{error_prefix} must be type list, not {type(json_value)}"
-	if length != None:
+	if length is not None:
 		assert len(json_value) == length, f"{error_prefix} must have length of {length}, not {len(json_value)}"
 
 	return json_value
 
 
-def __validate_position_vector(json_value, error_prefix="Position") -> np.ndarray:
-	json_value = __validate_list(json_value, length=3, error_prefix=error_prefix)
+def __validate_position_vector(json_value, default=None, error_prefix="Position") -> np.ndarray:
+	json_value = __validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
 	for i in json_value:
 		__validate_number(i, error_prefix=f"{error_prefix} element")
 		
 	return np.array(json_value)
 
 
-def __validate_direction_vector(json_value, error_prefix="Direction") -> np.ndarray:
-	json_value = __validate_list(json_value, length=3, error_prefix=error_prefix)
+def __validate_direction_vector(json_value, default=None, error_prefix="Direction") -> np.ndarray:
+	json_value = __validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
 	for i in json_value:
 		__validate_number(i, error_prefix=f"{error_prefix} element")
 		
@@ -103,18 +111,18 @@ def __validate_direction_vector(json_value, error_prefix="Direction") -> np.ndar
 	return vector
 
 
-def __validate_color_vector(json_value, error_prefix="Color") -> np.ndarray:
-	json_value = __validate_list(json_value, length=3, error_prefix=error_prefix)
+def __validate_color_vector(json_value, default=None, error_prefix="Color") -> np.ndarray:
+	json_value = __validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
 	for i in json_value:
 		__validate_number(i, min=0, max=1, error_prefix=f"{error_prefix} element")
 
 	return np.array(json_value)
 
 
-def __load_objects(json_value, error_prefix="Objects") -> list:
+def __load_objects(json_value, default=None, error_prefix="Objects") -> list:
 	objects = []
 
-	json_value = __validate_list(json_value, error_prefix=error_prefix)
+	json_value = __validate_list(json_value, default=default, error_prefix=error_prefix)
 	for i in range(len(json_value)):
 		obj = __load_object(json_value[i], error_prefix=f"{error_prefix}[{i}]")
 		objects.append(obj)
@@ -125,11 +133,11 @@ def __load_objects(json_value, error_prefix="Objects") -> list:
 def __load_object(json_value, error_prefix="Object") -> Object:
 	obj = None
 
-	assert json_value != None, f"{error_prefix} must not be missing"
+	assert json_value is not None, f"{error_prefix} must not be missing"
 	assert type(json_value) is dict, f"{error_prefix} must be type dict, not {type(json_value)}"
 
 	objType = json_value.get("type")
-	assert objType != None, f"{error_prefix}.type must not be missing"
+	assert objType is not None, f"{error_prefix}.type must not be missing"
 	assert type(objType) is str, f"{error_prefix}.type must be type string, not {type(objType)}"
 
 	# Load in object-type-specific values
@@ -141,16 +149,16 @@ def __load_object(json_value, error_prefix="Object") -> Object:
 		
 	# Load in universal object values
 	name = json_value.get("name")
-	if name != None:
+	if name is not None:
 		assert type(name) is str, f"{error_prefix}.name must be type string, not {type(name)}"
 	obj.name = name
 
-	obj.ambient_coefficient = __validate_number(json_value.get("ambient_coefficient"), error_prefix=f"{error_prefix}.ambient_coefficient")
-	obj.diffuse_coefficient = __validate_number(json_value.get("diffuse_coefficient"), error_prefix=f"{error_prefix}.diffuse_coefficient")
-	obj.specular_coefficient = __validate_number(json_value.get("specular_coefficient"), error_prefix=f"{error_prefix}.specular_coefficient")
-	obj.diffuse_color = __validate_color_vector(json_value.get("diffuse_color"), error_prefix=f"{error_prefix}.diffuse_color")
-	obj.specular_color = __validate_color_vector(json_value.get("specular_color"), error_prefix=f"{error_prefix}.specular_color")
-	obj.gloss_coefficient = __validate_number(json_value.get("gloss_coefficient"), error_prefix=f"{error_prefix}.gloss_coefficient")
+	obj.ambient_coefficient = __validate_number(json_value.get("ambient_coefficient"), default=0, error_prefix=f"{error_prefix}.ambient_coefficient")
+	obj.diffuse_coefficient = __validate_number(json_value.get("diffuse_coefficient"), default=1, error_prefix=f"{error_prefix}.diffuse_coefficient")
+	obj.specular_coefficient = __validate_number(json_value.get("specular_coefficient"), default=0, error_prefix=f"{error_prefix}.specular_coefficient")
+	obj.diffuse_color = __validate_color_vector(json_value.get("diffuse_color"), default=[1,1,1], error_prefix=f"{error_prefix}.diffuse_color")
+	obj.specular_color = __validate_color_vector(json_value.get("specular_color"), default=[1,1,1], error_prefix=f"{error_prefix}.specular_color")
+	obj.gloss_coefficient = __validate_number(json_value.get("gloss_coefficient"), default=4, error_prefix=f"{error_prefix}.gloss_coefficient")
 
 	return obj
 
