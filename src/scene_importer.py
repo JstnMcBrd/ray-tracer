@@ -4,6 +4,7 @@ import numpy as np
 from objects.Object import Object
 from objects.Sphere import Sphere
 from Scene import Scene
+from vector_utils import magnitude, normalized
 
 def import_scene(file_path: str) -> Scene:
 	json_str = None
@@ -88,23 +89,18 @@ def __validate_direction_vector(json_value, error_prefix="Direction") -> np.ndar
 	json_value = __validate_list(json_value, length=3, error_prefix=error_prefix)
 	for i in json_value:
 		__validate_number(i, error_prefix=f"{error_prefix} element")
-
-	def vector_magnitude(v):
-		l = 0
-		for i in v:
-			l += i**2
-		return l**0.5
 		
-	# Normalize vector
-	mag = vector_magnitude(json_value)
+	# Convert to numpy array
+	vector = np.array(json_value)
+
+	# Make sure the vector is normalized
+	mag = magnitude(vector)
 	if mag != 1 and mag != 0:
-		for i in range(len(json_value)):
-			json_value[i] /= mag
-
-	mag = vector_magnitude(json_value)
-	assert mag == 1 or mag == 0, f"{error_prefix} must be normalized with magnitude of 0 or 1, not magnitude of {mag}"
+		print(f"WARNING: {error_prefix} is not normalized with magnitude of {mag}, performing auto-normalization")
+		vector = normalized(vector)
+		print(f"WARNING: {error_prefix} has been normalized to [{vector[0]}, {vector[1]}, {vector[2]}], please correct the Scene JSON file to match")
 		
-	return np.array(json_value)
+	return vector
 
 
 def __validate_color_vector(json_value, error_prefix="Color") -> np.ndarray:

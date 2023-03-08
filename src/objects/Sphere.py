@@ -1,6 +1,7 @@
 import numpy as np
 
 from objects.Object import Object
+from vector_utils import normalized
 
 class Sphere(Object):
 	def __init__(self):
@@ -11,7 +12,7 @@ class Sphere(Object):
 	def normal(self, point: np.ndarray) -> np.ndarray:
 		if self.radius != 0:
 			N = (point - self.center)/self.radius
-			return N / np.sqrt(np.dot(N, N)) # Normalize
+			return normalized(N)
 		else:
 			return np.array([0,0,0])
 

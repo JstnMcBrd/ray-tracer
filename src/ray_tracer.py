@@ -4,6 +4,7 @@ import numpy as np
 from objects.Object import Object
 from Scene import Scene
 from shader import shade
+from vector_utils import magnitude, normalized
 
 
 # TODO shadows
@@ -11,6 +12,15 @@ from shader import shade
 # TODO refraction
 # TODO more than one light source
 # TODO multiprocessing
+
+
+class Ray_Collision:
+	def __init__(self, obj, ray, location):
+		self.obj = obj
+		self.ray = ray
+		self.location = location
+		
+		self.distance = magnitude(location - ray.origin)
 
 
 class Ray:
@@ -30,15 +40,6 @@ class Ray:
 					closest_collision = collision
 		
 		return closest_collision
-
-
-class Ray_Collision:
-	def __init__(self, obj, ray, location):
-		self.obj = obj
-		self.ray = ray
-		self.location = location
-		
-		self.distance = magnitude(location - ray.origin)
 
 
 def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:
@@ -72,7 +73,7 @@ def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:
 			world_point_relative = window_to_relative_world(window_point, camera_look_at_relative, camera_forward, camera_up, camera_right)
 
 			# Initialize and cast the ray
-			ray = Ray(camera_look_from, normalize(world_point_relative))
+			ray = Ray(camera_look_from, normalized(world_point_relative))
 			collision = ray.cast(scene)
 
 			# Shade the pixel using the collided object
@@ -95,14 +96,6 @@ def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:
 
 	print()
 	return screen
-
-
-def magnitude(vector: np.ndarray) -> float:
-	return np.sqrt(np.dot(vector, vector))
-
-
-def normalize(vector: np.ndarray) -> np.ndarray:
-	return vector / magnitude(vector)
 
 
 def calculate_window_size(viewport_size: np.ndarray, camera_look_at_relative: np.ndarray, field_of_view: float) -> np.ndarray:

@@ -1,5 +1,7 @@
 import numpy as np
 
+from vector_utils import normalized
+
 class Scene:
 	def __init__(self):
 		# Camera
@@ -19,7 +21,7 @@ class Scene:
 
 	def camera_forward(self):
 		direction = self.camera_look_at - self.camera_look_from
-		return direction / np.sqrt(np.dot(direction, direction)) # Normalize
+		return normalized(direction)
 
 	def camera_up(self):
 		return self.camera_look_up
