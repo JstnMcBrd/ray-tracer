@@ -1,6 +1,7 @@
 import numpy as np
 
 from objects.Object import Object
+from Ray import Ray, Ray_Collision
 from vector_utils import normalized
 
 class Polygon(Object):
@@ -22,6 +23,6 @@ class Polygon(Object):
 	def normal(self, point: np.ndarray) -> np.ndarray:
 		return __normal
 
-	def ray_intersection(self, ray_origin, ray_direction) -> np.ndarray or None:
+	def ray_intersection(self, ray: Ray) -> Ray_Collision or None:
 		#NotImplemented # TODO
 		return None

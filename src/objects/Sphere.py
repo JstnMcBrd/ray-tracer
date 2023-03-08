@@ -1,6 +1,7 @@
 import numpy as np
 
 from objects.Object import Object
+from Ray import Ray, Ray_Collision
 from vector_utils import normalized
 
 class Sphere(Object):
@@ -16,14 +17,14 @@ class Sphere(Object):
 		else:
 			return np.array([0,0,0])
 
-	def ray_intersection(self, ray_origin, ray_direction) -> np.ndarray or None:
-		dist = self.center - ray_origin
+	def ray_intersection(self, ray: Ray) -> Ray_Collision or None:
+		dist = self.center - ray.origin
 		dist_sqr = np.dot(dist, dist)
 		dist_mag = np.sqrt(dist_sqr)
 
 		outside = dist_mag >= self.radius
 
-		closest_approach = np.dot(ray_direction, dist)
+		closest_approach = np.dot(ray.direction, dist)
 
 		if closest_approach < 0 and outside:
 			return None
@@ -37,4 +38,4 @@ class Sphere(Object):
 
 		t = closest_approach - closest_approach_dist_to_surface if outside else closest_approach + closest_approach_dist_to_surface
 
-		return ray_origin + ray_direction*t
+		return Ray_Collision(self, ray, ray.origin + ray.direction*t)

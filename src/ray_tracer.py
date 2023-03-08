@@ -2,6 +2,7 @@ from math import tan
 import numpy as np
 
 from objects.Object import Object
+from Ray import Ray
 from Scene import Scene
 from shader import shade
 from vector_utils import magnitude, normalized
@@ -12,34 +13,6 @@ from vector_utils import magnitude, normalized
 # TODO refraction
 # TODO more than one light source
 # TODO multiprocessing
-
-
-class Ray_Collision:
-	def __init__(self, obj, ray, location):
-		self.obj = obj
-		self.ray = ray
-		self.location = location
-		
-		self.distance = magnitude(location - ray.origin)
-
-
-class Ray:
-	def __init__(self, origin: np.ndarray, direction: np.ndarray):
-		self.origin = origin
-		self.direction = direction
-
-	def cast(self, scene: Scene) -> Ray_Collision or None:
-		closest_collision: Ray_Collision = None
-
-		# Find the closest object that intersects with the ray
-		for obj in scene.objects:
-			intersection = obj.ray_intersection(self.origin, self.direction)
-			if intersection is not None:
-				collision = Ray_Collision(obj, self, intersection)
-				if closest_collision is None or collision.distance < closest_collision.distance:
-					closest_collision = collision
-		
-		return closest_collision
 
 
 def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:
