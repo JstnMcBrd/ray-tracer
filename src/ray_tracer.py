@@ -8,14 +8,12 @@ from shader import shade
 from vector_utils import magnitude, normalized
 
 
-# TODO shadows
-# TODO reflection
 # TODO refraction
 # TODO more than one light source
 # TODO multiprocessing
 
 
-def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:
+def ray_trace(scene: Scene, width: int, height: int, reflection_limit:int) -> np.ndarray:
 	screen = np.zeros((width, height, 3)) # TODO this is time/space intensive - maybe calculate + write values gradually?
 	num_pixels = width * height
 
@@ -45,19 +43,7 @@ def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:
 			window_point = viewport_to_window(viewport_point, window_to_viewport_size_ratio, half_window_size)
 			world_point_relative = window_to_relative_world(window_point, camera_look_at_relative, camera_forward, camera_up, camera_right)
 
-			# Initialize and cast the ray
-			ray = Ray(camera_look_from, normalized(world_point_relative))
-			collision = ray.cast(scene)
-
-			# Shade the pixel using the collided object
-			if collision is not None:
-				shadow = is_in_shadow(collision.location, scene)
-				view_direction = -1 * ray.direction
-				screen[x,y] = shade(scene, collision.obj, collision.location, view_direction, shadow)
-			
-			# If no object collided, use the background
-			else:
-				screen[x,y] = scene.background_color
+			screen[x,y] = get_color(camera_look_from, normalized(world_point_relative), scene, reflection_limit=reflection_limit)
 
 		# Report progress
 		pixel_num += width
@@ -77,6 +63,35 @@ def is_in_shadow(point: np.ndarray, scene: Scene) -> bool:
 	
 	collision = ray.cast(scene)
 	return collision is not None
+
+
+def get_color(origin: np.ndarray, direction: np.ndarray, scene: Scene, fade=1, reflections=0, reflection_limit=float("inf")):
+	if fade <= 0.01 or reflections > reflection_limit:
+		return np.array([0,0,0])
+
+	# Initialize and cast the ray
+	ray = Ray(origin, direction)
+	collision = ray.cast(scene)
+
+	# Shade the pixel using the collided object
+	if collision is not None:
+		view_direction = -1 * ray.direction
+		normal = collision.obj.normal(collision.location)
+
+		collision.location += 0.01*normal	# Avoid getting trapped inside objects
+
+		shadow = is_in_shadow(collision.location, scene)
+
+		reflection_direction = ray.direction - 2 * normal * np.dot(ray.direction, normal)
+		offset_origin = collision.location + 0.01*reflection_direction	# Avoid colliding with the same surface
+
+		reflected_color = get_color(offset_origin, reflection_direction, scene, fade=fade*collision.obj.reflectivity, reflections=reflections+1, reflection_limit=reflection_limit)
+
+		return shade(scene, collision.obj, collision.location, view_direction, shadow, reflected_color)		
+
+	# If no object collided, use the background
+	else:
+		return scene.background_color
 
 
 def calculate_window_size(viewport_size: np.ndarray, camera_look_at_relative: np.ndarray, field_of_view: float) -> np.ndarray:

@@ -19,6 +19,7 @@ if __name__ == "__main__":
 	arg.add_argument("-x", "--width", type=int, help="Width of the output image", default=getenv("WIDTH"), required=getenv("WIDTH") == None)
 	arg.add_argument("-y", "--height", type=int, help="Height of the output image", default=getenv("HEIGHT"), required=getenv("HEIGHT") == None)
 	arg.add_argument("-c", "--max-color", type=float, help="The maximum color of the ppm file", default=getenv("MAX_COLOR", default=255), required=getenv("MAX_COLOR", default=255) == None)
+	arg.add_argument("-r", "--reflection-limit", type=float, help="The maximum number of recursive reflections", default=getenv("REFLECTION_LIMIT", default=10), required=getenv("REFLECTION_LIMIT", default=10) == None)
 	parsed = arg.parse_args()
 	
 	scene_file_path = parsed.scene
@@ -26,6 +27,7 @@ if __name__ == "__main__":
 	width = parsed.width
 	height = parsed.height
 	max_color = parsed.max_color
+	reflection_limit = parsed.reflection_limit
 
 	# Start timer
 	start_time = datetime.now()
@@ -34,7 +36,7 @@ if __name__ == "__main__":
 	scene = import_scene(scene_file_path)
 
 	# Raytrace
-	screen = ray_trace(scene, width, height)
+	screen = ray_trace(scene, width, height, reflection_limit)
 
 	# Write to file
 	write_to_ppm(screen, output_file_path, max_color)
