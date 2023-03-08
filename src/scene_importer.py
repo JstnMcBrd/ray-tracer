@@ -2,6 +2,7 @@ from json import loads as json_as_dict
 import numpy as np
 
 from objects.Object import Object
+from objects.Plane import Plane
 from objects.Polygon import Polygon
 from objects.Sphere import Sphere
 from Scene import Scene
@@ -143,10 +144,12 @@ def __load_object(json_value, error_prefix="Object") -> Object:
 	objType = objType.lower()
 
 	# Load in object-type-specific values
-	if objType == "sphere":
-		obj = __load_sphere(json_value, error_prefix=f"{error_prefix}<sphere>")
+	if objType == "plane":
+		obj = __load_plane(json_value, error_prefix=f"{error_prefix}<Plane>")
 	elif objType == "polygon":
-		obj = __load_polygon(json_value, error_prefix=f"{error_prefix}<polygon>")
+		obj = __load_polygon(json_value, error_prefix=f"{error_prefix}<Polygon>")
+	elif objType == "sphere":
+		obj = __load_sphere(json_value, error_prefix=f"{error_prefix}<Sphere>")
 	# TODO support for more object types
 	else:
 		raise f"{error_prefix} must have valid type, not {objType}"
@@ -168,14 +171,14 @@ def __load_object(json_value, error_prefix="Object") -> Object:
 	return obj
 
 
-def __load_sphere(json_value, error_prefix="Sphere") -> Sphere:
-	center = __validate_position_vector(json_value.get("center"), error_prefix=f"{error_prefix}.center")
-	radius = __validate_number(json_value.get("radius"), min=0, error_prefix=f"{error_prefix}.radius")
+def __load_plane(json_value, error_prefix="Plane") -> Plane:
+	normal = __validate_direction_vector(json_value.get("normal"), error_prefix=f"{error_prefix}.normal")
+	point = __validate_position_vector(json_value.get("point"), default=[0,0,0], error_prefix=f"{error_prefix}.point")
 
-	return Sphere(center, radius)
+	return Plane(normal, point)
+
 
 def __load_polygon(json_value, error_prefix="Polygon") -> Polygon:
-	
 	vertices_numpyified = []
 	vertices = __validate_list(json_value.get("vertices"), error_prefix=f"{error_prefix}.vertices")
 
@@ -186,3 +189,10 @@ def __load_polygon(json_value, error_prefix="Polygon") -> Polygon:
 		vertices_numpyified.append(vertex)
 	
 	return Polygon(vertices_numpyified)
+
+
+def __load_sphere(json_value, error_prefix="Sphere") -> Sphere:
+	center = __validate_position_vector(json_value.get("center"), error_prefix=f"{error_prefix}.center")
+	radius = __validate_number(json_value.get("radius"), min=0, error_prefix=f"{error_prefix}.radius")
+
+	return Sphere(center, radius)
