@@ -4,10 +4,10 @@ from objects.Object import Object
 from vector_utils import normalized
 
 class Sphere(Object):
-	def __init__(self):
+	def __init__(self, center: np.ndarray, radius: float):
 		super().__init__()
-		self.center = np.array([0, 0, 0])
-		self.radius = 0
+		self.center = center
+		self.radius = radius
 
 	def normal(self, point: np.ndarray) -> np.ndarray:
 		if self.radius != 0:
@@ -16,7 +16,7 @@ class Sphere(Object):
 		else:
 			return np.array([0,0,0])
 
-	def ray_intersection(self, ray_origin, ray_direction) -> np.ndarray:
+	def ray_intersection(self, ray_origin, ray_direction) -> np.ndarray or None:
 		dist = self.center - ray_origin
 		dist_sqr = np.dot(dist, dist)
 		dist_mag = np.sqrt(dist_sqr)

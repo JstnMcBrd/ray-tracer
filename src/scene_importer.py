@@ -2,6 +2,7 @@ from json import loads as json_as_dict
 import numpy as np
 
 from objects.Object import Object
+from objects.Polygon import Polygon
 from objects.Sphere import Sphere
 from Scene import Scene
 from vector_utils import magnitude, normalized
@@ -139,10 +140,13 @@ def __load_object(json_value, error_prefix="Object") -> Object:
 	objType = json_value.get("type")
 	assert objType is not None, f"{error_prefix}.type must not be missing"
 	assert type(objType) is str, f"{error_prefix}.type must be type string, not {type(objType)}"
+	objType = objType.lower()
 
 	# Load in object-type-specific values
-	if objType  == "sphere":
-		obj = _loadSphere(json_value, error_prefix=f"{error_prefix}<sphere>")
+	if objType == "sphere":
+		obj = __load_sphere(json_value, error_prefix=f"{error_prefix}<sphere>")
+	elif objType == "polygon":
+		obj = __load_polygon(json_value, error_prefix=f"{error_prefix}<polygon>")
 	# TODO support for more object types
 	else:
 		raise f"{error_prefix} must have valid type, not {objType}"
@@ -164,10 +168,21 @@ def __load_object(json_value, error_prefix="Object") -> Object:
 	return obj
 
 
-def _loadSphere(json_value, error_prefix="Sphere") -> Sphere:
-	sphere = Sphere()
+def __load_sphere(json_value, error_prefix="Sphere") -> Sphere:
+	center = __validate_position_vector(json_value.get("center"), error_prefix=f"{error_prefix}.center")
+	radius = __validate_number(json_value.get("radius"), min=0, error_prefix=f"{error_prefix}.radius")
 
-	sphere.center = __validate_position_vector(json_value.get("center"), error_prefix=f"{error_prefix}.center")
-	sphere.radius = __validate_number(json_value.get("radius"), error_prefix=f"{error_prefix}.radius")
+	return Sphere(center, radius)
 
-	return sphere
+def __load_polygon(json_value, error_prefix="Polygon") -> Polygon:
+	
+	vertices_numpyified = []
+	vertices = __validate_list(json_value.get("vertices"), error_prefix=f"{error_prefix}.vertices")
+
+	assert len(vertices) >= 3, f"{error_prefix}.vertices must have at least 3 vertices"
+
+	for i in range(len(vertices)):
+		vertex = __validate_position_vector(vertices[i], error_prefix=f"{error_prefix}.vertices[{i}]")
+		vertices_numpyified.append(vertex)
+	
+	return Polygon(vertices_numpyified)

@@ -15,5 +15,5 @@ class Object:
 	def normal(self, point: np.ndarray) -> np.ndarray:
 		NotImplemented
 
-	def ray_intersection(self, ray_origin: np.ndarray, ray_direction: np.ndarray) -> np.ndarray:
+	def ray_intersection(self, ray_origin: np.ndarray, ray_direction: np.ndarray) -> np.ndarray or None:
 		NotImplemented
