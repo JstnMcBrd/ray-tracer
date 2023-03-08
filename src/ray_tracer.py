@@ -10,6 +10,35 @@ from shader import shade
 # TODO reflection
 # TODO refraction
 # TODO more than one light source
+# TODO multiprocessing
+
+
+class Ray:
+	def __init__(self, origin: np.ndarray, direction: np.ndarray):
+		self.origin = origin
+		self.direction = direction
+
+	def cast(self, scene: Scene) -> Ray_Collision or None:
+		closest_collision: Ray_Collision = None
+
+		# Find the closest object that intersects with the ray
+		for obj in scene.objects:
+			intersection = obj.ray_intersection(self.origin, self.direction)
+			if intersection is not None:
+				collision = Ray_Collision(obj, self, intersection)
+				if closest_collision is None or collision.distance < closest_collision.distance:
+					closest_collision = collision
+		
+		return closest_collision
+
+
+class Ray_Collision:
+	def __init__(self, obj, ray, location):
+		self.obj = obj
+		self.ray = ray
+		self.location = location
+		
+		self.distance = magnitude(location - ray.origin)
 
 
 def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:
@@ -31,8 +60,6 @@ def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:
 	window_to_viewport_size_ratio = window_size/viewport_size
 	half_window_size = window_size/2
 
-	ray_origin = camera_look_from
-
 	# For each pixel on the screen...
 	pixel_num = 0
 	percent_progress = 0
@@ -44,30 +71,15 @@ def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:
 			window_point = viewport_to_window(viewport_point, window_to_viewport_size_ratio, half_window_size)
 			world_point_relative = window_to_relative_world(window_point, camera_look_at_relative, camera_forward, camera_up, camera_right)
 
-			# Find the direction the ray is pointing
-			ray_direction = normalize(world_point_relative)
+			# Initialize and cast the ray
+			ray = Ray(camera_look_from, normalize(world_point_relative))
+			collision = ray.cast(scene)
 
-			# Find the closest object that intersects with the ray
-			closest_object: Object = None
-			closest_intersection = None
-			closest_distance = float("inf")
-			closest_direction = None
-			for obj in scene.objects:
-				intersection = obj.ray_intersection(ray_origin, ray_direction)
-				if not type(intersection) is type(None):
-					direction = camera_look_from - intersection
-					distance = magnitude(direction)
-					if distance < closest_distance:
-						closest_object = obj
-						closest_intersection = intersection
-						closest_distance = distance
-						closest_direction = direction
-
-			# Shade the pixel using the closest object
-			if closest_object != None:
-				view_direction = closest_direction / closest_distance # Normalize
-				normal = closest_object.normal(closest_intersection)
-				screen[x,y] = shade(scene, closest_object, normal, view_direction)
+			# Shade the pixel using the collided object
+			if collision is not None:
+				view_direction = -1 * ray.direction
+				normal = collision.obj.normal(collision.location)
+				screen[x,y] = shade(scene, collision.obj, normal, view_direction)
 			
 			# If no object collided, use the background
 			else:
