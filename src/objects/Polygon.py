@@ -27,7 +27,7 @@ class Polygon(Object):
 	def vertices(self):
 		return self.__vertices
 
-	def normal(self, point: np.ndarray) -> np.ndarray:
+	def normal(self, point: np.ndarray = None) -> np.ndarray:
 		return self.__normal
 
 	def ray_intersection(self, ray: Ray) -> Ray_Collision or None:

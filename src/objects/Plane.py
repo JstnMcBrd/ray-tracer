@@ -21,9 +21,6 @@ class Plane(Object):
 		if v_d == 0:
 			# Ray is parallel to plane
 			return None
-		if v_d > 0:
-			# Plane is pointing away from ray
-			return None
 
 		v_o = -1 * (np.dot(self.__normal, ray.origin) + self.__distance_from_origin)
 		t = v_o / v_d
