@@ -10,6 +10,7 @@ class Object:
 		self.diffuse_color = np.array([0, 0, 0])
 		self.specular_color = np.array([0, 0, 0])
 		self.gloss_coefficient = 0
+		self.reflectivity = 0
 
 	def normal(self, point: np.ndarray) -> np.ndarray:
 		NotImplemented

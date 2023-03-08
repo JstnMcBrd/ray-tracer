@@ -159,6 +159,7 @@ def __load_object(json_value, error_prefix="Object") -> Object:
 	obj.diffuse_color = __validate_color_vector(json_value.get("diffuse_color"), default=[1,1,1], error_prefix=f"{error_prefix}.diffuse_color")
 	obj.specular_color = __validate_color_vector(json_value.get("specular_color"), default=[1,1,1], error_prefix=f"{error_prefix}.specular_color")
 	obj.gloss_coefficient = __validate_number(json_value.get("gloss_coefficient"), default=4, error_prefix=f"{error_prefix}.gloss_coefficient")
+	obj.reflectivity = __validate_number(json_value.get("reflectivity"), default=0, error_prefix=f"{error_prefix}.reflectivity")
 
 	return obj
 
