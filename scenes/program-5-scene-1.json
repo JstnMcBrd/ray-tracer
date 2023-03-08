@@ -18,7 +18,8 @@
 			"specular_coefficient": 0.2,
 			"diffuse_color": [1.0, 0.0, 1.0],
 			"specular_color": [1.0, 1.0, 1.0],
-			"gloss_coefficient": 16.0
+			"gloss_coefficient": 16.0,
+			"reflectivity": 0.0
 		}
 	]
 }
