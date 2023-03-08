@@ -78,9 +78,9 @@ def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:
 
 			# Shade the pixel using the collided object
 			if collision is not None:
+				shadow = is_in_shadow(collision.location, scene)
 				view_direction = -1 * ray.direction
-				normal = collision.obj.normal(collision.location)
-				screen[x,y] = shade(scene, collision.obj, normal, view_direction)
+				screen[x,y] = shade(scene, collision.obj, collision.location, view_direction, shadow)
 			
 			# If no object collided, use the background
 			else:
@@ -96,6 +96,14 @@ def ray_trace(scene: Scene, width: int, height: int) -> np.ndarray:
 
 	print()
 	return screen
+
+
+def is_in_shadow(point: np.ndarray, scene: Scene) -> bool:
+	ray = Ray(point, scene.direction_to_light)
+	ray.origin += ray.direction * 0.01	# Offset to avoid colliding with the object
+	
+	collision = ray.cast(scene)
+	return collision is not None
 
 
 def calculate_window_size(viewport_size: np.ndarray, camera_look_at_relative: np.ndarray, field_of_view: float) -> np.ndarray:

@@ -98,7 +98,7 @@ def __validate_direction_vector(json_value, error_prefix="Direction") -> np.ndar
 	if mag != 1 and mag != 0:
 		print(f"WARNING: {error_prefix} is not normalized with magnitude of {mag}, performing auto-normalization")
 		vector = normalized(vector)
-		print(f"WARNING: {error_prefix} has been normalized to [{vector[0]}, {vector[1]}, {vector[2]}], please correct the Scene JSON file to match")
+		print(f"WARNING: {error_prefix} has been normalized to [{vector[0]}, {vector[1]}, {vector[2]}]")
 		
 	return vector
 
