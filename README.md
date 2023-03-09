@@ -2,7 +2,7 @@
 
 A simple [ray tracer](https://en.wikipedia.org/wiki/Ray_tracing_(graphics)) written in [Python](https://www.python.org/).
 
-![example](https://user-images.githubusercontent.com/28303477/221353237-11327d55-0782-4e33-aa83-4f73434ee86a.png)
+![program-6-scene-3](https://user-images.githubusercontent.com/28303477/224002637-4f6d5e4d-c5f9-428f-9237-80e46799bcb7.png)
 
 ## Licensing
 
@@ -12,7 +12,57 @@ Without a custom license, this code is the direct intellectual property of the o
 
 Scenes are defined in `JSON` files. See a few examples in the [scenes](/scenes/) folder.
 
-Any deviation from the schema will result in assertion errors.
+Any deviation from the following type definitions will result in assertion errors.
+
+```ts
+type Color = Array<number>[3];					// all elements must be between 0 and 1
+type Direction = Array<number>[3];				// will throw warnings if not normalized
+type Position = Array<number>[3]; 
+
+class Scene {
+	camera_look_at?: Position = [0, 0, 0];
+	camera_look_from?: Position = [0, 0, 1];
+	camera_look_up?: Position = [0, 1, 0];
+	field_of_view?: float = 90;					// must be between 0 and 359
+	light_direction?: Direction = [0, 1, 0];
+	light_color?: Color = [1, 1, 1];
+	ambient_light_color?: Color = [1, 1, 1];
+	background_color?: Color = [0, 0, 0];
+	objects?: Array<Object>;
+};
+
+class Object {
+	name?: string;
+	type: string;								// must be one of the accepted values, see below
+	ambient_coefficient?: number = 0;			// must be between 0 and 1
+	diffuse_coefficient?: number = 1;			// must be between 0 and 1
+	specular_coefficient?: number = 0;			// must be between 0 and 1
+	diffuse_color?: Color = [1, 1, 1];
+	specular_color?: Color = [1, 1, 1];
+	gloss_coefficient?: number = 4;
+	reflectivity?: number = 0;					// must be between 0 and 1
+};
+
+class Plane extends Object {
+	type: string = "plane";
+	normal: Direction;
+	point: Position = [0, 0, 0];
+};
+
+class Polygon extends Object {
+	type: string = "polygon";
+	vertices: Array<Position>;					// must have at least 3
+};
+
+class Sphere extends Object {
+	type: string = "sphere";
+	center: Position;
+	radius: number;								// must be greater than 0
+};
+
+// More types of objects can be added later
+// In the meantime, most kinds of objects can be modeled with polygons
+```
 
 ## Running
 
