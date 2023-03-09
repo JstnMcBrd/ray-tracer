@@ -11,11 +11,7 @@ class Sphere(Object):
 		self.radius = radius
 
 	def normal(self, point: np.ndarray) -> np.ndarray:
-		if self.radius != 0:
-			N = (point - self.center)/self.radius
-			return normalized(N)
-		else:
-			return np.array([0,0,0])
+		return normalized(point - self.center)
 
 	def ray_intersection(self, ray: Ray) -> Ray_Collision or None:
 		dist = self.center - ray.origin
