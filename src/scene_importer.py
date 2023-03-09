@@ -59,68 +59,6 @@ def __load_from_json(json) -> Scene:
 	return scene
 
 
-def __validate_number(json_value, min=None, max=None, default=None, error_prefix="Number") -> float or int:
-	if json_value is None and default is not None:
-		print(f"WARNING: {error_prefix} is missing, reverting to default value {default}")
-		return default
-
-	assert json_value is not None, f"{error_prefix} must not be missing"
-	assert type(json_value) is float or type(json_value) is int, f"{error_prefix} must be type float or int, not {type(json_value)}"
-	if min is not None:
-		assert json_value >= min, f"{error_prefix} must be greater than {min}, not {json_value}"
-	if max is not None:
-		assert json_value <= max, f"{error_prefix} must be less than {max}, not {json_value}"
-
-	return json_value
-
-
-def __validate_list(json_value, length=None, default=None, error_prefix="List") -> list:
-	if json_value is None and default is not None:
-		print(f"WARNING: {error_prefix} is missing, reverting to default value {default}")
-		return default
-
-	assert json_value is not None, f"{error_prefix} must not be missing"
-	assert type(json_value) is list, f"{error_prefix} must be type list, not {type(json_value)}"
-	if length is not None:
-		assert len(json_value) == length, f"{error_prefix} must have length of {length}, not {len(json_value)}"
-
-	return json_value
-
-
-def __validate_position_vector(json_value, default=None, error_prefix="Position") -> np.ndarray:
-	json_value = __validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
-	for i in json_value:
-		__validate_number(i, error_prefix=f"{error_prefix} element")
-		
-	return np.array(json_value)
-
-
-def __validate_direction_vector(json_value, default=None, error_prefix="Direction") -> np.ndarray:
-	json_value = __validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
-	for i in json_value:
-		__validate_number(i, error_prefix=f"{error_prefix} element")
-		
-	# Convert to numpy array
-	vector = np.array(json_value)
-
-	# Make sure the vector is normalized
-	mag = magnitude(vector)
-	if mag != 1 and mag != 0:
-		print(f"WARNING: {error_prefix} is not normalized with magnitude of {mag}, performing auto-normalization")
-		vector = normalized(vector)
-		print(f"WARNING: {error_prefix} has been normalized to [{vector[0]}, {vector[1]}, {vector[2]}]")
-		
-	return vector
-
-
-def __validate_color_vector(json_value, default=None, error_prefix="Color") -> np.ndarray:
-	json_value = __validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
-	for i in json_value:
-		__validate_number(i, min=0, max=1, error_prefix=f"{error_prefix} element")
-
-	return np.array(json_value)
-
-
 def __load_objects(json_value, default=None, error_prefix="Objects") -> list:
 	objects = []
 
@@ -196,3 +134,65 @@ def __load_sphere(json_value, error_prefix="Sphere") -> Sphere:
 	radius = __validate_number(json_value.get("radius"), min=0, error_prefix=f"{error_prefix}.radius")
 
 	return Sphere(center, radius)
+
+
+def __validate_number(json_value, min=None, max=None, default=None, error_prefix="Number") -> float or int:
+	if json_value is None and default is not None:
+		print(f"WARNING: {error_prefix} is missing, reverting to default value {default}")
+		return default
+
+	assert json_value is not None, f"{error_prefix} must not be missing"
+	assert type(json_value) is float or type(json_value) is int, f"{error_prefix} must be type float or int, not {type(json_value)}"
+	if min is not None:
+		assert json_value >= min, f"{error_prefix} must be greater than {min}, not {json_value}"
+	if max is not None:
+		assert json_value <= max, f"{error_prefix} must be less than {max}, not {json_value}"
+
+	return json_value
+
+
+def __validate_list(json_value, length=None, default=None, error_prefix="List") -> list:
+	if json_value is None and default is not None:
+		print(f"WARNING: {error_prefix} is missing, reverting to default value {default}")
+		return default
+
+	assert json_value is not None, f"{error_prefix} must not be missing"
+	assert type(json_value) is list, f"{error_prefix} must be type list, not {type(json_value)}"
+	if length is not None:
+		assert len(json_value) == length, f"{error_prefix} must have length of {length}, not {len(json_value)}"
+
+	return json_value
+
+
+def __validate_position_vector(json_value, default=None, error_prefix="Position") -> np.ndarray:
+	json_value = __validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
+	for i in json_value:
+		__validate_number(i, error_prefix=f"{error_prefix} element")
+		
+	return np.array(json_value)
+
+
+def __validate_direction_vector(json_value, default=None, error_prefix="Direction") -> np.ndarray:
+	json_value = __validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
+	for i in json_value:
+		__validate_number(i, error_prefix=f"{error_prefix} element")
+		
+	# Convert to numpy array
+	vector = np.array(json_value)
+
+	# Make sure the vector is normalized
+	mag = magnitude(vector)
+	if mag != 1 and mag != 0:
+		print(f"WARNING: {error_prefix} is not normalized with magnitude of {mag}, performing auto-normalization")
+		vector = normalized(vector)
+		print(f"WARNING: {error_prefix} has been normalized to [{vector[0]}, {vector[1]}, {vector[2]}]")
+		
+	return vector
+
+
+def __validate_color_vector(json_value, default=None, error_prefix="Color") -> np.ndarray:
+	json_value = __validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
+	for i in json_value:
+		__validate_number(i, min=0, max=1, error_prefix=f"{error_prefix} element")
+
+	return np.array(json_value)

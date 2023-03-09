@@ -78,8 +78,7 @@ def get_color(origin: np.ndarray, direction: np.ndarray, scene: Scene, fade=1, r
 		return shade(scene, collision.obj, collision.position, view_direction, shadow, reflected_color)		
 
 	# If no object collided, use the background
-	else:
-		return scene.background_color
+	return scene.background_color
 
 
 def is_in_shadow(point: np.ndarray, scene: Scene) -> bool:
