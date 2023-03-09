@@ -1,30 +1,31 @@
 import numpy as np
 
-from vector_utils import normalized
+from vector_utils import magnitude, normalized
+
+
+class Camera:
+	def __init__(self, camera_look_at: np.ndarray, camera_look_from: np.ndarray, camera_look_up: np.ndarray, field_of_view: float):
+		self.position = camera_look_from
+		self.field_of_view = field_of_view
+
+		self.relative_look_at = camera_look_at - camera_look_from
+		self.focal_length = magnitude(self.relative_look_at)
+
+		self.forward = normalized(self.relative_look_at)
+		self.up = camera_look_up
+		self.right = np.cross(self.forward, self.up)
+
 
 class Scene:
-	def __init__(self):
+	def __init__(self, camera: Camera, light_direction: np.ndarray, light_color: np.ndarray, ambient_light_color: np.ndarray, background_color: np.ndarray, objects: list):
 		# Camera
-		self.camera_look_at = np.array([0.0, 0.0, 0.0])
-		self.camera_look_from = np.array([0.0, 0.0, 0.0])
-		self.camera_look_up = np.array([0.0, 0.0, 0.0])
-		self.field_of_view = 0
+		self.camera = camera
 
 		# Lighting
-		self.light_direction = np.array([0, 0, 0])
-		self.light_color = np.array([0, 0, 0])
-		self.ambient_light_color = np.array([0, 0, 0])
-		self.background_color = np.array([0, 0, 0])
+		self.light_direction = light_direction
+		self.light_color = light_color
+		self.ambient_light_color = ambient_light_color
+		self.background_color = background_color
 
 		# Objects
-		self.objects = []
-
-	# Call this whenever camera_look_at, camera_look_from, or camera_look_up are updated
-	def update_camera_axes(self):
-		self.camera_look_at_relative = self.camera_look_at - self.camera_look_from
-
-		self.camera_forward = normalized(self.camera_look_at_relative)
-
-		self.camera_up = self.camera_look_up
-
-		self.camera_right = np.cross(self.camera_forward, self.camera_up)
+		self.objects = objects

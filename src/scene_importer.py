@@ -5,7 +5,7 @@ from objects.Object import Object
 from objects.Plane import Plane
 from objects.Polygon import Polygon
 from objects.Sphere import Sphere
-from Scene import Scene
+from Scene import Camera, Scene
 from vector_utils import magnitude, normalized
 
 def import_scene(file_path: str) -> Scene:
@@ -36,27 +36,25 @@ def import_scene(file_path: str) -> Scene:
 def __load_from_json(json) -> Scene:
 	error_prefix = "Scene"
 
-	scene = Scene()
-
 	# Camera
-	scene.camera_look_at = __validate_position_vector(json.get("camera_look_at"), default=[0,0,0], error_prefix=f"{error_prefix}.camera_look_at")
-	scene.camera_look_from = __validate_position_vector(json.get("camera_look_from"), default=[0,0,1], error_prefix=f"{error_prefix}.camera_look_from")
-	scene.camera_look_up = __validate_direction_vector(json.get("camera_look_up"), default=[0,1,0], error_prefix=f"{error_prefix}.camera_look_up")
-
-	scene.update_camera_axes()
-
+	camera_look_at = __validate_position_vector(json.get("camera_look_at"), default=[0,0,0], error_prefix=f"{error_prefix}.camera_look_at")
+	camera_look_from = __validate_position_vector(json.get("camera_look_from"), default=[0,0,1], error_prefix=f"{error_prefix}.camera_look_from")
+	camera_look_up = __validate_direction_vector(json.get("camera_look_up"), default=[0,1,0], error_prefix=f"{error_prefix}.camera_look_up")
 	# TODO assert camera_look_up is perpendicular to the normalized difference between camera_look_at and camera_look_from
-
-	scene.field_of_view = __validate_number(json.get("field_of_view"), min=0, max=360, default=90, error_prefix=f"{error_prefix}.field_of_view")
+	field_of_view = __validate_number(json.get("field_of_view"), min=0, max=360, default=90, error_prefix=f"{error_prefix}.field_of_view")
 	
+	camera = Camera(camera_look_at, camera_look_from, camera_look_up, field_of_view)
+
 	# Lighting
-	scene.light_direction = __validate_direction_vector(json.get("light_direction"), default=[0,1,0], error_prefix=f"{error_prefix}.light_direction")
-	scene.light_color = __validate_color_vector(json.get("light_color"), default=[1,1,1], error_prefix=f"{error_prefix}.light_color")
-	scene.ambient_light_color = __validate_color_vector(json.get("ambient_light_color"), default=[1,1,1], error_prefix=f"{error_prefix}.ambient_light_color")
-	scene.background_color = __validate_color_vector(json.get("background_color"), default=[0,0,0], error_prefix=f"{error_prefix}.background_color")
+	light_direction = __validate_direction_vector(json.get("light_direction"), default=[0,1,0], error_prefix=f"{error_prefix}.light_direction")
+	light_color = __validate_color_vector(json.get("light_color"), default=[1,1,1], error_prefix=f"{error_prefix}.light_color")
+	ambient_light_color = __validate_color_vector(json.get("ambient_light_color"), default=[1,1,1], error_prefix=f"{error_prefix}.ambient_light_color")
+	background_color = __validate_color_vector(json.get("background_color"), default=[0,0,0], error_prefix=f"{error_prefix}.background_color")
 
 	# Objects
-	scene.objects = __load_objects(json.get("objects"), default=[], error_prefix=f"{error_prefix}.objects")
+	objects = __load_objects(json.get("objects"), default=[], error_prefix=f"{error_prefix}.objects")
+
+	scene = Scene(camera, light_direction, light_color, ambient_light_color, background_color, objects)
 
 	return scene
 

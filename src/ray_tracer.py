@@ -6,7 +6,7 @@ import tqdm
 
 from objects.Object import Object
 from Ray import Ray
-from Scene import Scene
+from Scene import Camera, Scene
 from shader import shade
 from vector_utils import magnitude, normalized
 
@@ -19,7 +19,7 @@ def ray_trace(scene: Scene, width: int, height: int, reflection_limit:int, progr
 	# Save time by pre-calcuating constant values
 	num_pixels = width*height
 	viewport_size = np.array([width, height])
-	window_size = calculate_window_size(viewport_size, scene.camera_look_at_relative, scene.field_of_view)
+	window_size = calculate_window_size(viewport_size, scene.camera.focal_length, scene.camera.field_of_view)
 	window_to_viewport_size_ratio = window_size/viewport_size
 	half_window_size = window_size/2
 
@@ -41,21 +41,14 @@ def ray_trace(scene: Scene, width: int, height: int, reflection_limit:int, progr
 	return screen
 
 
-def ray_trace_pixel(x: int, y: int, scene: Scene, window_to_viewport_size_ratio: np.ndarray, half_window_size: np.ndarray, reflection_limit: int) -> np.ndarray:
-	# Get camera axes
-	camera_look_from = scene.camera_look_from
-	camera_look_at_relative = scene.camera_look_at_relative
-	camera_forward = scene.camera_forward
-	camera_up = scene.camera_up
-	camera_right = scene.camera_right
-	
+def ray_trace_pixel(x: int, y: int, scene: Scene, window_to_viewport_size_ratio: np.ndarray, half_window_size: np.ndarray, reflection_limit: int) -> np.ndarray:	
 	# Find the world point of the pixel, relative to the camera's position
 	viewport_point = np.array([x, y])
 	window_point = viewport_to_window(viewport_point, window_to_viewport_size_ratio, half_window_size)
-	world_point_relative = window_to_relative_world(window_point, camera_look_at_relative, camera_forward, camera_up, camera_right)
+	world_point_relative = window_to_relative_world(window_point, scene.camera)
 
 	# Start sending out rays
-	return get_color(camera_look_from, normalized(world_point_relative), scene, reflection_limit=reflection_limit)
+	return get_color(scene.camera.position, normalized(world_point_relative), scene, reflection_limit=reflection_limit)
 
 
 # Recursive
@@ -96,9 +89,8 @@ def is_in_shadow(point: np.ndarray, scene: Scene) -> bool:
 	return collision is not None
 
 
-def calculate_window_size(viewport_size: np.ndarray, camera_look_at_relative: np.ndarray, field_of_view: float) -> np.ndarray:
-	distance = magnitude(camera_look_at_relative)
-	x = distance * tan(np.deg2rad(field_of_view/2)) * 2
+def calculate_window_size(viewport_size: np.ndarray, focal_length: np.ndarray, field_of_view: float) -> np.ndarray:
+	x = focal_length * tan(np.deg2rad(field_of_view/2)) * 2
 	y = x * viewport_size[1]/viewport_size[0]
 	return np.array([x, y])
 
@@ -108,5 +100,5 @@ def viewport_to_window(viewport_point: np.ndarray, window_to_viewport_size_ratio
 	return np.array([window_point[0], window_point[1]*-1, 0]) # The -1 seems necessary to orient it correctly
 
 
-def window_to_relative_world(window_point: np.ndarray, camera_look_at_relative: np.ndarray, camera_forward: np.ndarray, camera_up: np.ndarray, camera_right: np.ndarray) -> np.ndarray:
-	return camera_look_at_relative + window_point[0]*camera_right + window_point[1]*camera_up + window_point[2]*camera_forward
+def window_to_relative_world(window_point: np.ndarray, camera: Camera) -> np.ndarray:
+	return camera.relative_look_at + window_point[0]*camera.right + window_point[1]*camera.up + window_point[2]*camera.forward
