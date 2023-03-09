@@ -4,12 +4,12 @@ from Scene import Scene
 from vector_utils import magnitude
 
 class Ray_Collision:
-	def __init__(self, obj, ray, location: np.ndarray):
+	def __init__(self, obj, ray, position: np.ndarray):
 		self.obj = obj
 		self.ray = ray
-		self.location = location
+		self.position = position
 		
-		self.distance = magnitude(location - ray.origin)
+		self.distance = magnitude(self.position - ray.origin)
 
 
 class Ray:

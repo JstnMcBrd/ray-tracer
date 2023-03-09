@@ -37,7 +37,7 @@ class Polygon(Object):
 		if plane_collision is None:
 			return None
 
-		intersection = plane_collision.location
+		intersection = plane_collision.position
 
 		# All vertices are pre-flattened
 

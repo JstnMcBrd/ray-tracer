@@ -70,18 +70,18 @@ def get_color(origin: np.ndarray, direction: np.ndarray, scene: Scene, fade=1, r
 	# Shade the pixel using the collided object
 	if collision is not None:
 		view_direction = -1 * ray.direction
-		normal = collision.obj.normal(collision.location)
+		normal = collision.obj.normal(collision.position)
 
-		collision.location += 0.01*normal	# Avoid getting trapped inside objects
+		collision.position += 0.01*normal	# Avoid getting trapped inside objects
 
-		shadow = is_in_shadow(collision.location, scene)
+		shadow = is_in_shadow(collision.position, scene)
 
 		reflection_direction = ray.direction - 2 * normal * np.dot(ray.direction, normal)
-		offset_origin = collision.location + 0.01*reflection_direction	# Avoid colliding with the same surface
+		offset_origin = collision.position + 0.01*reflection_direction	# Avoid colliding with the same surface
 
 		reflected_color = get_color(offset_origin, reflection_direction, scene, fade=fade*collision.obj.reflectivity, reflections=reflections+1, reflection_limit=reflection_limit)
 
-		return shade(scene, collision.obj, collision.location, view_direction, shadow, reflected_color)		
+		return shade(scene, collision.obj, collision.position, view_direction, shadow, reflected_color)		
 
 	# If no object collided, use the background
 	else:

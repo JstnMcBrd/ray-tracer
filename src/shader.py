@@ -4,10 +4,10 @@ import objects.Object as Object
 from Scene import Scene
 
 # Phong shading
-def shade(scene: Scene, obj: Object, location: np.ndarray, view_direction: np.ndarray, shadow: bool, reflected_color: np.ndarray) -> np.ndarray:
+def shade(scene: Scene, obj: Object, position: np.ndarray, view_direction: np.ndarray, shadow: bool, reflected_color: np.ndarray) -> np.ndarray:
 	shadow_coefficient = 0 if shadow else 1
 
-	surface_normal = obj.normal(location)
+	surface_normal = obj.normal(position)
 
 	N_dot_L = np.dot(surface_normal, scene.light_direction)
 	reflection_direction = 2 * surface_normal * N_dot_L - scene.light_direction
