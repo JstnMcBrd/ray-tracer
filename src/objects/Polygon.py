@@ -22,7 +22,7 @@ class Polygon(Object):
 
 		# Project all the vertices onto a 2D plane (for future intersection calculations)
 		self.__plane_dominant_coord = np.where(np.abs(self.__normal) == np.max(np.abs(self.__normal)))[0][0]
-		self.__flattened_vertices = [np.append(np.delete(v, self.__plane_dominant_coord), 0) for v in self.__vertices]
+		self.__flattened_vertices = [np.delete(v, self.__plane_dominant_coord) for v in self.__vertices]
 
 	def vertices(self):
 		return self.__vertices
@@ -42,7 +42,7 @@ class Polygon(Object):
 		# All vertices are pre-flattened
 
 		# Move all flattened vertices so the intersection is at the origin
-		flattened_intersection = np.append(np.delete(intersection, self.__plane_dominant_coord), 0)
+		flattened_intersection = np.delete(intersection, self.__plane_dominant_coord)
 		vertices = [v - flattened_intersection for v in self.__flattened_vertices]
 
 		# Make sure no vertices lie on the x-axis
