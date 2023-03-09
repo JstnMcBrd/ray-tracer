@@ -1,4 +1,5 @@
 from math import tan
+from multiprocessing import cpu_count, Pool
 import numpy as np
 
 from objects.Object import Object
@@ -10,12 +11,11 @@ from vector_utils import magnitude, normalized
 
 # TODO refraction
 # TODO more than one light source
-# TODO multiprocessing
 
 
 def ray_trace(scene: Scene, width: int, height: int, reflection_limit:int) -> np.ndarray:
+	# Initialize the screen
 	screen = np.zeros((width, height, 3)) # TODO this is time/space intensive - maybe calculate + write values gradually?
-	num_pixels = width * height
 
 	# Save time by pre-calcuating constant values
 	viewport_size = np.array([width, height])
@@ -23,23 +23,34 @@ def ray_trace(scene: Scene, width: int, height: int, reflection_limit:int) -> np
 	window_to_viewport_size_ratio = window_size/viewport_size
 	half_window_size = window_size/2
 
-	# For each pixel on the screen...
-	pixel_num = 0
-	percent_progress = 0
-	one_row_progress = (width/num_pixels)*100
-	for x in range(len(screen)):
-		for y in range(len(screen[x])):
-			screen[x,y] = ray_trace_pixel(x, y, scene, window_to_viewport_size_ratio, half_window_size, reflection_limit)
+	# Set up multiprocessing pool
+	pool = Pool(cpu_count())
 
-		# Report progress
-		pixel_num += width
-		percent_progress += one_row_progress
-		percent_progress_one_decimal = int(percent_progress*10)/10
+	# Start a process for ray-tracing each pixel
+	inputs = [(x, y, scene, window_to_viewport_size_ratio, half_window_size, reflection_limit) for x in range(width) for y in range(height)]
+	results = pool.starmap(ray_trace_pixel, inputs)
+
+	# Shape results into a width x height screen
+	screen = np.array(results).reshape((width, height, 3))
+
+	# For each pixel on the screen...
+	# num_pixels = width * height
+	# pixel_num = 0
+	# percent_progress = 0
+	# one_row_progress = (width/num_pixels)*100
+	# for x in range(len(screen)):
+	# 	for y in range(len(screen[x])):
+	# 		screen[x,y] = ray_trace_pixel(x, y, scene, window_to_viewport_size_ratio, half_window_size, reflection_limit)
+
+	# 	# Report progress
+	# 	pixel_num += width
+	# 	percent_progress += one_row_progress
+	# 	percent_progress_one_decimal = int(percent_progress*10)/10
 	
-		print("\r", end="", flush=True) # Wipe the previous line of output
-		print(f"Progress:\t{percent_progress_one_decimal}%\t\t({pixel_num}/{num_pixels} pixels)", end="", flush=True)
+	# 	print("\r", end="", flush=True) # Wipe the previous line of output
+	# 	print(f"Progress:\t{percent_progress_one_decimal}%\t\t({pixel_num}/{num_pixels} pixels)", end="", flush=True)
 	
-	print()
+	# print()
 
 	return screen
 
