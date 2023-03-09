@@ -50,7 +50,7 @@ class Polygon(Object):
 		# Make sure no vertices lie on the x-axis
 		for v in vertices:
 			if v[1] == 0:
-				v[1] += 0.00001
+				v[1] += 0.01
 
 		# Calculate how many times polygon edges cross the x-axis
 		num_crossings = 0

@@ -69,10 +69,11 @@ def get_color(origin: np.ndarray, direction: np.ndarray, scene: Scene, fade=1, r
 
 		shadow = is_in_shadow(collision.position, scene)
 
-		reflection_direction = ray.direction - 2 * normal * np.dot(ray.direction, normal)
-		offset_origin = collision.position + 0.01*reflection_direction	# Avoid colliding with the same surface
+		sight_reflection_direction = ray.direction - 2 * normal * np.dot(ray.direction, normal)
+		offset_origin = collision.position + 0.01*sight_reflection_direction	# Avoid colliding with the same surface
 
-		reflected_color = get_color(offset_origin, reflection_direction, scene, fade=fade*collision.obj.reflectivity, reflections=reflections+1, reflection_limit=reflection_limit)
+		# Get the color from the reflection (recursive)
+		reflected_color = get_color(offset_origin, sight_reflection_direction, scene, fade=fade*collision.obj.reflectivity, reflections=reflections+1, reflection_limit=reflection_limit)
 
 		return shade(scene, collision.obj, collision.position, view_direction, shadow, reflected_color)		
 
