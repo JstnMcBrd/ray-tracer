@@ -3,7 +3,7 @@
 	"camera_look_from": [0, 0, 1],
 	"camera_look_up": [0, 1, 0],
 	"field_of_view": 90,
-	"direction_to_light": [0.0, 0.0, 1.0],
+	"light_direction": [0.0, 0.0, 1.0],
 	"light_color": [1.0, 1.0, 1.0],
 	"ambient_light_color": [1.0, 1.0, 1.0],
 	"background_color": [0.0, 0.0, 0.0],

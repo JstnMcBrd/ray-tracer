@@ -50,7 +50,7 @@ def __load_from_json(json) -> Scene:
 	scene.field_of_view = __validate_number(json.get("field_of_view"), min=0, max=360, default=90, error_prefix=f"{error_prefix}.field_of_view")
 	
 	# Lighting
-	scene.direction_to_light = __validate_direction_vector(json.get("direction_to_light"), default=[0,1,0], error_prefix=f"{error_prefix}.direction_to_light")
+	scene.light_direction = __validate_direction_vector(json.get("light_direction"), default=[0,1,0], error_prefix=f"{error_prefix}.light_direction")
 	scene.light_color = __validate_color_vector(json.get("light_color"), default=[1,1,1], error_prefix=f"{error_prefix}.light_color")
 	scene.ambient_light_color = __validate_color_vector(json.get("ambient_light_color"), default=[1,1,1], error_prefix=f"{error_prefix}.ambient_light_color")
 	scene.background_color = __validate_color_vector(json.get("background_color"), default=[0,0,0], error_prefix=f"{error_prefix}.background_color")

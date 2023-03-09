@@ -9,8 +9,8 @@ def shade(scene: Scene, obj: Object, location: np.ndarray, view_direction: np.nd
 
 	surface_normal = obj.normal(location)
 
-	N_dot_L = np.dot(surface_normal, scene.direction_to_light)
-	reflection_direction = 2 * surface_normal * N_dot_L - scene.direction_to_light
+	N_dot_L = np.dot(surface_normal, scene.light_direction)
+	reflection_direction = 2 * surface_normal * N_dot_L - scene.light_direction
 
 	ambient = obj.ambient_coefficient * scene.ambient_light_color * obj.diffuse_color
 	diffuse = shadow_coefficient * obj.diffuse_coefficient * scene.light_color * obj.diffuse_color * max(0, N_dot_L)

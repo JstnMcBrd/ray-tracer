@@ -89,7 +89,7 @@ def get_color(origin: np.ndarray, direction: np.ndarray, scene: Scene, fade=1, r
 
 
 def is_in_shadow(point: np.ndarray, scene: Scene) -> bool:
-	ray = Ray(point, scene.direction_to_light)
+	ray = Ray(point, scene.light_direction)
 	ray.origin += ray.direction * 0.01	# Offset to avoid colliding with the object
 	
 	collision = ray.cast(scene)

@@ -11,7 +11,7 @@ class Scene:
 		self.field_of_view = 0
 
 		# Lighting
-		self.direction_to_light = np.array([0, 0, 0])
+		self.light_direction = np.array([0, 0, 0])
 		self.light_color = np.array([0, 0, 0])
 		self.ambient_light_color = np.array([0, 0, 0])
 		self.background_color = np.array([0, 0, 0])
