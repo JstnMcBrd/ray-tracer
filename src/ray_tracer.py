@@ -1,5 +1,5 @@
 from math import tan
-import istarmap
+import lib_patches.istarmap
 from multiprocessing import cpu_count, Pool
 import numpy as np
 import tqdm

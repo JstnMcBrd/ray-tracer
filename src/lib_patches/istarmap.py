@@ -2,10 +2,10 @@ import multiprocessing.pool as mpp
 
 def istarmap(self, func, iterable, chunksize=1):
 	"""
-		istarmap.py for Python 3.8+
+	istarmap.py for Python 3.8+
 	
-		starmap version of imap
-		Adopted this from [this source](https://stackoverflow.com/a/57364423)
+	starmap version of imap
+	Adopted this from [this source](https://stackoverflow.com/a/57364423)
 	"""
 
 	self._check_running()
