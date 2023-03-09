@@ -1,3 +1,5 @@
+import lib_patches.closed_pairwise
+from itertools import closed_pairwise
 import numpy as np
 
 from objects.Object import Object
@@ -39,7 +41,7 @@ class Polygon(Object):
 
 		intersection = plane_collision.position
 
-		# All vertices are pre-flattened
+		# All vertices are pre-flattened in __init__()
 
 		# Move all flattened vertices so the intersection is at the origin
 		flattened_intersection = np.delete(intersection, self.__plane_dominant_coord)
@@ -50,28 +52,33 @@ class Polygon(Object):
 			if v[1] == 0:
 				v[1] += 0.00001
 
-		# Not sure what the rest of this algorithm does - I'll revist it later # TODO
+		# Calculate how many times polygon edges cross the x-axis
 		num_crossings = 0
+		for vertex, next_vertex in closed_pairwise(vertices):
+			below_x_axis = vertex[1] < 0
+			next_below_x_axis = next_vertex[1] < 0
 
-		sign_holder = -1 if vertices[0][1] < 0 else 1
+			# If the edge crosses the x axis...
+			if below_x_axis != next_below_x_axis:
+				right_of_y_axis = vertex[0] > 0
+				next_right_of_y_axis = next_vertex[0] > 0
 
-		for i in range(len(vertices)):
-			i_1 = i + 1 if i < len(vertices)-1 else 0
-			
-			next_sign_holder = -1 if vertices[i_1][1] < 0 else 1
-
-			if sign_holder != next_sign_holder:
-				if vertices[i][0] > 0 and vertices[i_1][0] > 0:
-					# This edge crosses +u'
+				if right_of_y_axis and next_right_of_y_axis:
+					# This edge crosses
 					num_crossings += 1
-				elif vertices[i][0] > 0 or vertices[i_1][0] > 0:
-					# The edge might cross +u'
-					# Compute the intersection with the u' axis
-					u_cross = vertices[i][0] - vertices[i][1] * (vertices[i_1][0] - vertices[i][0]) / (vertices[i_1][1] - vertices[i][1])
-					if u_cross > 0:
-						# The edge crosses +u
-						num_crossings += 1
-			
-			sign_holder = next_sign_holder
+				elif right_of_y_axis or next_right_of_y_axis:
+					# The edge might cross
+					# Compute intersection with the axis
+					vertex_dif = next_vertex - vertex
+					cross = vertex[0] - vertex[1] * vertex_dif[0] / vertex_dif[1]
 
-		return Ray_Collision(self, ray, intersection) if num_crossings % 2 == 1 else None
+					if cross > 0:
+						# The edge crosses
+						num_crossings += 1
+
+		# Even number of crossings -> outside polygon -> no collision
+		if num_crossings % 2 == 0:
+			return None
+
+		# Odd number of crossings -> inside polygon -> yes collision
+		return Ray_Collision(self, ray, intersection)
