@@ -1,6 +1,8 @@
 from math import tan
+import istarmap
 from multiprocessing import cpu_count, Pool
 import numpy as np
+import tqdm
 
 from objects.Object import Object
 from Ray import Ray
@@ -13,44 +15,28 @@ from vector_utils import magnitude, normalized
 # TODO more than one light source
 
 
-def ray_trace(scene: Scene, width: int, height: int, reflection_limit:int) -> np.ndarray:
-	# Initialize the screen
-	screen = np.zeros((width, height, 3)) # TODO this is time/space intensive - maybe calculate + write values gradually?
-
+def ray_trace(scene: Scene, width: int, height: int, reflection_limit:int, progress_bar: bool) -> np.ndarray:
 	# Save time by pre-calcuating constant values
+	num_pixels = width*height
 	viewport_size = np.array([width, height])
 	window_size = calculate_window_size(viewport_size, scene.camera_look_at_relative, scene.field_of_view)
 	window_to_viewport_size_ratio = window_size/viewport_size
 	half_window_size = window_size/2
 
-	# Set up multiprocessing pool
+	# Set up multiprocessing pool and inputs
 	pool = Pool(cpu_count())
+	inputs = [(x, y, scene, window_to_viewport_size_ratio, half_window_size, reflection_limit) for x in range(width) for y in range(height)]
 
 	# Start a process for ray-tracing each pixel
-	inputs = [(x, y, scene, window_to_viewport_size_ratio, half_window_size, reflection_limit) for x in range(width) for y in range(height)]
-	results = pool.starmap(ray_trace_pixel, inputs)
+	processes = pool.istarmap(ray_trace_pixel, inputs)
+	if progress_bar:
+		processes = tqdm.tqdm(processes, total=num_pixels)
 
-	# Shape results into a width x height screen
-	screen = np.array(results).reshape((width, height, 3))
+	# Iterate and store the output to allow it to compute
+	outputs = [output for output in processes]
 
-	# For each pixel on the screen...
-	# num_pixels = width * height
-	# pixel_num = 0
-	# percent_progress = 0
-	# one_row_progress = (width/num_pixels)*100
-	# for x in range(len(screen)):
-	# 	for y in range(len(screen[x])):
-	# 		screen[x,y] = ray_trace_pixel(x, y, scene, window_to_viewport_size_ratio, half_window_size, reflection_limit)
-
-	# 	# Report progress
-	# 	pixel_num += width
-	# 	percent_progress += one_row_progress
-	# 	percent_progress_one_decimal = int(percent_progress*10)/10
-	
-	# 	print("\r", end="", flush=True) # Wipe the previous line of output
-	# 	print(f"Progress:\t{percent_progress_one_decimal}%\t\t({pixel_num}/{num_pixels} pixels)", end="", flush=True)
-	
-	# print()
+	# Shape outputs into a width*height screen
+	screen = np.array(outputs).reshape((width, height, 3))
 
 	return screen
 
@@ -72,6 +58,7 @@ def ray_trace_pixel(x: int, y: int, scene: Scene, window_to_viewport_size_ratio:
 	return get_color(camera_look_from, normalized(world_point_relative), scene, reflection_limit=reflection_limit)
 
 
+# Recursive
 def get_color(origin: np.ndarray, direction: np.ndarray, scene: Scene, fade=1, reflections=0, reflection_limit=float("inf")):
 	if fade <= 0.01 or reflections > reflection_limit:
 		return np.array([0,0,0])
