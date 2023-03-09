@@ -19,12 +19,12 @@ class Scene:
 		# Objects
 		self.objects = []
 
-	def camera_forward(self):
-		direction = self.camera_look_at - self.camera_look_from
-		return normalized(direction)
+	# Call this whenever camera_look_at, camera_look_from, or camera_look_up are updated
+	def update_camera_axes(self):
+		self.camera_look_at_relative = self.camera_look_at - self.camera_look_from
 
-	def camera_up(self):
-		return self.camera_look_up
+		self.camera_forward = normalized(self.camera_look_at_relative)
 
-	def camera_right(self):
-		return np.cross(self.camera_forward(), self.camera_up())
+		self.camera_up = self.camera_look_up
+
+		self.camera_right = np.cross(self.camera_forward, self.camera_up)

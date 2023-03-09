@@ -43,6 +43,8 @@ def __load_from_json(json) -> Scene:
 	scene.camera_look_from = __validate_position_vector(json.get("camera_look_from"), default=[0,0,1], error_prefix=f"{error_prefix}.camera_look_from")
 	scene.camera_look_up = __validate_direction_vector(json.get("camera_look_up"), default=[0,1,0], error_prefix=f"{error_prefix}.camera_look_up")
 
+	scene.update_camera_axes()
+
 	# TODO assert camera_look_up is perpendicular to the normalized difference between camera_look_at and camera_look_from
 
 	scene.field_of_view = __validate_number(json.get("field_of_view"), min=0, max=360, default=90, error_prefix=f"{error_prefix}.field_of_view")
