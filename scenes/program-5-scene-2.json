@@ -3,7 +3,7 @@
 	"camera_look_from": [0, 0, 1],
 	"camera_look_up": [0, 1, 0],
 	"field_of_view": 60,
-	"direction_to_light": [1.0, 1.0, 1.0],
+	"light_direction": [1.0, 1.0, 1.0],
 	"light_color": [1.0, 1.0, 1.0],
 	"ambient_light_color": [0.1, 0.1, 0.1],
 	"background_color": [0.2, 0.2, 0.2],
@@ -18,7 +18,8 @@
 	  		"specular_coefficient": 0.1,
 	  		"diffuse_color": [1.0, 1.0, 1.0],
 	  		"specular_color": [1.0, 1.0, 1.0],
-	  		"gloss_coefficient": 4.0
+	  		"gloss_coefficient": 4.0,
+			"reflectivity": 0.0
 		},
 		{
 			"name": "red sphere",
@@ -30,7 +31,8 @@
 			"specular_coefficient": 0.3,
 			"diffuse_color": [1.0, 0.0, 0.0],
 			"specular_color": [1.0, 1.0, 1.0],
-			"gloss_coefficient": 32.0
+			"gloss_coefficient": 32.0,
+			"reflectivity": 0.0
 		},
 		{
 			"name": "green sphere",
@@ -42,7 +44,8 @@
 			"specular_coefficient": 0.2,
 			"diffuse_color": [0.0, 1.0, 0.0],
 			"specular_color": [0.5, 1.0, 0.5],
-			"gloss_coefficient": 64.0
+			"gloss_coefficient": 64.0,
+			"reflectivity": 0.0
 		},
 		{
 			"name": "blue sphere",
@@ -54,7 +57,8 @@
 			"specular_coefficient": 0.0,
 			"diffuse_color": [0.0, 0.0, 1.0],
 			"specular_color": [1.0, 1.0, 1.0],
-			"gloss_coefficient": 16.0
+			"gloss_coefficient": 16.0,
+			"reflectivity": 0.0
 		}
 	]
 }
