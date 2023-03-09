@@ -8,7 +8,7 @@ class Plane(Object):
 	def __init__(self, normal, point):
 		super().__init__()
 
-		self.__normal = normal
+		self.__normal = normalized(normal)
 		self.__point = point
 		self.__distance_from_origin = -1 * np.dot(normal, point)
 
