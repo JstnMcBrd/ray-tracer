@@ -17,18 +17,9 @@ def ray_trace(scene: Scene, width: int, height: int, reflection_limit:int) -> np
 	screen = np.zeros((width, height, 3)) # TODO this is time/space intensive - maybe calculate + write values gradually?
 	num_pixels = width * height
 
-	# Get camera axes and positions
-	camera_look_from = scene.camera_look_from
-	camera_look_at = scene.camera_look_at
-	camera_forward = scene.camera_forward()
-	camera_up = scene.camera_up()
-	camera_right = scene.camera_right()
-
 	# Save time by pre-calcuating constant values
-	camera_look_at_relative = camera_look_at - camera_look_from
-
 	viewport_size = np.array([width, height])
-	window_size = calculate_window_size(viewport_size, camera_look_at_relative, scene.field_of_view)
+	window_size = calculate_window_size(viewport_size, scene.camera_look_at_relative, scene.field_of_view)
 	window_to_viewport_size_ratio = window_size/viewport_size
 	half_window_size = window_size/2
 
@@ -38,31 +29,36 @@ def ray_trace(scene: Scene, width: int, height: int, reflection_limit:int) -> np
 	one_row_progress = (width/num_pixels)*100
 	for x in range(len(screen)):
 		for y in range(len(screen[x])):
-			# Find the world point of the pixel, relative to the camera's position
-			viewport_point = np.array([x, y])
-			window_point = viewport_to_window(viewport_point, window_to_viewport_size_ratio, half_window_size)
-			world_point_relative = window_to_relative_world(window_point, camera_look_at_relative, camera_forward, camera_up, camera_right)
-
-			screen[x,y] = get_color(camera_look_from, normalized(world_point_relative), scene, reflection_limit=reflection_limit)
+			screen[x,y] = ray_trace_pixel(x, y, scene, window_to_viewport_size_ratio, half_window_size, reflection_limit)
 
 		# Report progress
 		pixel_num += width
 		percent_progress += one_row_progress
 		percent_progress_one_decimal = int(percent_progress*10)/10
-
+	
 		print("\r", end="", flush=True) # Wipe the previous line of output
 		print(f"Progress:\t{percent_progress_one_decimal}%\t\t({pixel_num}/{num_pixels} pixels)", end="", flush=True)
-
+	
 	print()
+
 	return screen
 
 
-def is_in_shadow(point: np.ndarray, scene: Scene) -> bool:
-	ray = Ray(point, scene.direction_to_light)
-	ray.origin += ray.direction * 0.01	# Offset to avoid colliding with the object
+def ray_trace_pixel(x: int, y: int, scene: Scene, window_to_viewport_size_ratio: np.ndarray, half_window_size: np.ndarray, reflection_limit: int) -> np.ndarray:
+	# Get camera axes
+	camera_look_from = scene.camera_look_from
+	camera_look_at_relative = scene.camera_look_at_relative
+	camera_forward = scene.camera_forward
+	camera_up = scene.camera_up
+	camera_right = scene.camera_right
 	
-	collision = ray.cast(scene)
-	return collision is not None
+	# Find the world point of the pixel, relative to the camera's position
+	viewport_point = np.array([x, y])
+	window_point = viewport_to_window(viewport_point, window_to_viewport_size_ratio, half_window_size)
+	world_point_relative = window_to_relative_world(window_point, camera_look_at_relative, camera_forward, camera_up, camera_right)
+
+	# Start sending out rays
+	return get_color(camera_look_from, normalized(world_point_relative), scene, reflection_limit=reflection_limit)
 
 
 def get_color(origin: np.ndarray, direction: np.ndarray, scene: Scene, fade=1, reflections=0, reflection_limit=float("inf")):
@@ -92,6 +88,14 @@ def get_color(origin: np.ndarray, direction: np.ndarray, scene: Scene, fade=1, r
 	# If no object collided, use the background
 	else:
 		return scene.background_color
+
+
+def is_in_shadow(point: np.ndarray, scene: Scene) -> bool:
+	ray = Ray(point, scene.direction_to_light)
+	ray.origin += ray.direction * 0.01	# Offset to avoid colliding with the object
+	
+	collision = ray.cast(scene)
+	return collision is not None
 
 
 def calculate_window_size(viewport_size: np.ndarray, camera_look_at_relative: np.ndarray, field_of_view: float) -> np.ndarray:
