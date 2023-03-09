@@ -14,13 +14,13 @@ if __name__ == "__main__":
 	load_dotenv()
 
 	arg = argparse.ArgumentParser("Ray Tracer")
-	arg.add_argument("-s", "--scene", type=str, help="Path to the scene file", default=getenv("SCENE"), required=getenv("SCENE") == None)
-	arg.add_argument("-o", "--output", type=str, help="Path to the output file", default=getenv("OUTPUT"), required=getenv("OUTPUT") == None)
-	arg.add_argument("-x", "--width", type=int, help="Width of the output image", default=getenv("WIDTH"), required=getenv("WIDTH") == None)
-	arg.add_argument("-y", "--height", type=int, help="Height of the output image", default=getenv("HEIGHT"), required=getenv("HEIGHT") == None)
-	arg.add_argument("-c", "--max-color", type=float, help="The maximum color of the ppm file", default=getenv("MAX_COLOR", default=255), required=getenv("MAX_COLOR", default=255) == None)
-	arg.add_argument("-r", "--reflection-limit", type=float, help="The maximum number of recursive reflections", default=getenv("REFLECTION_LIMIT", default=10), required=getenv("REFLECTION_LIMIT", default=10) == None)
-	arg.add_argument("-p", "--progress-bar", type=bool, help="Whether to show a progress bar", default=bool(int(getenv("PROGRESS_BAR", default=True))), required=bool(int(getenv("PROGRESS_BAR", default=True))) == None)
+	arg.add_argument("-s", "--scene", type=str, help="Path to the scene file", default=getenv("SCENE"), required=getenv("SCENE") is None)
+	arg.add_argument("-o", "--output", type=str, help="Path to the output file", default=getenv("OUTPUT"), required=getenv("OUTPUT") is None)
+	arg.add_argument("-x", "--width", type=int, help="Width of the output image", default=getenv("WIDTH"), required=getenv("WIDTH") is None)
+	arg.add_argument("-y", "--height", type=int, help="Height of the output image", default=getenv("HEIGHT"), required=getenv("HEIGHT") is None)
+	arg.add_argument("-c", "--max-color", type=float, help="The maximum color of the ppm file", default=getenv("MAX_COLOR", default=255), required=getenv("MAX_COLOR", default=255) is None)
+	arg.add_argument("-r", "--reflection-limit", type=float, help="The maximum number of recursive reflections", default=getenv("REFLECTION_LIMIT", default=10), required=getenv("REFLECTION_LIMIT", default=10) is None)
+	arg.add_argument("-p", "--progress-bar", type=bool, help="Whether to show a progress bar", default=bool(int(getenv("PROGRESS_BAR", default=True))), required=bool(int(getenv("PROGRESS_BAR", default=True))) is None)
 	parsed = arg.parse_args()
 	
 	scene_file_path = parsed.scene
