@@ -5,7 +5,7 @@ from Ray import Ray, Ray_Collision
 from vector_utils import normalized
 
 class Plane(Object):
-	def __init__(self, normal, point):
+	def __init__(self, normal: np.ndarray, point: np.ndarray):
 		super().__init__()
 
 		self.__normal = normalized(normal)
