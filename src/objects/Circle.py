@@ -11,12 +11,12 @@ class Circle(Object):
 
 		self.center = center
 		self.radius = radius
-		self.__normal = normalized(normal)
-
-		self.__plane = Plane(self.__normal, center)
+		
+		normal = normalized(normal)
+		self._plane = Plane(normal, center)
 
 	def normal(self, point: np.ndarray = None) -> np.ndarray:
-		return self.__normal
+		return self._plane.normal(point)
 
 	def ray_intersection(self, ray: Ray) -> Ray_Collision or None:
 		# See if ray intersects with plane
