@@ -136,6 +136,10 @@ def __load_polygon(json_value, error_prefix="Polygon") -> Polygon:
 
 	assert len(vertices) >= 3, f"{error_prefix}.vertices must have at least 3 vertices"
 
+	if len(vertices) == 3:
+		print(f"WARNING: {error_prefix} only has 3 vertices, automatically converting to Triangle")
+		return __load_triangle(json_value, error_prefix)
+
 	for i in range(len(vertices)):
 		vertex = __validate_position_vector(vertices[i], error_prefix=f"{error_prefix}.vertices[{i}]")
 		vertices_numpyified.append(vertex)
