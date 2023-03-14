@@ -1,6 +1,7 @@
 from json import loads as json_as_dict
 import numpy as np
 
+from objects.Circle import Circle
 from objects.Object import Object
 from objects.Plane import Plane
 from objects.Polygon import Polygon
@@ -82,7 +83,9 @@ def __load_object(json_value, error_prefix="Object") -> Object:
 	objType = objType.lower()
 
 	# Load in object-type-specific values
-	if objType == "plane":
+	if objType == "circle":
+		obj = __load_circle(json_value, error_prefix=f"{error_prefix}<Circle>")
+	elif objType == "plane":
 		obj = __load_plane(json_value, error_prefix=f"{error_prefix}<Plane>")
 	elif objType == "polygon":
 		obj = __load_polygon(json_value, error_prefix=f"{error_prefix}<Polygon>")
@@ -107,6 +110,14 @@ def __load_object(json_value, error_prefix="Object") -> Object:
 	obj.reflectivity = __validate_number(json_value.get("reflectivity"), default=0, error_prefix=f"{error_prefix}.reflectivity")
 
 	return obj
+
+
+def __load_circle(json_value, error_prefix="Circle") -> Circle:
+	center = __validate_position_vector(json_value.get("center"), default=[0,0,0], error_prefix=f"{error_prefix}.center")
+	radius = __validate_number(json_value.get("radius"), min=0, error_prefix=f"{error_prefix}.radius")
+	normal = __validate_direction_vector(json_value.get("normal"), default=[0,0,1], error_prefix=f"{error_prefix}.normal")
+
+	return Circle(center, radius, normal)
 
 
 def __load_plane(json_value, error_prefix="Plane") -> Plane:
