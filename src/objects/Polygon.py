@@ -8,44 +8,42 @@ from Ray import Ray, Ray_Collision
 from vector_utils import normalized
 
 class Polygon(Object):
-	def __init__(self, vertices):
+	def __init__(self, vertices: list):
 		super().__init__()
 
 		assert len(vertices) >= 3, "Polygon must have at least 3 vertices"
 
-		self.__vertices = vertices
+		self._vertices = vertices
 
 		v1 = normalized(vertices[1] - vertices[0])
 		v2 = normalized(vertices[2] - vertices[1])
 
-		self.__normal = normalized(np.cross(v1, v2))
+		_normal = normalized(np.cross(v1, v2))
 
-		self.__plane = Plane(self.__normal, vertices[0])
+		self._plane = Plane(_normal, vertices[0])
 
 		# Project all the vertices onto a 2D plane (for future intersection calculations)
-		self.__plane_dominant_coord = np.where(np.abs(self.__normal) == np.max(np.abs(self.__normal)))[0][0]
-		self.__flattened_vertices = [np.delete(v, self.__plane_dominant_coord) for v in self.__vertices]
+		self._plane_dominant_coord = np.where(np.abs(_normal) == np.max(np.abs(_normal)))[0][0]
+		self._flattened_vertices = [np.delete(v, self._plane_dominant_coord) for v in self._vertices]
 
 	def vertices(self):
-		return self.__vertices
+		return self._vertices
 
 	def normal(self, point: np.ndarray = None) -> np.ndarray:
-		return self.__normal
+		return self._plane.normal(point)
 
 	def ray_intersection(self, ray: Ray) -> Ray_Collision or None:
 		# See if ray intersects with plane
-		plane_collision = self.__plane.ray_intersection(ray)
-
+		plane_collision = self._plane.ray_intersection(ray)
 		if plane_collision is None:
 			return None
-
 		intersection = plane_collision.position
 
 		# All vertices are pre-flattened in __init__()
 
 		# Move all flattened vertices so the intersection is at the origin
-		flattened_intersection = np.delete(intersection, self.__plane_dominant_coord)
-		vertices = [v - flattened_intersection for v in self.__flattened_vertices]
+		flattened_intersection = np.delete(intersection, self._plane_dominant_coord)
+		vertices = [v - flattened_intersection for v in self._flattened_vertices]
 
 		# Make sure no vertices lie on the x-axis
 		for v in vertices:

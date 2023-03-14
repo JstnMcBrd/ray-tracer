@@ -133,6 +133,17 @@ class Sphere extends Object {
 	radius: number;
 };
 
+/** The specific values necessary for Triangles.
+ * The algorithm for Triangle intersections is slightly faster than Polygons,
+ * so 3-sided Polygons will be automatically converted to Triangles.
+*/
+class Triangle extends Polygon {
+	/** Defines this object as a Triangle. */
+	type: string = "triangle";
+
+	/** The number of vertices must be ONLY 3. */
+};
+
 // More types of objects can be added later.
 // In the meantime, most kinds of objects can be modeled with Polygons.
 ```
