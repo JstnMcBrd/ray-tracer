@@ -85,6 +85,21 @@ class Object {
 	reflectivity?: number = 0;
 };
 
+/** The specific values necessary for Circles. */
+class Circle extends Object {
+	/** Defines this object as a Circle. */
+	type: string = "circle";
+
+	/** The central location of the Circle. */
+	center: Position;
+
+	/** The radius of the Circle. Must be greater than 0. */
+	radius: number;
+
+	/** The direction the circle faces. */
+	normal: Direction;
+};
+
 /** The specific values necessary for Planes. */
 class Plane extends Object {
 	/** Defines this object as a Plane. */
