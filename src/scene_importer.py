@@ -6,6 +6,7 @@ from objects.Object import Object
 from objects.Plane import Plane
 from objects.Polygon import Polygon
 from objects.Sphere import Sphere
+from objects.Triangle import Triangle
 from Scene import Camera, Scene
 from vector_utils import magnitude, normalized
 
@@ -91,6 +92,8 @@ def __load_object(json_value, error_prefix="Object") -> Object:
 		obj = __load_polygon(json_value, error_prefix=f"{error_prefix}<Polygon>")
 	elif objType == "sphere":
 		obj = __load_sphere(json_value, error_prefix=f"{error_prefix}<Sphere>")
+	elif objType == "triangle":
+		obj = __load_triangle(json_value, error_prefix=f"{error_prefix}<Triangle>")
 	# TODO support for more object types
 	else:
 		raise f"{error_prefix} must have valid type, not {objType}"
@@ -145,6 +148,19 @@ def __load_sphere(json_value, error_prefix="Sphere") -> Sphere:
 	radius = __validate_number(json_value.get("radius"), min=0, error_prefix=f"{error_prefix}.radius")
 
 	return Sphere(center, radius)
+
+
+def __load_triangle(json_value, error_prefix="Triangle") -> Triangle:
+	vertices_numpyified = []
+	vertices = __validate_list(json_value.get("vertices"), error_prefix=f"{error_prefix}.vertices")
+
+	assert len(vertices) == 3, f"{error_prefix}.vertices must have 3 vertices"
+
+	for i in range(len(vertices)):
+		vertex = __validate_position_vector(vertices[i], error_prefix=f"{error_prefix}.vertices[{i}]")
+		vertices_numpyified.append(vertex)
+	
+	return Triangle(vertices_numpyified)
 
 
 def __validate_number(json_value, min=None, max=None, default=None, error_prefix="Number") -> float or int:
