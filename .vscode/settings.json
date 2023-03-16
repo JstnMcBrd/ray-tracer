@@ -2,8 +2,5 @@
     "editor.insertSpaces": false,
 	"editor.detectIndentation": false,
 	"python.linting.enabled": true,
-	"python.linting.pylintEnabled": true,
-	"pylint.args": [
-		"--indent-string='\t'"
-	]
+	"python.linting.pylintEnabled": true
 }
