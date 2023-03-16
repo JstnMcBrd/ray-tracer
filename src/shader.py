@@ -1,23 +1,47 @@
+"""
+Contains methods for shading objects.
+"""
+
+
 import numpy as np
 
-import objects.Object as Object
+from objects import Object
 from Scene import Scene
 
-# Phong shading
-def shade(scene: Scene, obj: Object, position: np.ndarray, view_direction: np.ndarray, shadow: bool, reflected_color: np.ndarray) -> np.ndarray:
+
+def shade(scene: Scene, obj: Object, position: np.ndarray, view_direction: np.ndarray,
+	  shadow: bool, reflected_color: np.ndarray) -> np.ndarray:
+	"""
+	Applies [Phong shading](https://en.wikipedia.org/wiki/Phong_shading)
+	to the given object and returns the color.
+	"""
+
 	shadow_coefficient = 0 if shadow else 1
 
 	surface_normal = obj.normal(position)
+	normal_dot_light = np.dot(surface_normal, scene.light_direction)
+	light_reflection_direction = 2 * surface_normal * normal_dot_light - scene.light_direction
+	view_dot_light = np.dot(view_direction, light_reflection_direction)
 
-	N_dot_L = np.dot(surface_normal, scene.light_direction)
-	light_reflection_direction = 2 * surface_normal * N_dot_L - scene.light_direction
+	# Ambient lighting
+	ambient = scene.ambient_light_color * obj.diffuse_color
+	ambient *= obj.ambient_coefficient
 
-	ambient = obj.ambient_coefficient * scene.ambient_light_color * obj.diffuse_color
-	diffuse = shadow_coefficient * obj.diffuse_coefficient * scene.light_color * obj.diffuse_color * max(0, N_dot_L)
-	specular = shadow_coefficient * obj.specular_coefficient * scene.light_color * obj.specular_color * max(0, np.dot(view_direction, light_reflection_direction))**obj.gloss_coefficient
+	# Diffuse lighting
+	diffuse = scene.light_color * obj.diffuse_color * max(0, normal_dot_light)
+	diffuse *= obj.diffuse_coefficient
+	diffuse *= shadow_coefficient
+
+	# Specular lighting
+	specular = scene.light_color * obj.specular_color * max(0, view_dot_light)**obj.gloss_coefficient
+	specular *= obj.specular_coefficient
+	specular *= shadow_coefficient
+
+	# Reflections
 	reflected = obj.reflectivity * reflected_color
+
+	# Combined color
 	color = ambient + diffuse + specular + reflected
-	
 	color = np.clip(color, 0, 1)
 
 	return color
