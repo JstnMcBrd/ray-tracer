@@ -156,11 +156,24 @@ You can run the ray tracer with the following command:
 python ./src/main.py
 ```
 
-The script has many required arguments. Use the `--help` command to see a full list. 
+The script has many arguments. Use the `--help` command to see a full list.
 
-Passing all the arguments through the console every time can quickly get annoying, so this project has support for `dotenv`.
+Most arguments have default values, but not all. You will likely want to override these values by providing them yourself. Additionally, you must provide all arguments that lack a default value.
 
-Create a new file called `.env` in the root folder and place any arguments you reuse often. These will act as "default" values.
+Passing all the arguments through the command line can get tedious, so this project has support for `dotenv`.
+
+Create a new file called `.env` in the root folder and add any arguments you reuse often. These will act as new "default" values.
+
+Here is an sample `.env` with the default values of all required arguments.
+```bash
+scene="<path to the scene file>"
+output="./output.ppm"
+width=512
+height=512
+max-color=255
+reflection-limit=10
+progress-bar=1 # True
+```
 
 You may still pass the arguments through the command prompt, and your `.env` values will be ignored.
 
