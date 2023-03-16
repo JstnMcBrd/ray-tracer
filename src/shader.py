@@ -5,8 +5,8 @@ Contains methods for shading objects.
 
 import numpy as np
 
-from objects import Object
-from Scene import Scene
+from objects.Object import Object
+from scene import Scene
 
 
 def shade(scene: Scene, obj: Object, position: np.ndarray, view_direction: np.ndarray,

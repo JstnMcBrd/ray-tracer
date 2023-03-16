@@ -6,7 +6,7 @@ import tqdm
 
 from objects.Object import Object
 from Ray import Ray
-from Scene import Camera, Scene
+from scene import Camera, Scene
 from shader import shade
 from vector_utils import magnitude, normalized
 

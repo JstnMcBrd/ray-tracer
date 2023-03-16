@@ -1,6 +1,6 @@
 import numpy as np
 
-from Scene import Scene
+from scene import Scene
 from vector_utils import magnitude
 
 class Ray_Collision:

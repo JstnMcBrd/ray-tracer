@@ -7,7 +7,7 @@ from objects.Plane import Plane
 from objects.Polygon import Polygon
 from objects.Sphere import Sphere
 from objects.Triangle import Triangle
-from Scene import Camera, Scene
+from scene import Camera, Scene
 from vector_utils import magnitude, normalized
 
 def import_scene(file_path: str) -> Scene:
