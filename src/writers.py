@@ -1,7 +1,6 @@
 """
 Contains methods for writing the screen to image files.
 """
-# TODO add support for other image types
 
 
 import numpy as np

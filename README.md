@@ -180,3 +180,25 @@ You may still pass the arguments through the command prompt, and your `.env` val
 ## Output
 
 For now, this raytracer only formats output as `.ppm` files. [PPM](https://en.wikipedia.org/wiki/Netpbm) images can be difficult to open and view. Support for more commonly-used image encodings is a future goal.
+
+## Future Plans
+
+- More shapes
+	- Rectangles
+	- Rectangular Prisms
+	- Cylinders
+	- Parameterized Surfaces
+- Refraction
+- Output images as PNGs
+- Transparency
+- More light types
+	- Point
+	- Area
+- Multiple light sources
+- Anti-aliasing
+- Distributed ray tracing
+- Mapping
+	- Texture
+	- Normal
+	- Reflection
+	- Transparency

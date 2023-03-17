@@ -11,8 +11,6 @@ from shader import shade
 from vector_utils import magnitude, normalized
 
 
-# TODO refraction
-# TODO more than one light source
 
 
 def ray_trace(scene: Scene, width: int, height: int, reflection_limit:int, progress_bar: bool) -> np.ndarray:
