@@ -55,7 +55,7 @@ if __name__ == "__main__":
 	arg.add_argument("-r", "--reflection-limit", type=int, help="Max number of recursive reflections",
 		default=env_reflection_limit, required=env_reflection_limit is None)
 	arg.add_argument("-p", "--progress-bar", type=bool, help="Whether to show a progress bar",
-		default=env_progress_bar, required=env_progress_bar is None)
+		default=int(env_progress_bar), required=env_progress_bar is None)
 
 	# Parse arguments
 	parsed = arg.parse_args()
