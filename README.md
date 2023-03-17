@@ -183,6 +183,9 @@ For now, this raytracer only formats output as `.ppm` files. [PPM](https://en.wi
 
 ## Future Plans
 
+- Special vector object
+- Loading bar for writing to file
+- More command line output to announce stages
 - More shapes
 	- Rectangles
 	- Rectangular Prisms

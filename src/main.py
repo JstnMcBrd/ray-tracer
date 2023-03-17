@@ -6,7 +6,7 @@ To see a full list of arguments, use `python ./src/main.py --help`.
 """
 
 
-import argparse
+from argparse import ArgumentParser
 from datetime import datetime
 from os import getenv
 
@@ -41,7 +41,7 @@ if __name__ == "__main__":
 
 	# Retrieve arguments overrides from command line
 	#	(A command line argument is only required if the environment variable is missing.)
-	arg = argparse.ArgumentParser("Ray Tracer")
+	arg = ArgumentParser("Ray Tracer")
 	arg.add_argument("-s", "--scene", "-i", "--input", type=str, help="Path to the scene file",
 		default=env_scene, required=env_scene is None)
 	arg.add_argument("-o", "--output", type=str, help="Path to the output file",
