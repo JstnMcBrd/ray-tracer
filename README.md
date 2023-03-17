@@ -8,6 +8,12 @@ A simple [ray tracer](https://en.wikipedia.org/wiki/Ray_tracing_(graphics)) writ
 
 Without a custom license, this code is the direct intellectual property of the original developer. It may not be used, modified, or shared without explicit permission. Please see [GitHub's guide on licensing](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository).
 
+## Versioning
+
+This project abides by [Semantic Versioning](https://semver.org/).
+
+To see a changelog for each update, check the description of [releases on GitHub](https://github.com/JstnMcBrd/ray-tracer/releases).
+
 ## Running
 
 You can run the ray tracer with the following command:
