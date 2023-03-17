@@ -32,7 +32,7 @@ def import_scene(file_path: str) -> Scene:
 
 	scene = None
 	try:
-		scene = __load_from_json(json_data)
+		scene = _load_from_json(json_data)
 	except AssertionError as err:
 		print(f"\"{file_path}\" is improperly formatted\n\t{err}")
 		end_program(1)
@@ -40,55 +40,55 @@ def import_scene(file_path: str) -> Scene:
 	return scene
 
 
-def __load_from_json(json: dict) -> Scene:
+def _load_from_json(json: dict) -> Scene:
 	""" Imports a scene from a dictionary formatted as a JSON file. """
 
 	error_prefix = "Scene"
 
 	# Camera
-	camera_look_at = __validate_position_vector(json.get("camera_look_at"), default=[0,0,0],
+	camera_look_at = _validate_position_vector(json.get("camera_look_at"), default=[0,0,0],
 					     error_prefix=f"{error_prefix}.camera_look_at")
-	camera_look_from = __validate_position_vector(json.get("camera_look_from"), default=[0,0,1],
+	camera_look_from = _validate_position_vector(json.get("camera_look_from"), default=[0,0,1],
 					       error_prefix=f"{error_prefix}.camera_look_from")
-	camera_look_up = __validate_direction_vector(json.get("camera_look_up"), default=[0,1,0],
+	camera_look_up = _validate_direction_vector(json.get("camera_look_up"), default=[0,1,0],
 					      error_prefix=f"{error_prefix}.camera_look_up")
-	field_of_view = __validate_number(json.get("field_of_view"), _min=0, _max=359, default=90,
+	field_of_view = _validate_number(json.get("field_of_view"), _min=0, _max=359, default=90,
 				   error_prefix=f"{error_prefix}.field_of_view")
 
 	camera = Camera(camera_look_at, camera_look_from, camera_look_up, field_of_view)
 
 	# Lighting
-	light_direction = __validate_direction_vector(json.get("light_direction"), default=[0,1,0],
+	light_direction = _validate_direction_vector(json.get("light_direction"), default=[0,1,0],
 					       error_prefix=f"{error_prefix}.light_direction")
-	light_color = __validate_color_vector(json.get("light_color"), default=[1,1,1],
+	light_color = _validate_color_vector(json.get("light_color"), default=[1,1,1],
 				       error_prefix=f"{error_prefix}.light_color")
-	ambient_light_color = __validate_color_vector(json.get("ambient_light_color"), default=[1,1,1],
+	ambient_light_color = _validate_color_vector(json.get("ambient_light_color"), default=[1,1,1],
 					       error_prefix=f"{error_prefix}.ambient_light_color")
-	background_color = __validate_color_vector(json.get("background_color"), default=[0,0,0],
+	background_color = _validate_color_vector(json.get("background_color"), default=[0,0,0],
 					    error_prefix=f"{error_prefix}.background_color")
 
 	# Objects
-	objects = __load_objects(json.get("objects"), default=[], error_prefix=f"{error_prefix}.objects")
+	objects = _load_objects(json.get("objects"), default=[], error_prefix=f"{error_prefix}.objects")
 
 	scene = Scene(camera, light_direction, light_color, ambient_light_color, background_color, objects)
 
 	return scene
 
 
-def __load_objects(json_value, default: list = None, error_prefix="Objects") -> list:
+def _load_objects(json_value, default: list = None, error_prefix="Objects") -> list:
 	""" Takes a list of dictionaries and imports each of them as an Object. """
 
 	objects = []
 
-	json_value = __validate_list(json_value, default=default, error_prefix=error_prefix)
+	json_value = _validate_list(json_value, default=default, error_prefix=error_prefix)
 	for count, element in enumerate(json_value):
-		obj = __load_object(element, error_prefix=f"{error_prefix}[{count}]")
+		obj = _load_object(element, error_prefix=f"{error_prefix}[{count}]")
 		objects.append(obj)
 
 	return objects
 
 
-def __load_object(json_value, error_prefix="Object") -> Object:
+def _load_object(json_value, error_prefix="Object") -> Object:
 	""" Imports a dictionary as an Object. """
 
 	obj = None
@@ -103,15 +103,15 @@ def __load_object(json_value, error_prefix="Object") -> Object:
 
 	# Load in object-type-specific values
 	if obj_type == "circle":
-		obj = __load_circle(json_value, error_prefix=f"{error_prefix}<Circle>")
+		obj = _load_circle(json_value, error_prefix=f"{error_prefix}<Circle>")
 	elif obj_type == "plane":
-		obj = __load_plane(json_value, error_prefix=f"{error_prefix}<Plane>")
+		obj = _load_plane(json_value, error_prefix=f"{error_prefix}<Plane>")
 	elif obj_type == "polygon":
-		obj = __load_polygon(json_value, error_prefix=f"{error_prefix}<Polygon>")
+		obj = _load_polygon(json_value, error_prefix=f"{error_prefix}<Polygon>")
 	elif obj_type == "sphere":
-		obj = __load_sphere(json_value, error_prefix=f"{error_prefix}<Sphere>")
+		obj = _load_sphere(json_value, error_prefix=f"{error_prefix}<Sphere>")
 	elif obj_type == "triangle":
-		obj = __load_triangle(json_value, error_prefix=f"{error_prefix}<Triangle>")
+		obj = _load_triangle(json_value, error_prefix=f"{error_prefix}<Triangle>")
 	else:
 		raise f"{error_prefix} must have valid type, not {obj_type}"
 
@@ -121,113 +121,113 @@ def __load_object(json_value, error_prefix="Object") -> Object:
 		assert isinstance(name, str), f"{error_prefix}.name must be type string, not {type(name)}"
 	obj.name = name
 
-	obj.ambient_coefficient = __validate_number(json_value.get("ambient_coefficient"), default=0,
+	obj.ambient_coefficient = _validate_number(json_value.get("ambient_coefficient"), default=0,
 					     error_prefix=f"{error_prefix}.ambient_coefficient")
-	obj.diffuse_coefficient = __validate_number(json_value.get("diffuse_coefficient"), default=1,
+	obj.diffuse_coefficient = _validate_number(json_value.get("diffuse_coefficient"), default=1,
 					     error_prefix=f"{error_prefix}.diffuse_coefficient")
-	obj.specular_coefficient = __validate_number(json_value.get("specular_coefficient"), default=0,
+	obj.specular_coefficient = _validate_number(json_value.get("specular_coefficient"), default=0,
 					      error_prefix=f"{error_prefix}.specular_coefficient")
-	obj.diffuse_color = __validate_color_vector(json_value.get("diffuse_color"), default=[1,1,1],
+	obj.diffuse_color = _validate_color_vector(json_value.get("diffuse_color"), default=[1,1,1],
 					     error_prefix=f"{error_prefix}.diffuse_color")
-	obj.specular_color = __validate_color_vector(json_value.get("specular_color"), default=[1,1,1],
+	obj.specular_color = _validate_color_vector(json_value.get("specular_color"), default=[1,1,1],
 					      error_prefix=f"{error_prefix}.specular_color")
-	obj.gloss_coefficient = __validate_number(json_value.get("gloss_coefficient"), default=4,
+	obj.gloss_coefficient = _validate_number(json_value.get("gloss_coefficient"), default=4,
 					   error_prefix=f"{error_prefix}.gloss_coefficient")
-	obj.reflectivity = __validate_number(json_value.get("reflectivity"), default=0,
+	obj.reflectivity = _validate_number(json_value.get("reflectivity"), default=0,
 				      error_prefix=f"{error_prefix}.reflectivity")
 
 	return obj
 
 
-def __load_circle(json_value, error_prefix="Circle") -> Circle:
+def _load_circle(json_value, error_prefix="Circle") -> Circle:
 	""" Imports Circle-specific values from a dictionary. """
 
-	center = __validate_position_vector(json_value.get("center"), default=[0,0,0],
+	center = _validate_position_vector(json_value.get("center"), default=[0,0,0],
 				     error_prefix=f"{error_prefix}.center")
-	radius = __validate_number(json_value.get("radius"), _min=0,
+	radius = _validate_number(json_value.get("radius"), _min=0,
 			    error_prefix=f"{error_prefix}.radius")
-	normal = __validate_direction_vector(json_value.get("normal"), default=[0,0,1],
+	normal = _validate_direction_vector(json_value.get("normal"), default=[0,0,1],
 				      error_prefix=f"{error_prefix}.normal")
 
 	return Circle(center, radius, normal)
 
 
-def __load_plane(json_value, error_prefix="Plane") -> Plane:
+def _load_plane(json_value, error_prefix="Plane") -> Plane:
 	""" Imports Plane-specific values from a dictionary. """
 
-	normal = __validate_direction_vector(json_value.get("normal"),
+	normal = _validate_direction_vector(json_value.get("normal"),
 				      error_prefix=f"{error_prefix}.normal")
-	point = __validate_position_vector(json_value.get("point"), default=[0,0,0],
+	point = _validate_position_vector(json_value.get("point"), default=[0,0,0],
 				    error_prefix=f"{error_prefix}.point")
 
 	return Plane(normal, point)
 
 
-def __load_polygon(json_value, error_prefix="Polygon") -> Polygon:
+def _load_polygon(json_value, error_prefix="Polygon") -> Polygon:
 	""" Imports Polygon-specific values from a dictionary. """
 
 	vertices_numpyified = []
-	vertices = __validate_list(json_value.get("vertices"), error_prefix=f"{error_prefix}.vertices")
+	vertices = _validate_list(json_value.get("vertices"), error_prefix=f"{error_prefix}.vertices")
 
 	assert len(vertices) >= 3, f"{error_prefix}.vertices must have at least 3 vertices"
 
 	if len(vertices) == 3:
 		print(f"WARNING: {error_prefix} only has 3 vertices, automatically converting to Triangle")
-		return __load_triangle(json_value, error_prefix)
+		return _load_triangle(json_value, error_prefix)
 
 	for count, element in enumerate(vertices):
-		vertex = __validate_position_vector(element, error_prefix=f"{error_prefix}.vertices[{count}]")
+		vertex = _validate_position_vector(element, error_prefix=f"{error_prefix}.vertices[{count}]")
 		vertices_numpyified.append(vertex)
 
 	return Polygon(vertices_numpyified)
 
 
-def __load_sphere(json_value, error_prefix="Sphere") -> Sphere:
+def _load_sphere(json_value, error_prefix="Sphere") -> Sphere:
 	""" Imports Sphere-specific values from a dictionary. """
 
-	center = __validate_position_vector(json_value.get("center"),
+	center = _validate_position_vector(json_value.get("center"),
 				     error_prefix=f"{error_prefix}.center")
-	radius = __validate_number(json_value.get("radius"), _min=0,
+	radius = _validate_number(json_value.get("radius"), _min=0,
 			    error_prefix=f"{error_prefix}.radius")
 
 	return Sphere(center, radius)
 
 
-def __load_triangle(json_value, error_prefix="Triangle") -> Triangle:
+def _load_triangle(json_value, error_prefix="Triangle") -> Triangle:
 	""" Imports Triangle-specific values from a dictionary. """
 
 	vertices_numpyified = []
-	vertices = __validate_list(json_value.get("vertices"), error_prefix=f"{error_prefix}.vertices")
+	vertices = _validate_list(json_value.get("vertices"), error_prefix=f"{error_prefix}.vertices")
 
 	assert len(vertices) == 3, f"{error_prefix}.vertices must have 3 vertices"
 
 	for count, element in enumerate(vertices):
-		vertex = __validate_position_vector(element, error_prefix=f"{error_prefix}.vertices[{count}]")
+		vertex = _validate_position_vector(element, error_prefix=f"{error_prefix}.vertices[{count}]")
 		vertices_numpyified.append(vertex)
 
 	return Triangle(vertices_numpyified)
 
 
-def __validate_position_vector(json_value,
+def _validate_position_vector(json_value,
 			       default: list = None,
 				   error_prefix="Position") -> np.ndarray:
 	""" Imports a list as a position vector. """
 
-	json_value = __validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
+	json_value = _validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
 	for element in json_value:
-		__validate_number(element, error_prefix=f"{error_prefix} element")
+		_validate_number(element, error_prefix=f"{error_prefix} element")
 
 	return np.array(json_value)
 
 
-def __validate_direction_vector(json_value,
+def _validate_direction_vector(json_value,
 				default: list = None,
 				error_prefix="Direction") -> np.ndarray:
 	""" Imports a list as a direction vector, verifying it is normalized. """
 
-	json_value = __validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
+	json_value = _validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
 	for element in json_value:
-		__validate_number(element, error_prefix=f"{error_prefix} element")
+		_validate_number(element, error_prefix=f"{error_prefix} element")
 
 	# Convert to numpy array
 	vector = np.array(json_value)
@@ -242,19 +242,19 @@ def __validate_direction_vector(json_value,
 	return vector
 
 
-def __validate_color_vector(json_value,
+def _validate_color_vector(json_value,
 			    default: list = None,
 				error_prefix="Color") -> np.ndarray:
 	""" Imports a list as a color vector, verifying the proper range of values. """
 
-	json_value = __validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
+	json_value = _validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
 	for element in json_value:
-		__validate_number(element, _min=0, _max=1, error_prefix=f"{error_prefix} element")
+		_validate_number(element, _min=0, _max=1, error_prefix=f"{error_prefix} element")
 
 	return np.array(json_value)
 
 
-def __validate_list(json_value,
+def _validate_list(json_value,
 		    length: int = None,
 			default: list = None,
 			error_prefix = "List") -> list:
@@ -273,7 +273,7 @@ def __validate_list(json_value,
 	return json_value
 
 
-def __validate_number(json_value,
+def _validate_number(json_value,
 		      _min: float|int = None,
 			  _max: float|int = None,
 			  default: float|int = None,
