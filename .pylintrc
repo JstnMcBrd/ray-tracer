@@ -3,4 +3,4 @@
 indent-string="\t"
 
 # Good variable names which should always be accepted, separated by a comma.
-good-names=x, y, up
+good-names=x, y, up, t
