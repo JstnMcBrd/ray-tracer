@@ -1,24 +1,36 @@
+"""
+Classes to define the properties and behaviors of rays.
+"""
+
+
 import numpy as np
 
-from Scene import Scene
-from vector_utils import magnitude
+from scene import Scene
+from vector import magnitude
 
-class Ray_Collision:
+
+class RayCollision:
+	""" Contains information about the collision of a ray with an object. """
+
 	def __init__(self, obj, ray, position: np.ndarray):
 		self.obj = obj
 		self.ray = ray
 		self.position = position
-		
+
 		self.distance = magnitude(self.position - ray.origin)
 
 
 class Ray:
+	""" Represents a semi-infinite line. """
+
 	def __init__(self, origin: np.ndarray, direction: np.ndarray):
 		self.origin = origin
 		self.direction = direction
 
-	def cast(self, scene: Scene) -> Ray_Collision or None:
-		closest_collision: Ray_Collision = None
+	def cast(self, scene: Scene) -> RayCollision|None:
+		""" Projects the ray into the scene and returns the closest object collision. """
+
+		closest_collision: RayCollision = None
 
 		# Find the closest object that intersects with the ray
 		for obj in scene.objects:
@@ -26,5 +38,5 @@ class Ray:
 			if collision is not None:
 				if closest_collision is None or collision.distance < closest_collision.distance:
 					closest_collision = collision
-		
+
 		return closest_collision

@@ -8,6 +8,39 @@ A simple [ray tracer](https://en.wikipedia.org/wiki/Ray_tracing_(graphics)) writ
 
 Without a custom license, this code is the direct intellectual property of the original developer. It may not be used, modified, or shared without explicit permission. Please see [GitHub's guide on licensing](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository).
 
+## Running
+
+You can run the ray tracer with the following command:
+
+```bash
+python ./src/main.py
+```
+
+The script has many arguments. Use the `--help` command to see a full list.
+
+Most arguments have default values, but not all. You will likely want to override these values by providing them yourself. Additionally, you must provide all arguments that lack a default value.
+
+Passing all the arguments through the command line can get tedious, so this project has support for `dotenv`.
+
+Create a new file called `.env` in the root folder and add any arguments you reuse often. These will act as new "default" values.
+
+Here is an sample `.env` with the default values of all required arguments.
+```bash
+scene="<path to the scene file>"
+output="./output.ppm"
+width=512
+height=512
+max-color=255
+reflection-limit=10
+progress-bar=1 # True
+```
+
+You may still pass the arguments through the command prompt, and your `.env` values will be ignored.
+
+## Output
+
+For now, this raytracer only formats output as `.ppm` files. [PPM](https://en.wikipedia.org/wiki/Netpbm) images can be difficult to open and view. Support for more commonly-used image encodings is a future goal.
+
 ## Scenes
 
 Scenes are defined in `JSON` files. See a few examples in the [scenes](/scenes/) folder.
@@ -148,22 +181,26 @@ class Triangle extends Polygon {
 // In the meantime, most kinds of objects can be modeled with Polygons.
 ```
 
-## Running
+## Future Plans
 
-You can run the ray tracer with the following command:
-
-```bash
-python ./src/main.py
-```
-
-The script has many required arguments. Use the `--help` command to see a full list. 
-
-Passing all the arguments through the console every time can quickly get annoying, so this project has support for `dotenv`.
-
-Create a new file called `.env` in the root folder and place any arguments you reuse often. These will act as "default" values.
-
-You may still pass the arguments through the command prompt, and your `.env` values will be ignored.
-
-## Output
-
-For now, this raytracer only formats output as `.ppm` files. [PPM](https://en.wikipedia.org/wiki/Netpbm) images can be difficult to open and view. Support for more commonly-used image encodings is a future goal.
+- Loading bar for writing to file
+- More command line output to announce stages
+- More shapes
+	- Rectangles
+	- Rectangular Prisms
+	- Cylinders
+	- Parameterized Surfaces
+- Refraction
+- Output images as PNGs
+- Transparency
+- More light types
+	- Point
+	- Area
+- Multiple light sources
+- Anti-aliasing
+- Distributed ray tracing
+- Mapping
+	- Texture
+	- Normal
+	- Reflection
+	- Transparency
