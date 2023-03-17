@@ -1,7 +1,7 @@
 import numpy as np
 
 from objects.Object import Object
-from Ray import Ray, Ray_Collision
+from ray import Ray, RayCollision
 from vector_utils import normalized
 
 class Plane(Object):
@@ -15,7 +15,7 @@ class Plane(Object):
 	def normal(self, point: np.ndarray = None) -> np.ndarray:
 		return self._normal
 
-	def ray_intersection(self, ray: Ray) -> Ray_Collision or None:
+	def ray_intersection(self, ray: Ray) -> RayCollision or None:
 		v_d = np.dot(self._normal, ray.direction)
 		
 		if v_d == 0:
@@ -29,4 +29,4 @@ class Plane(Object):
 			# Intersection point is behind the ray
 			return None
 
-		return Ray_Collision(self, ray, ray.origin + ray.direction*t)
+		return RayCollision(self, ray, ray.origin + ray.direction*t)

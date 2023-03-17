@@ -2,7 +2,7 @@ import numpy as np
 
 from objects.Plane import Plane
 from objects.Polygon import Polygon
-from Ray import Ray, Ray_Collision
+from ray import Ray, RayCollision
 from vector_utils import magnitude, normalized
 
 
@@ -18,7 +18,7 @@ class Triangle(Polygon):
 
 		self._flattened_area = triangle_area(self._flattened_vertices[0], self._flattened_vertices[1], self._flattened_vertices[2])
 
-	def ray_intersection(self, ray: Ray) -> Ray_Collision or None:
+	def ray_intersection(self, ray: Ray) -> RayCollision or None:
 		# See if ray intersects with plane
 		plane_collision = self._plane.ray_intersection(ray)
 		if plane_collision is None:
@@ -37,4 +37,4 @@ class Triangle(Polygon):
 		if abs(area_1 + area_2 + area_3 - self._flattened_area) > 0.01:
 			return None
 
-		return Ray_Collision(self, ray, intersection)
+		return RayCollision(self, ray, intersection)

@@ -5,7 +5,7 @@ import numpy as np
 import tqdm
 
 from objects.Object import Object
-from Ray import Ray
+from ray import Ray
 from scene import Camera, Scene
 from shader import shade
 from vector_utils import magnitude, normalized

@@ -1,6 +1,6 @@
 import numpy as np
 
-from Ray import Ray, Ray_Collision
+from ray import Ray, RayCollision
 
 class Object:
 	def __init__(self):
@@ -17,5 +17,5 @@ class Object:
 	def normal(self, point: np.ndarray) -> np.ndarray:
 		NotImplemented
 
-	def ray_intersection(self, ray: Ray) -> Ray_Collision or None:
+	def ray_intersection(self, ray: Ray) -> RayCollision or None:
 		NotImplemented

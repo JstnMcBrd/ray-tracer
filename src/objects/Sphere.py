@@ -1,7 +1,7 @@
 import numpy as np
 
 from objects.Object import Object
-from Ray import Ray, Ray_Collision
+from ray import Ray, RayCollision
 from vector_utils import normalized
 
 class Sphere(Object):
@@ -13,7 +13,7 @@ class Sphere(Object):
 	def normal(self, point: np.ndarray) -> np.ndarray:
 		return normalized(point - self.center)
 
-	def ray_intersection(self, ray: Ray) -> Ray_Collision or None:
+	def ray_intersection(self, ray: Ray) -> RayCollision or None:
 		dist = self.center - ray.origin
 		dist_sqr = np.dot(dist, dist)
 		dist_mag = np.sqrt(dist_sqr)
@@ -34,4 +34,4 @@ class Sphere(Object):
 
 		t = closest_approach - closest_approach_dist_to_surface if outside else closest_approach + closest_approach_dist_to_surface
 
-		return Ray_Collision(self, ray, ray.origin + ray.direction*t)
+		return RayCollision(self, ray, ray.origin + ray.direction*t)

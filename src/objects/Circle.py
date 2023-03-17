@@ -2,7 +2,7 @@ import numpy as np
 
 from objects.Object import Object
 from objects.Plane import Plane
-from Ray import Ray, Ray_Collision
+from ray import Ray, RayCollision
 from vector_utils import magnitude, normalized
 
 class Circle(Object):
@@ -18,7 +18,7 @@ class Circle(Object):
 	def normal(self, point: np.ndarray = None) -> np.ndarray:
 		return self._plane.normal(point)
 
-	def ray_intersection(self, ray: Ray) -> Ray_Collision or None:
+	def ray_intersection(self, ray: Ray) -> RayCollision or None:
 		# See if ray intersects with plane
 		plane_collision = self.__plane.ray_intersection(ray)
 		if plane_collision is None:
@@ -31,4 +31,4 @@ class Circle(Object):
 		if distance > self.radius:
 			return None
 
-		return Ray_Collision(self, ray, intersection)
+		return RayCollision(self, ray, intersection)
