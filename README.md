@@ -183,7 +183,6 @@ class Triangle extends Polygon {
 
 ## Future Plans
 
-- Special vector object
 - Loading bar for writing to file
 - More command line output to announce stages
 - More shapes

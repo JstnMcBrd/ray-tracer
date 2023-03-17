@@ -9,7 +9,7 @@ import numpy as np
 
 from objects import Circle, Object, Plane, Polygon, Sphere, Triangle
 from scene import Camera, Scene
-from vector_utils import magnitude, normalized
+from vector import magnitude, normalized
 
 
 def import_scene(file_path: str) -> Scene:

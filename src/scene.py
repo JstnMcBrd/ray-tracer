@@ -5,7 +5,7 @@ Classes that define the scene to be ray traced.
 
 import numpy as np
 
-from vector_utils import magnitude, normalized
+from vector import magnitude, normalized
 
 
 class Camera:

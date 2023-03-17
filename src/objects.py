@@ -7,7 +7,7 @@ import numpy as np
 
 from lib._itertools import closed_pairwise
 from ray import Ray, RayCollision
-from vector_utils import magnitude, normalized
+from vector import magnitude, normalized
 
 
 class Object:

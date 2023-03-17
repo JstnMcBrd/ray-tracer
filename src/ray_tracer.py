@@ -13,7 +13,7 @@ from lib._multiprocessing import istarmap
 from ray import Ray
 from scene import Camera, Scene
 from shader import shade
-from vector_utils import normalized
+from vector import normalized
 
 
 def ray_trace(scene: Scene, width: int, height: int,

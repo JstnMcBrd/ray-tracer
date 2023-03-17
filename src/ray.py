@@ -6,7 +6,7 @@ Classes to define the properties and behaviors of rays.
 import numpy as np
 
 from scene import Scene
-from vector_utils import magnitude
+from vector import magnitude
 
 
 class RayCollision:
