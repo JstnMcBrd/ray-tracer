@@ -207,15 +207,6 @@ class Sphere(Object):
 		return RayCollision(self, ray, ray.origin + ray.direction*t)
 
 
-def triangle_area(vertex_1: np.ndarray, vertex_2: np.ndarray, vertex_3: np.ndarray):
-	""" Given the three vertices, returns the area of the enclosed triangle. """
-
-	area = (vertex_1[0] * (vertex_2[1] - vertex_3[1]) \
-	     + vertex_2[0] * (vertex_3[1] - vertex_1[1]) \
-			+ vertex_3[0] * (vertex_1[1] - vertex_2[1])) / 2.0
-	return abs(area)
-
-
 class Triangle(Polygon):
 	"""
 	The specific values necessary for Triangles. 
@@ -228,9 +219,7 @@ class Triangle(Polygon):
 
 		assert len(vertices) == 3, "Triangle must have 3 vertices"
 
-		self._flattened_area = triangle_area(self._flattened_vertices[0], 
-				       self._flattened_vertices[1], 
-					   self._flattened_vertices[2])
+		self._flattened_area = Triangle.area(self._flattened_vertices)
 
 	def ray_intersection(self, ray: Ray) -> RayCollision or None:
 		# See if ray intersects with plane
@@ -243,15 +232,26 @@ class Triangle(Polygon):
 		flattened_intersection = np.delete(intersection, self._plane_dominant_coord)
 
 		# Calculate areas
-		area_1 = triangle_area(self._flattened_vertices[0], self._flattened_vertices[1],
-			 flattened_intersection)
-		area_2 = triangle_area(self._flattened_vertices[0], self._flattened_vertices[2],
-			 flattened_intersection)
-		area_3 = triangle_area(self._flattened_vertices[1], self._flattened_vertices[2],
-			 flattened_intersection)
+		area_1 = Triangle.area([self._flattened_vertices[0], self._flattened_vertices[1],
+			 flattened_intersection])
+		area_2 = Triangle.area([self._flattened_vertices[0], self._flattened_vertices[2],
+			 flattened_intersection])
+		area_3 = Triangle.area([self._flattened_vertices[1], self._flattened_vertices[2],
+			 flattened_intersection])
 
 		# If point is inside triangle, then the area of all sub-triangles will add up to the total area
 		if abs(area_1 + area_2 + area_3 - self._flattened_area) > 0.01:
 			return None
 
 		return RayCollision(self, ray, intersection)
+	
+	@staticmethod
+	def area(vertices: list):
+		""" Given the three vertices, returns the area of the enclosed triangle. """
+
+		assert len(vertices) == 3, "Must have 3 vertices to be a triangle"
+
+		area = (vertices[0][0] * (vertices[1][1] - vertices[2][1]) \
+			+ vertices[1][0] * (vertices[2][1] - vertices[0][1]) \
+				+ vertices[2][0] * (vertices[0][1] - vertices[1][1])) / 2.0
+		return abs(area)
