@@ -5,7 +5,7 @@ Contains methods for shading objects.
 
 import numpy as np
 
-from objects.Object import Object
+from objects import Object
 from scene import Scene
 
 

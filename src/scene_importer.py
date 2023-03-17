@@ -7,12 +7,7 @@ from sys import exit as end_program
 
 import numpy as np
 
-from objects.Circle import Circle
-from objects.Object import Object
-from objects.Plane import Plane
-from objects.Polygon import Polygon
-from objects.Sphere import Sphere
-from objects.Triangle import Triangle
+from objects import Circle, Object, Plane, Polygon, Sphere, Triangle
 from scene import Camera, Scene
 from vector_utils import magnitude, normalized
 
