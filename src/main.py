@@ -42,7 +42,7 @@ if __name__ == "__main__":
 	# Retrieve arguments overrides from command line
 	#	(A command line argument is only required if the environment variable is missing.)
 	arg = ArgumentParser("Ray Tracer")
-	arg.add_argument("-s", "--scene", "-i", "--input", type=str, help="Path to the scene file",
+	arg.add_argument("-s", "--scene", type=str, help="Path to the scene file",
 		default=env_scene, required=env_scene is None)
 	arg.add_argument("-o", "--output", type=str, help="Path to the output file",
 		default=env_output, required=env_output is None)
