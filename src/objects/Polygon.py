@@ -1,7 +1,6 @@
-import lib_patches.closed_pairwise
-from itertools import closed_pairwise
 import numpy as np
 
+from lib._itertools import closed_pairwise
 from objects.Object import Object
 from objects.Plane import Plane
 from ray import Ray, RayCollision

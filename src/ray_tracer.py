@@ -1,10 +1,10 @@
 from math import tan
-import lib_patches.istarmap
 from multiprocessing import cpu_count, Pool
 import numpy as np
 import tqdm
 
 from objects.Object import Object
+from lib._multiprocessing import istarmap
 from ray import Ray
 from scene import Camera, Scene
 from shader import shade
@@ -28,7 +28,7 @@ def ray_trace(scene: Scene, width: int, height: int, reflection_limit:int, progr
 	inputs = [(x, y, scene, window_to_viewport_size_ratio, half_window_size, reflection_limit) for x in range(width) for y in range(height)]
 
 	# Start a process for ray-tracing each pixel
-	processes = pool.istarmap(ray_trace_pixel, inputs)
+	processes = istarmap(pool, ray_trace_pixel, inputs)
 	if progress_bar:
 		processes = tqdm.tqdm(processes, total=num_pixels)
 
