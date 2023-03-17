@@ -22,9 +22,7 @@ You can run the ray tracer with the following command:
 python ./src/main.py
 ```
 
-The script has many arguments. Use the `--help` command to see a full list.
-
-Most arguments have default values, but not all. You will likely want to override these values by providing them yourself. Additionally, you must provide all arguments that lack a default value.
+The script has many arguments. Use the `--help` command to see a full list. Some have a default values, but you must provide the rest yourself.
 
 Passing all the arguments through the command line can get tedious, so this project has support for `dotenv`.
 
@@ -41,7 +39,7 @@ reflection-limit=10
 progress-bar=1 # True
 ```
 
-You may still pass the arguments through the command prompt, and your `.env` values will be ignored.
+You may still pass arguments through the command prompt, and your `.env` values will be ignored.
 
 ## Output
 
@@ -189,8 +187,6 @@ class Triangle extends Polygon {
 
 ## Future Plans
 
-- Loading bar for writing to file
-- More command line output to announce stages
 - More shapes
 	- Rectangles
 	- Rectangular Prisms
