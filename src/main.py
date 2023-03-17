@@ -68,19 +68,29 @@ if __name__ == "__main__":
 	progress_bar = parsed.progress_bar
 
 	# Import Scene
+	print()
+	print("> Importing...")
+	start_time = datetime.now()
 	scene = import_scene(scene_file_path)
+	time_elapsed = datetime.now() - start_time
+	print(f"Time elapsed: {time_elapsed}")
+	print("> Done")
+	print()
 
 	# Raytrace
+	print("> Ray tracing...")
 	start_time = datetime.now()
 	screen = ray_trace(scene, width, height, reflection_limit, progress_bar)
-	end_time = datetime.now()
-
-	# Print timer
-	elapsed = end_time - start_time
-	pixels_per_second = (width*height) / elapsed.total_seconds()
-	print(f"Time elapsed:\t{elapsed}\t({int(pixels_per_second)} pixels/second)")
+	time_elapsed = datetime.now() - start_time
+	print(f"Time elapsed: {time_elapsed}")
+	print("> Done")
+	print()
 
 	# Write to file
-	print("Writing to file... ", end="", flush=True)
-	write_to_ppm(screen, output_file_path, max_color)
-	print("Done", flush=True)
+	print("> Exporting...")
+	start_time = datetime.now()
+	write_to_ppm(screen, output_file_path, max_color, progress_bar)
+	time_elapsed = datetime.now() - start_time
+	print(f"Time elapsed: {time_elapsed}")
+	print("> Done")
+	print()

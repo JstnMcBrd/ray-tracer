@@ -7,7 +7,7 @@ Generates an image from a scene using
 from math import tan
 from multiprocessing import cpu_count, Pool
 import numpy as np
-import tqdm
+from tqdm import tqdm
 
 from lib._multiprocessing import istarmap
 from ray import Ray
@@ -39,7 +39,7 @@ def ray_trace(scene: Scene, width: int, height: int,
 		# Start a process for ray-tracing each pixel
 		processes = istarmap(pool, _ray_trace_pixel, inputs)
 		if progress_bar:
-			processes = tqdm.tqdm(processes, total=num_pixels)
+			processes = tqdm(processes, total=num_pixels)
 
 		# Iterate and store the output to allow it to compute
 		outputs = [output for output in processes]
