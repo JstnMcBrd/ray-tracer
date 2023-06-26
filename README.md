@@ -173,25 +173,3 @@ class Triangle extends Polygon {
 // More types of objects can be added later.
 // In the meantime, most kinds of objects can be modeled with Polygons.
 ```
-
-## Future Plans
-
-- More shapes
-	- Rectangles
-	- Rectangular Prisms
-	- Cylinders
-	- Parameterized Surfaces
-- Refraction
-- Output images as PNGs
-- Transparency
-- More light types
-	- Point
-	- Area
-- Multiple light sources
-- Anti-aliasing
-- Distributed ray tracing
-- Mapping
-	- Texture
-	- Normal
-	- Reflection
-	- Transparency
