@@ -26,18 +26,7 @@ The script has many arguments. Use the `--help` command to see a full list. Some
 
 Passing all the arguments through the command line can get tedious, so this project has support for `dotenv`.
 
-Create a new file called `.env` in the root folder and add any arguments you reuse often. These will act as new "default" values.
-
-Here is an sample `.env` with the default values of all required arguments.
-```bash
-scene="<path to the scene file>"
-output="./output.ppm"
-width=512
-height=512
-max-color=255
-reflection-limit=10
-progress-bar=1 # True
-```
+Create a new file called `.env` in the root folder and add any arguments you reuse often. These will act as new "default" values. You can find a sample `.env` with all the default values in [`.env.example`](./.env.example).
 
 You may still pass arguments through the command prompt, and your `.env` values will be ignored.
 
