@@ -32,7 +32,7 @@ You may still pass arguments through the command prompt, and your `.env` values 
 
 ## Output
 
-For now, this raytracer only formats output as `.ppm` files. [PPM](https://en.wikipedia.org/wiki/Netpbm) images can be difficult to open and view. Support for more commonly-used image encodings is a future goal.
+This raytracer can output images as `.png` files or `.ppm` files. Transparency is not supported, but is a future goal.
 
 ## Scenes
 
