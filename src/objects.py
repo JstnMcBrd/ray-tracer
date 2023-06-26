@@ -240,11 +240,11 @@ class Triangle(Polygon):
 			 flattened_intersection])
 
 		# If point is inside triangle, then the area of all sub-triangles will add up to the total area
-		if abs(area_1 + area_2 + area_3 - self._flattened_area) > 0.01:
+		if abs(area_1 + area_2 + area_3 - self._flattened_area) > 0.0001:
 			return None
 
 		return RayCollision(self, ray, intersection)
-	
+
 	@staticmethod
 	def area(vertices: list):
 		""" Given the three vertices, returns the area of the enclosed triangle. """
