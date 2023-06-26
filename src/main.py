@@ -14,13 +14,14 @@ from dotenv import load_dotenv
 
 from ray_tracer import ray_trace
 from scene_importer import import_scene
-from writers import write_to_ppm
+from writers import write_to_ppm, write_to_png
 
 
 if __name__ == "__main__":
 
 	# Default arguments
-	DEFAULT_OUTPUT = "./output.ppm"
+	DEFAULT_OUTPUT = "./output.png"
+	DEFAULT_OUTPUT_FORMAT = "png"
 	DEFAULT_WIDTH = 512
 	DEFAULT_HEIGHT = 512
 	DEFAULT_MAX_COLOR = 255
@@ -33,6 +34,7 @@ if __name__ == "__main__":
 	load_dotenv()
 	env_scene = getenv("scene")
 	env_output = getenv("output", default=DEFAULT_OUTPUT)
+	env_output_format = getenv("output-format", default=DEFAULT_OUTPUT_FORMAT)
 	env_width = getenv("width", default=str(DEFAULT_WIDTH))
 	env_height = getenv("height", default=str(DEFAULT_HEIGHT))
 	env_max_color = getenv("max-color", default=str(DEFAULT_MAX_COLOR))
@@ -42,10 +44,12 @@ if __name__ == "__main__":
 	# Retrieve arguments overrides from command line
 	#	(A command line argument is only required if the environment variable is missing.)
 	arg = ArgumentParser("Ray Tracer")
-	arg.add_argument("-s", "--scene", "-i", "--input", type=str, help="Path to the scene file",
+	arg.add_argument("-s", "--scene", type=str, help="Path to the scene file",
 		default=env_scene, required=env_scene is None)
 	arg.add_argument("-o", "--output", type=str, help="Path to the output file",
 		default=env_output, required=env_output is None)
+	arg.add_argument("-f", "--output-format", type=str, choices=["png", "ppm"], help="Format of the output image",
+		default=env_output_format, required=env_output_format is None)
 	arg.add_argument("-x", "--width", type=int, help="Width of the output image",
 		default=env_width, required=env_width is None)
 	arg.add_argument("-y", "--height", type=int, help="Height of the output image",
@@ -61,6 +65,7 @@ if __name__ == "__main__":
 	parsed = arg.parse_args()
 	scene_file_path = parsed.scene
 	output_file_path = parsed.output
+	output_format = parsed.output_format
 	width = parsed.width
 	height = parsed.height
 	max_color = parsed.max_color
@@ -89,7 +94,10 @@ if __name__ == "__main__":
 	# Write to file
 	print("> Exporting...")
 	start_time = datetime.now()
-	write_to_ppm(screen, output_file_path, max_color, progress_bar)
+	if output_format == "ppm":
+		write_to_ppm(screen, output_file_path, max_color, progress_bar)
+	elif output_format == "png":
+		write_to_png(screen, output_file_path, max_color)
 	time_elapsed = datetime.now() - start_time
 	print(f"Time elapsed: {time_elapsed}")
 	print("> Done")

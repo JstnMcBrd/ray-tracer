@@ -39,14 +39,14 @@ class Object:
 class Circle(Object):
 	""" The specific values necessary for Circles. """
 
-	def __init__(self, center: np.ndarray, radius: float, normal: np.ndarray):
+	def __init__(self, position: np.ndarray, normal: np.ndarray, radius: float):
 		super().__init__()
 
-		self.center = center
+		self.position = position
 		self.radius = radius
 
 		normal = normalized(normal)
-		self._plane = Plane(normal, center)
+		self._plane = Plane(position, normal)
 
 	def normal(self, point: np.ndarray = None) -> np.ndarray:
 		return self._plane.normal(point)
@@ -59,7 +59,7 @@ class Circle(Object):
 
 		# Check if intersection is within circle radius
 		intersection = plane_collision.position
-		distance = magnitude(intersection - self.center)
+		distance = magnitude(intersection - self.position)
 
 		if distance > self.radius:
 			return None
@@ -70,12 +70,11 @@ class Circle(Object):
 class Plane(Object):
 	""" The specific values necessary for Planes. """
 
-	def __init__(self, normal: np.ndarray, point: np.ndarray):
+	def __init__(self, position: np.ndarray, normal: np.ndarray):
 		super().__init__()
 
 		self._normal = normalized(normal)
-		self._point = point
-		self._distance_from_origin = -1 * np.dot(normal, point)
+		self._distance_from_origin = -1 * np.dot(normal, position)
 
 	def normal(self, point: np.ndarray = None) -> np.ndarray:
 		return self._normal
@@ -112,7 +111,7 @@ class Polygon(Object):
 
 		_normal = normalized(np.cross(vector_1, vector_2))
 
-		self._plane = Plane(_normal, vertices[0])
+		self._plane = Plane(vertices[0], _normal)
 
 		# Project all the vertices onto a 2D plane (for future intersection calculations)
 		self._plane_dominant_coord = np.where(np.abs(_normal) == np.max(np.abs(_normal)))[0][0]
@@ -174,16 +173,16 @@ class Polygon(Object):
 class Sphere(Object):
 	""" The specific values necessary for Spheres. """
 
-	def __init__(self, center: np.ndarray, radius: float):
+	def __init__(self, position: np.ndarray, radius: float):
 		super().__init__()
-		self.center = center
+		self.position = position
 		self.radius = radius
 
 	def normal(self, point: np.ndarray) -> np.ndarray:
-		return normalized(point - self.center)
+		return normalized(point - self.position)
 
 	def ray_intersection(self, ray: Ray) -> RayCollision|None:
-		dist = self.center - ray.origin
+		dist = self.position - ray.origin
 		dist_sqr = np.dot(dist, dist)
 		dist_mag = np.sqrt(dist_sqr)
 
@@ -207,15 +206,6 @@ class Sphere(Object):
 		return RayCollision(self, ray, ray.origin + ray.direction*t)
 
 
-def triangle_area(vertex_1: np.ndarray, vertex_2: np.ndarray, vertex_3: np.ndarray):
-	""" Given the three vertices, returns the area of the enclosed triangle. """
-
-	area = (vertex_1[0] * (vertex_2[1] - vertex_3[1]) \
-	     + vertex_2[0] * (vertex_3[1] - vertex_1[1]) \
-			+ vertex_3[0] * (vertex_1[1] - vertex_2[1])) / 2.0
-	return abs(area)
-
-
 class Triangle(Polygon):
 	"""
 	The specific values necessary for Triangles. 
@@ -228,9 +218,7 @@ class Triangle(Polygon):
 
 		assert len(vertices) == 3, "Triangle must have 3 vertices"
 
-		self._flattened_area = triangle_area(self._flattened_vertices[0], 
-				       self._flattened_vertices[1], 
-					   self._flattened_vertices[2])
+		self._flattened_area = Triangle.area(self._flattened_vertices)
 
 	def ray_intersection(self, ray: Ray) -> RayCollision or None:
 		# See if ray intersects with plane
@@ -243,15 +231,26 @@ class Triangle(Polygon):
 		flattened_intersection = np.delete(intersection, self._plane_dominant_coord)
 
 		# Calculate areas
-		area_1 = triangle_area(self._flattened_vertices[0], self._flattened_vertices[1],
-			 flattened_intersection)
-		area_2 = triangle_area(self._flattened_vertices[0], self._flattened_vertices[2],
-			 flattened_intersection)
-		area_3 = triangle_area(self._flattened_vertices[1], self._flattened_vertices[2],
-			 flattened_intersection)
+		area_1 = Triangle.area([self._flattened_vertices[0], self._flattened_vertices[1],
+			 flattened_intersection])
+		area_2 = Triangle.area([self._flattened_vertices[0], self._flattened_vertices[2],
+			 flattened_intersection])
+		area_3 = Triangle.area([self._flattened_vertices[1], self._flattened_vertices[2],
+			 flattened_intersection])
 
 		# If point is inside triangle, then the area of all sub-triangles will add up to the total area
-		if abs(area_1 + area_2 + area_3 - self._flattened_area) > 0.01:
+		if abs(area_1 + area_2 + area_3 - self._flattened_area) > 0.0001:
 			return None
 
 		return RayCollision(self, ray, intersection)
+
+	@staticmethod
+	def area(vertices: list):
+		""" Given the three vertices, returns the area of the enclosed triangle. """
+
+		assert len(vertices) == 3, "Must have 3 vertices to be a triangle"
+
+		area = (vertices[0][0] * (vertices[1][1] - vertices[2][1]) \
+			+ vertices[1][0] * (vertices[2][1] - vertices[0][1]) \
+				+ vertices[2][0] * (vertices[0][1] - vertices[1][1])) / 2.0
+		return abs(area)

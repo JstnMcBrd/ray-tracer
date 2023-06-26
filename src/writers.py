@@ -5,6 +5,7 @@ Contains methods for writing the screen to image files.
 
 import numpy as np
 
+from PIL import Image
 from tqdm import tqdm
 
 
@@ -18,9 +19,23 @@ def write_to_ppm(screen: np.ndarray, output_file_path: str, max_color: float, pr
 		output_file.write(f"{max_color}\n")
 
 		# Pixels
-		pixels = [(x,y) for y in range(len(screen[0])) for x in range(len(screen))]
+		pixel_coords = [(x,y) for y in range(len(screen[0])) for x in range(len(screen))]
 		if progress_bar:
-			pixels = tqdm(pixels)
-		for x,y in pixels:
+			pixel_coords = tqdm(pixel_coords)
+		for x,y in pixel_coords:
 			pixel = screen[x,y]*max_color
 			output_file.write(f"{pixel[0]} {pixel[1]} {pixel[2]} ")
+
+
+def write_to_png(screen: np.ndarray, output_file_path: str, max_color: float):
+	""" Writes the screen to a file with [PNG](https://en.wikipedia.org/wiki/PNG) encoding. """
+
+	width = len(screen)
+	height = len(screen[0])
+
+	pixel_coords = [(x,y) for y in range(height) for x in range(width)]
+	pixels = [tuple((screen[x,y] * max_color).astype(int)) for x,y in pixel_coords]
+
+	image = Image.new('RGB', (width, height))
+	image.putdata(pixels)
+	image.save(output_file_path)

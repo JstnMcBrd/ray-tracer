@@ -8,6 +8,12 @@ A simple [ray tracer](https://en.wikipedia.org/wiki/Ray_tracing_(graphics)) writ
 
 Without a custom license, this code is the direct intellectual property of the original developer. It may not be used, modified, or shared without explicit permission. Please see [GitHub's guide on licensing](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository).
 
+## Versioning
+
+This project abides by [Semantic Versioning](https://semver.org/).
+
+To see a changelog for each update, check the description of [releases on GitHub](https://github.com/JstnMcBrd/ray-tracer/releases).
+
 ## Running
 
 You can run the ray tracer with the following command:
@@ -16,30 +22,17 @@ You can run the ray tracer with the following command:
 python ./src/main.py
 ```
 
-The script has many arguments. Use the `--help` command to see a full list.
-
-Most arguments have default values, but not all. You will likely want to override these values by providing them yourself. Additionally, you must provide all arguments that lack a default value.
+The script has many arguments. Use the `--help` command to see a full list. Some have a default values, but you must provide the rest yourself.
 
 Passing all the arguments through the command line can get tedious, so this project has support for `dotenv`.
 
-Create a new file called `.env` in the root folder and add any arguments you reuse often. These will act as new "default" values.
+Create a new file called `.env` in the root folder and add any arguments you reuse often. These will act as new "default" values. You can find a sample `.env` with all the default values in [`.env.example`](./.env.example).
 
-Here is an sample `.env` with the default values of all required arguments.
-```bash
-scene="<path to the scene file>"
-output="./output.ppm"
-width=512
-height=512
-max-color=255
-reflection-limit=10
-progress-bar=1 # True
-```
-
-You may still pass the arguments through the command prompt, and your `.env` values will be ignored.
+You may still pass arguments through the command prompt, and your `.env` values will be ignored.
 
 ## Output
 
-For now, this raytracer only formats output as `.ppm` files. [PPM](https://en.wikipedia.org/wiki/Netpbm) images can be difficult to open and view. Support for more commonly-used image encodings is a future goal.
+This raytracer can output images as `.png` files or `.ppm` files. Transparency is not supported, but is a future goal.
 
 ## Scenes
 
@@ -123,14 +116,14 @@ class Circle extends Object {
 	/** Defines this object as a Circle. */
 	type: string = "circle";
 
-	/** The central location of the Circle. */
-	center: Position;
+	/** The center of the Circle. */
+	position: Position;
+
+	/** The direction the circle faces. */
+	normal: Direction = [0, 0, 1];
 
 	/** The radius of the Circle. Must be greater than 0. */
 	radius: number;
-
-	/** The direction the circle faces. */
-	normal: Direction;
 };
 
 /** The specific values necessary for Planes. */
@@ -138,11 +131,11 @@ class Plane extends Object {
 	/** Defines this object as a Plane. */
 	type: string = "plane";
 
+	/** Any position on the plane. */
+	position: Position = [0, 0, 0];
+
 	/** The direction the plane faces. */
 	normal: Direction;
-
-	/** Any position on the plane. */
-	point: Position = [0, 0, 0];
 };
 
 /** The specific values necessary for Polygons. */
@@ -159,14 +152,15 @@ class Sphere extends Object {
 	/** Defines this object as a Sphere. */
 	type: string = "sphere";
 
-	/** The central location of the Sphere. */
-	center: Position;
+	/** The center of the Sphere. */
+	position: Position;
 
 	/** The radius of the Sphere. Must be greater than 0. */
 	radius: number;
 };
 
-/** The specific values necessary for Triangles.
+/**
+ * The specific values necessary for Triangles.
  * The algorithm for Triangle intersections is slightly faster than Polygons,
  * so 3-sided Polygons will be automatically converted to Triangles.
 */
@@ -180,27 +174,3 @@ class Triangle extends Polygon {
 // More types of objects can be added later.
 // In the meantime, most kinds of objects can be modeled with Polygons.
 ```
-
-## Future Plans
-
-- Loading bar for writing to file
-- More command line output to announce stages
-- More shapes
-	- Rectangles
-	- Rectangular Prisms
-	- Cylinders
-	- Parameterized Surfaces
-- Refraction
-- Output images as PNGs
-- Transparency
-- More light types
-	- Point
-	- Area
-- Multiple light sources
-- Anti-aliasing
-- Distributed ray tracing
-- Mapping
-	- Texture
-	- Normal
-	- Reflection
-	- Transparency
