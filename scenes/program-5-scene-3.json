@@ -11,7 +11,7 @@
 		{
 			"name": "red",
 			"type": "sphere",
-			"center": [0.5, 0.0, 0.0],
+			"position": [0.5, 0.0, 0.0],
 			"radius": 0.25,
 			"ambient_coefficient": 0.1,
 			"diffuse_coefficient": 0.7,
@@ -24,7 +24,7 @@
 		{
 			"name": "pink",
 			"type": "sphere",
-			"center": [0.35, 0.35, 0.0],
+			"position": [0.35, 0.35, 0.0],
 			"radius": 0.25,
 			"ambient_coefficient": 0.1,
 			"diffuse_coefficient": 0.7,
@@ -37,7 +37,7 @@
 		{
 			"name": "purple",
 			"type": "sphere",
-			"center": [0.0, 0.5, 0.0],
+			"position": [0.0, 0.5, 0.0],
 			"radius": 0.25,
 			"ambient_coefficient": 0.1,
 			"diffuse_coefficient": 0.7,
@@ -50,7 +50,7 @@
 		{
 			"name": "blue",
 			"type": "sphere",
-			"center": [-0.35, 0.35, 0.0],
+			"position": [-0.35, 0.35, 0.0],
 			"radius": 0.25,
 			"ambient_coefficient": 0.1,
 			"diffuse_coefficient": 0.7,
@@ -63,7 +63,7 @@
 		{
 			"name": "aquamarine",
 			"type": "sphere",
-			"center": [-0.5, 0.0, 0.0],
+			"position": [-0.5, 0.0, 0.0],
 			"radius": 0.25,
 			"ambient_coefficient": 0.1,
 			"diffuse_coefficient": 0.7,
@@ -76,7 +76,7 @@
 		{
 			"name": "green",
 			"type": "sphere",
-			"center": [-0.35, -0.35, 0.0],
+			"position": [-0.35, -0.35, 0.0],
 			"radius": 0.25,
 			"ambient_coefficient": 0.1,
 			"diffuse_coefficient": 0.7,
@@ -89,7 +89,7 @@
 		{
 			"name": "lime",
 			"type": "sphere",
-			"center": [0.0, -0.5, 0.0],
+			"position": [0.0, -0.5, 0.0],
 			"radius": 0.25,
 			"ambient_coefficient": 0.1,
 			"diffuse_coefficient": 0.7,
@@ -102,7 +102,7 @@
 		{
 			"name": "yellow-orange",
 			"type": "sphere",
-			"center": [0.35, -0.35, 0.0],
+			"position": [0.35, -0.35, 0.0],
 			"radius": 0.25,
 			"ambient_coefficient": 0.1,
 			"diffuse_coefficient": 0.7,
@@ -115,7 +115,7 @@
 		{
 			"name": "middle sphere",
 			"type": "sphere",
-			"center": [0.0, 0.0, -0.1],
+			"position": [0.0, 0.0, -0.1],
 			"radius": 0.4,
 			"ambient_coefficient": 0.1,
 			"diffuse_coefficient": 0.7,

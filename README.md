@@ -116,14 +116,14 @@ class Circle extends Object {
 	/** Defines this object as a Circle. */
 	type: string = "circle";
 
-	/** The central location of the Circle. */
-	center: Position;
+	/** The center of the Circle. */
+	position: Position;
+
+	/** The direction the circle faces. */
+	normal: Direction = [0, 0, 1];
 
 	/** The radius of the Circle. Must be greater than 0. */
 	radius: number;
-
-	/** The direction the circle faces. */
-	normal: Direction;
 };
 
 /** The specific values necessary for Planes. */
@@ -131,11 +131,11 @@ class Plane extends Object {
 	/** Defines this object as a Plane. */
 	type: string = "plane";
 
+	/** Any position on the plane. */
+	position: Position = [0, 0, 0];
+
 	/** The direction the plane faces. */
 	normal: Direction;
-
-	/** Any position on the plane. */
-	point: Position = [0, 0, 0];
 };
 
 /** The specific values necessary for Polygons. */
@@ -152,14 +152,15 @@ class Sphere extends Object {
 	/** Defines this object as a Sphere. */
 	type: string = "sphere";
 
-	/** The central location of the Sphere. */
-	center: Position;
+	/** The center of the Sphere. */
+	position: Position;
 
 	/** The radius of the Sphere. Must be greater than 0. */
 	radius: number;
 };
 
-/** The specific values necessary for Triangles.
+/**
+ * The specific values necessary for Triangles.
  * The algorithm for Triangle intersections is slightly faster than Polygons,
  * so 3-sided Polygons will be automatically converted to Triangles.
 */

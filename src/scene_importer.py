@@ -142,25 +142,25 @@ def _load_object(json_value, error_prefix="Object") -> Object:
 def _load_circle(json_value, error_prefix="Circle") -> Circle:
 	""" Imports Circle-specific values from a dictionary. """
 
-	center = _validate_position_vector(json_value.get("center"), default=[0,0,0],
-				     error_prefix=f"{error_prefix}.center")
-	radius = _validate_number(json_value.get("radius"), _min=0,
-			    error_prefix=f"{error_prefix}.radius")
+	position = _validate_position_vector(json_value.get("position"),
+				     error_prefix=f"{error_prefix}.position")
 	normal = _validate_direction_vector(json_value.get("normal"), default=[0,0,1],
 				      error_prefix=f"{error_prefix}.normal")
+	radius = _validate_number(json_value.get("radius"), _min=0,
+			    error_prefix=f"{error_prefix}.radius")
 
-	return Circle(center, radius, normal)
+	return Circle(position, normal, radius)
 
 
 def _load_plane(json_value, error_prefix="Plane") -> Plane:
 	""" Imports Plane-specific values from a dictionary. """
 
+	position = _validate_position_vector(json_value.get("position"), default=[0,0,0],
+				    error_prefix=f"{error_prefix}.position")
 	normal = _validate_direction_vector(json_value.get("normal"),
 				      error_prefix=f"{error_prefix}.normal")
-	point = _validate_position_vector(json_value.get("point"), default=[0,0,0],
-				    error_prefix=f"{error_prefix}.point")
 
-	return Plane(normal, point)
+	return Plane(position, normal)
 
 
 def _load_polygon(json_value, error_prefix="Polygon") -> Polygon:
@@ -185,12 +185,12 @@ def _load_polygon(json_value, error_prefix="Polygon") -> Polygon:
 def _load_sphere(json_value, error_prefix="Sphere") -> Sphere:
 	""" Imports Sphere-specific values from a dictionary. """
 
-	center = _validate_position_vector(json_value.get("center"),
-				     error_prefix=f"{error_prefix}.center")
+	position = _validate_position_vector(json_value.get("position"),
+				     error_prefix=f"{error_prefix}.position")
 	radius = _validate_number(json_value.get("radius"), _min=0,
 			    error_prefix=f"{error_prefix}.radius")
 
-	return Sphere(center, radius)
+	return Sphere(position, radius)
 
 
 def _load_triangle(json_value, error_prefix="Triangle") -> Triangle:
