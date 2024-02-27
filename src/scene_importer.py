@@ -4,7 +4,6 @@ Handles importing scenes from JSON files.
 
 
 from json import loads as json_as_dict
-from sys import exit
 
 import numpy as np
 
@@ -235,7 +234,7 @@ def _validate_direction_vector(json_value,
 
 	# Make sure the vector is normalized
 	mag = magnitude(vector)
-	if mag != 1 and mag != 0:
+	if mag not in (0, 1):
 		print(f"WARNING: {error_prefix} is not normalized, performing auto-normalization")
 		vector = normalized(vector)
 		print(f"WARNING: {error_prefix} has been normalized to [{vector[0]}, {vector[1]}, {vector[2]}]")
