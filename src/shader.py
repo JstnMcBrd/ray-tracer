@@ -10,7 +10,7 @@ from scene import Scene
 
 
 def shade(scene: Scene, obj: Object, position: np.ndarray, view_direction: np.ndarray,
-	  shadow: bool, reflected_color: np.ndarray) -> np.ndarray:
+		shadow: bool, reflected_color: np.ndarray) -> np.ndarray:
 	"""
 	Applies [Phong shading](https://en.wikipedia.org/wiki/Phong_shading)
 	to the given object and returns the color.

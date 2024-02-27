@@ -12,7 +12,7 @@ class Camera:
 	""" Defines the camera position, orientation, and other settings. """
 
 	def __init__(self, camera_look_at: np.ndarray, camera_look_from: np.ndarray,
-	      camera_look_up: np.ndarray, field_of_view: float):
+			camera_look_up: np.ndarray, field_of_view: float):
 
 		self.position = camera_look_from
 		self.field_of_view = field_of_view
@@ -29,7 +29,7 @@ class Scene:
 	""" Defines the entire scene and all objects within it. """
 
 	def __init__(self, camera: Camera, light_direction: np.ndarray, light_color: np.ndarray,
-	      ambient_light_color: np.ndarray, background_color: np.ndarray, objects: list):
+			ambient_light_color: np.ndarray, background_color: np.ndarray, objects: list):
 
 		# Camera
 		self.camera = camera

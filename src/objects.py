@@ -31,7 +31,7 @@ class Object:
 		"""
 		return NotImplemented
 
-	def ray_intersection(self, ray: Ray) -> RayCollision|None:
+	def ray_intersection(self, ray: Ray) -> RayCollision | None:
 		""" Calculates whether the given ray collides with this object. """
 		return NotImplemented
 
@@ -51,7 +51,7 @@ class Circle(Object):
 	def normal(self, point: np.ndarray = None) -> np.ndarray:
 		return self._plane.normal(point)
 
-	def ray_intersection(self, ray: Ray) -> RayCollision or None:
+	def ray_intersection(self, ray: Ray) -> RayCollision | None:
 		# See if ray intersects with plane
 		plane_collision = self._plane.ray_intersection(ray)
 		if plane_collision is None:
@@ -79,7 +79,7 @@ class Plane(Object):
 	def normal(self, point: np.ndarray = None) -> np.ndarray:
 		return self._normal
 
-	def ray_intersection(self, ray: Ray) -> RayCollision or None:
+	def ray_intersection(self, ray: Ray) -> RayCollision | None:
 		v_d = np.dot(self._normal, ray.direction)
 
 		if v_d == 0:
@@ -220,7 +220,7 @@ class Triangle(Polygon):
 
 		self._flattened_area = Triangle.area(self._flattened_vertices)
 
-	def ray_intersection(self, ray: Ray) -> RayCollision or None:
+	def ray_intersection(self, ray: Ray) -> RayCollision | None:
 		# See if ray intersects with plane
 		plane_collision = self._plane.ray_intersection(ray)
 		if plane_collision is None:
