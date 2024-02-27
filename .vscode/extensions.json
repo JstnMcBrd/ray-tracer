@@ -1,5 +1,5 @@
 {
-    "recommendations": [
+	"recommendations": [
 		"ms-python.python",
 		"ms-python.pylint",
 		"ngtystr.ppm-pgm-viewer-for-vscode"

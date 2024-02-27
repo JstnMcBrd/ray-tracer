@@ -47,25 +47,25 @@ def _load_from_json(json: dict) -> Scene:
 
 	# Camera
 	camera_look_at = _validate_position_vector(json.get("camera_look_at"), default=[0,0,0],
-					     error_prefix=f"{error_prefix}.camera_look_at")
+							error_prefix=f"{error_prefix}.camera_look_at")
 	camera_look_from = _validate_position_vector(json.get("camera_look_from"), default=[0,0,1],
-					       error_prefix=f"{error_prefix}.camera_look_from")
+							error_prefix=f"{error_prefix}.camera_look_from")
 	camera_look_up = _validate_direction_vector(json.get("camera_look_up"), default=[0,1,0],
-					      error_prefix=f"{error_prefix}.camera_look_up")
+							error_prefix=f"{error_prefix}.camera_look_up")
 	field_of_view = _validate_number(json.get("field_of_view"), _min=0, _max=359, default=90,
-				   error_prefix=f"{error_prefix}.field_of_view")
+						error_prefix=f"{error_prefix}.field_of_view")
 
 	camera = Camera(camera_look_at, camera_look_from, camera_look_up, field_of_view)
 
 	# Lighting
 	light_direction = _validate_direction_vector(json.get("light_direction"), default=[0,1,0],
-					       error_prefix=f"{error_prefix}.light_direction")
+							error_prefix=f"{error_prefix}.light_direction")
 	light_color = _validate_color_vector(json.get("light_color"), default=[1,1,1],
-				       error_prefix=f"{error_prefix}.light_color")
+						error_prefix=f"{error_prefix}.light_color")
 	ambient_light_color = _validate_color_vector(json.get("ambient_light_color"), default=[1,1,1],
-					       error_prefix=f"{error_prefix}.ambient_light_color")
+							error_prefix=f"{error_prefix}.ambient_light_color")
 	background_color = _validate_color_vector(json.get("background_color"), default=[0,0,0],
-					    error_prefix=f"{error_prefix}.background_color")
+							error_prefix=f"{error_prefix}.background_color")
 
 	# Objects
 	objects = _load_objects(json.get("objects"), default=[], error_prefix=f"{error_prefix}.objects")
@@ -122,19 +122,19 @@ def _load_object(json_value, error_prefix="Object") -> Object:
 	obj.name = name
 
 	obj.ambient_coefficient = _validate_number(json_value.get("ambient_coefficient"), default=0,
-					     error_prefix=f"{error_prefix}.ambient_coefficient")
+							error_prefix=f"{error_prefix}.ambient_coefficient")
 	obj.diffuse_coefficient = _validate_number(json_value.get("diffuse_coefficient"), default=1,
-					     error_prefix=f"{error_prefix}.diffuse_coefficient")
+							error_prefix=f"{error_prefix}.diffuse_coefficient")
 	obj.specular_coefficient = _validate_number(json_value.get("specular_coefficient"), default=0,
-					      error_prefix=f"{error_prefix}.specular_coefficient")
+							error_prefix=f"{error_prefix}.specular_coefficient")
 	obj.diffuse_color = _validate_color_vector(json_value.get("diffuse_color"), default=[1,1,1],
-					     error_prefix=f"{error_prefix}.diffuse_color")
+							error_prefix=f"{error_prefix}.diffuse_color")
 	obj.specular_color = _validate_color_vector(json_value.get("specular_color"), default=[1,1,1],
-					      error_prefix=f"{error_prefix}.specular_color")
+							error_prefix=f"{error_prefix}.specular_color")
 	obj.gloss_coefficient = _validate_number(json_value.get("gloss_coefficient"), default=4,
-					   error_prefix=f"{error_prefix}.gloss_coefficient")
+							error_prefix=f"{error_prefix}.gloss_coefficient")
 	obj.reflectivity = _validate_number(json_value.get("reflectivity"), default=0,
-				      error_prefix=f"{error_prefix}.reflectivity")
+						error_prefix=f"{error_prefix}.reflectivity")
 
 	return obj
 
@@ -143,11 +143,11 @@ def _load_circle(json_value, error_prefix="Circle") -> Circle:
 	""" Imports Circle-specific values from a dictionary. """
 
 	position = _validate_position_vector(json_value.get("position"),
-				     error_prefix=f"{error_prefix}.position")
+						error_prefix=f"{error_prefix}.position")
 	normal = _validate_direction_vector(json_value.get("normal"), default=[0,0,1],
-				      error_prefix=f"{error_prefix}.normal")
+						error_prefix=f"{error_prefix}.normal")
 	radius = _validate_number(json_value.get("radius"), _min=0,
-			    error_prefix=f"{error_prefix}.radius")
+					error_prefix=f"{error_prefix}.radius")
 
 	return Circle(position, normal, radius)
 
@@ -156,9 +156,9 @@ def _load_plane(json_value, error_prefix="Plane") -> Plane:
 	""" Imports Plane-specific values from a dictionary. """
 
 	position = _validate_position_vector(json_value.get("position"), default=[0,0,0],
-				    error_prefix=f"{error_prefix}.position")
+						error_prefix=f"{error_prefix}.position")
 	normal = _validate_direction_vector(json_value.get("normal"),
-				      error_prefix=f"{error_prefix}.normal")
+						error_prefix=f"{error_prefix}.normal")
 
 	return Plane(position, normal)
 
@@ -186,9 +186,9 @@ def _load_sphere(json_value, error_prefix="Sphere") -> Sphere:
 	""" Imports Sphere-specific values from a dictionary. """
 
 	position = _validate_position_vector(json_value.get("position"),
-				     error_prefix=f"{error_prefix}.position")
+						error_prefix=f"{error_prefix}.position")
 	radius = _validate_number(json_value.get("radius"), _min=0,
-			    error_prefix=f"{error_prefix}.radius")
+					error_prefix=f"{error_prefix}.radius")
 
 	return Sphere(position, radius)
 
@@ -209,8 +209,8 @@ def _load_triangle(json_value, error_prefix="Triangle") -> Triangle:
 
 
 def _validate_position_vector(json_value,
-			       default: list = None,
-				   error_prefix="Position") -> np.ndarray:
+				default: list = None,
+				error_prefix="Position") -> np.ndarray:
 	""" Imports a list as a position vector. """
 
 	json_value = _validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
@@ -243,7 +243,7 @@ def _validate_direction_vector(json_value,
 
 
 def _validate_color_vector(json_value,
-			    default: list = None,
+				default: list = None,
 				error_prefix="Color") -> np.ndarray:
 	""" Imports a list as a color vector, verifying the proper range of values. """
 
@@ -255,7 +255,7 @@ def _validate_color_vector(json_value,
 
 
 def _validate_list(json_value,
-		    length: int = None,
+			length: int = None,
 			default: list = None,
 			error_prefix = "List") -> list:
 	""" Imports a list. """
@@ -274,10 +274,10 @@ def _validate_list(json_value,
 
 
 def _validate_number(json_value,
-		      _min: float|int = None,
-			  _max: float|int = None,
-			  default: float|int = None,
-		      error_prefix = "Number") -> float|int:
+			_min: float|int = None,
+			_max: float|int = None,
+			default: float|int = None,
+			error_prefix = "Number") -> float|int:
 	""" Imports a number. """
 
 	if json_value is None and default is not None:

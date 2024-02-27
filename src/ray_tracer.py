@@ -17,7 +17,7 @@ from vector import normalized
 
 
 def ray_trace(scene: Scene, width: int, height: int,
-	      reflection_limit: int, progress_bar: bool) -> np.ndarray:
+		reflection_limit: int, progress_bar: bool) -> np.ndarray:
 	""" Ray traces the given scene and returns a numpy array of pixel colors. """
 
 	camera = scene.camera
@@ -31,7 +31,7 @@ def ray_trace(scene: Scene, width: int, height: int,
 
 	# Set up multiprocessing pool and inputs
 	inputs = [(x, y, scene, window_to_viewport_size_ratio, half_window_size, reflection_limit)
-	   for x in range(width) for y in range(height)]
+		for x in range(width) for y in range(height)]
 	outputs = []
 
 	with Pool(cpu_count()) as pool:
@@ -51,8 +51,8 @@ def ray_trace(scene: Scene, width: int, height: int,
 
 
 def _ray_trace_pixel(x: int, y: int, scene: Scene,
-		     window_to_viewport_size_ratio: np.ndarray, half_window_size: np.ndarray,
-			 reflection_limit: int) -> np.ndarray:
+			window_to_viewport_size_ratio: np.ndarray, half_window_size: np.ndarray,
+			reflection_limit: int) -> np.ndarray:
 	""" Retrieves the color for a given pixel. """
 
 	# Find the world point of the pixel, relative to the camera's position
@@ -62,11 +62,11 @@ def _ray_trace_pixel(x: int, y: int, scene: Scene,
 
 	# Start sending out rays
 	return _get_color(scene.camera.position, normalized(world_point_relative), scene,
-		  reflection_limit=reflection_limit)
+			reflection_limit=reflection_limit)
 
 
 def _get_color(origin: np.ndarray, direction: np.ndarray, scene: Scene,
-	       fade=1, reflections=0, reflection_limit=float("inf")):
+		fade=1, reflections=0, reflection_limit=float("inf")):
 	""" Recursively casts rays to retrieve the color for the original ray collision. """
 
 	if fade <= 0.01 or reflections > reflection_limit:
@@ -92,8 +92,8 @@ def _get_color(origin: np.ndarray, direction: np.ndarray, scene: Scene,
 
 		# Get the color from the reflection (recursive)
 		reflected_color = _get_color(offset_origin, sight_reflection_direction, scene,
-			      fade=fade*collision.obj.reflectivity, reflections=reflections+1,
-				  reflection_limit=reflection_limit)
+						fade=fade*collision.obj.reflectivity, reflections=reflections+1,
+						reflection_limit=reflection_limit)
 
 		return shade(scene, collision.obj, collision.position, view_direction, shadow, reflected_color)
 
@@ -112,8 +112,8 @@ def _is_in_shadow(point: np.ndarray, scene: Scene) -> bool:
 
 
 def _calculate_window_size(viewport_size: np.ndarray,
-			   focal_length: np.ndarray,
-			   field_of_view: float) -> np.ndarray:
+				focal_length: np.ndarray,
+				field_of_view: float) -> np.ndarray:
 	""" Returns the window size, given the camera properties. """
 
 	x = focal_length * tan(np.deg2rad(field_of_view/2)) * 2
