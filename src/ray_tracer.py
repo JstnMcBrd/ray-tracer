@@ -42,7 +42,7 @@ def ray_trace(scene: Scene, width: int, height: int,
 			processes = tqdm(processes, total=num_pixels)
 
 		# Iterate and store the output to allow it to compute
-		outputs = [output for output in processes]
+		outputs = list(processes)
 
 	# Shape outputs into a width*height screen
 	screen = np.array(outputs).reshape((width, height, 3))
