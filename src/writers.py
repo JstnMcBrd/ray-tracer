@@ -9,9 +9,10 @@ from PIL import Image
 from tqdm import tqdm
 
 
-def write_to_ppm(screen: np.ndarray, output_file_path: str, max_color: float, progress_bar: bool):
+def write_to_ppm(screen: np.ndarray, output_file_path: str, progress_bar: bool):
 	""" Writes the screen to a file with [PPM](https://en.wikipedia.org/wiki/Netpbm) encoding. """
 
+	max_color = 255
 	with open(output_file_path, mode="w", encoding="utf8") as output_file:
 		# Headers
 		output_file.write("P3\n")
@@ -27,7 +28,7 @@ def write_to_ppm(screen: np.ndarray, output_file_path: str, max_color: float, pr
 			output_file.write(f"{pixel[0]} {pixel[1]} {pixel[2]} ")
 
 
-def write_to_png(screen: np.ndarray, output_file_path: str, max_color: float):
+def write_to_png(screen: np.ndarray, output_file_path: str, progress_bar: bool):
 	""" Writes the screen to a file with [PNG](https://en.wikipedia.org/wiki/PNG) encoding. """
 
 	width = len(screen)
