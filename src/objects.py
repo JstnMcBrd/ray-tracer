@@ -24,6 +24,7 @@ class Object:
 		self.gloss_coefficient = 0
 		self.reflectivity = 0
 
+	# pylint: disable-next=unused-argument
 	def normal(self, point: np.ndarray) -> np.ndarray:
 		"""
 		The "up" direction from this point on the object.
@@ -31,6 +32,7 @@ class Object:
 		"""
 		return NotImplemented
 
+	# pylint: disable-next=unused-argument
 	def ray_intersection(self, ray: Ray) -> RayCollision | None:
 		""" Calculates whether the given ray collides with this object. """
 		return NotImplemented

@@ -46,8 +46,9 @@ if __name__ == "__main__":
 		default=env_scene, required=env_scene is None)
 	arg.add_argument("-o", "--output", type=str, help="Path to the output file",
 		default=env_output, required=env_output is None)
-	arg.add_argument("-f", "--output-format", type=str, choices=["png", "ppm"], help="Format of the output image",
-		default=env_output_format, required=env_output_format is None)
+	arg.add_argument("-f", "--output-format", type=str, choices=["png", "ppm"],
+		help="Format of the output image", default=env_output_format,
+		required=env_output_format is None)
 	arg.add_argument("-x", "--width", type=int, help="Width of the output image",
 		default=env_width, required=env_width is None)
 	arg.add_argument("-y", "--height", type=int, help="Height of the output image",
