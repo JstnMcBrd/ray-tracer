@@ -1,6 +1,4 @@
 {
 	"editor.insertSpaces": false,
 	"editor.detectIndentation": false,
-	"python.linting.enabled": true,
-	"python.linting.pylintEnabled": true
 }
