@@ -24,7 +24,6 @@ if __name__ == "__main__":
 	DEFAULT_OUTPUT_FORMAT = "png"
 	DEFAULT_WIDTH = 512
 	DEFAULT_HEIGHT = 512
-	DEFAULT_MAX_COLOR = 255
 	DEFAULT_REFLECTION_LIMIT = 10
 	DEFAULT_PROGRESS_BAR = int(True)	# Must be an int because bools cannot be parsed from strings
 
@@ -37,7 +36,6 @@ if __name__ == "__main__":
 	env_output_format = getenv("output-format", default=DEFAULT_OUTPUT_FORMAT)
 	env_width = getenv("width", default=str(DEFAULT_WIDTH))
 	env_height = getenv("height", default=str(DEFAULT_HEIGHT))
-	env_max_color = getenv("max-color", default=str(DEFAULT_MAX_COLOR))
 	env_reflection_limit = getenv("reflection-limit", default=str(DEFAULT_REFLECTION_LIMIT))
 	env_progress_bar = getenv("progress-bar", default=str(DEFAULT_PROGRESS_BAR))
 
@@ -54,8 +52,6 @@ if __name__ == "__main__":
 		default=env_width, required=env_width is None)
 	arg.add_argument("-y", "--height", type=int, help="Height of the output image",
 		default=env_height, required=env_height is None)
-	arg.add_argument("-c", "--max-color", type=float, help="Max color of the ppm file",
-		default=env_max_color, required=env_max_color is None)
 	arg.add_argument("-r", "--reflection-limit", type=int, help="Max number of recursive reflections",
 		default=env_reflection_limit, required=env_reflection_limit is None)
 	arg.add_argument("-p", "--progress-bar", type=bool, help="Whether to show a progress bar",
@@ -68,7 +64,6 @@ if __name__ == "__main__":
 	output_format = parsed.output_format
 	width = parsed.width
 	height = parsed.height
-	max_color = parsed.max_color
 	reflection_limit = parsed.reflection_limit
 	progress_bar = parsed.progress_bar
 
@@ -95,9 +90,9 @@ if __name__ == "__main__":
 	print("> Exporting...")
 	start_time = datetime.now()
 	if output_format == "ppm":
-		write_to_ppm(screen, output_file_path, max_color, progress_bar)
+		write_to_ppm(screen, output_file_path, progress_bar)
 	elif output_format == "png":
-		write_to_png(screen, output_file_path, max_color)
+		write_to_png(screen, output_file_path, progress_bar)
 	time_elapsed = datetime.now() - start_time
 	print(f"Time elapsed: {time_elapsed}")
 	print("> Done")
