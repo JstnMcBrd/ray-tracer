@@ -14,6 +14,14 @@ This project abides by [Semantic Versioning](https://semver.org/).
 
 To see a changelog for each update, check the description of [releases on GitHub](https://github.com/JstnMcBrd/ray-tracer/releases).
 
+## Requirements
+
+Install all required packages with:
+
+```sh
+pip install --requirements requirements.txt
+```
+
 ## Running
 
 You can run the ray tracer with the following command:
