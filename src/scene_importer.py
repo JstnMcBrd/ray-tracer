@@ -4,6 +4,7 @@ Handles importing scenes from JSON files.
 
 
 from json import loads as json_as_dict
+import sys
 
 import numpy as np
 
@@ -21,21 +22,21 @@ def import_scene(file_path: str) -> Scene:
 			json_str = json_file.read()
 	except OSError as err:
 		print(f"\"{file_path}\" is not a valid path\n\t{err}")
-		exit(1)
+		sys.exit(1)
 
 	json_data = None
 	try:
 		json_data = json_as_dict(json_str)
 	except (ValueError, TypeError) as err:
 		print(f"\"{file_path}\" is not a valid json file\n\t{err}")
-		exit(1)
+		sys.exit(1)
 
 	scene = None
 	try:
 		scene = _load_from_json(json_data)
 	except AssertionError as err:
 		print(f"\"{file_path}\" is improperly formatted\n\t{err}")
-		exit(1)
+		sys.exit(1)
 
 	return scene
 
