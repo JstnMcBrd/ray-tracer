@@ -64,7 +64,6 @@ if __name__ == "__main__":
 	output_format = parsed.output_format
 	width = parsed.width
 	height = parsed.height
-	max_color = parsed.max_color
 	reflection_limit = parsed.reflection_limit
 	progress_bar = parsed.progress_bar
 

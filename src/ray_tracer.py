@@ -112,7 +112,7 @@ def _is_in_shadow(point: np.ndarray, scene: Scene) -> bool:
 
 
 def _calculate_window_size(viewport_size: np.ndarray,
-				focal_length: np.ndarray,
+				focal_length: float,
 				field_of_view: float) -> np.ndarray:
 	""" Returns the window size, given the camera properties. """
 
