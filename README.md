@@ -182,3 +182,11 @@ class Triangle extends Polygon {
 // More types of objects can be added later.
 // In the meantime, most kinds of objects can be modeled with Polygons.
 ```
+
+## Development
+
+To run Pylint, use
+
+```sh
+pylint src
+```
