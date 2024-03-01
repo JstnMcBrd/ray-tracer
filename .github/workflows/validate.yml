@@ -1,0 +1,28 @@
+name: Validate
+# Lints and typechecks the project whenever a pull request is opened
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install --requirement requirements.txt
+
+      - name: Lint
+        run: pylint src
