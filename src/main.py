@@ -14,14 +14,13 @@ from dotenv import load_dotenv
 
 from ray_tracer import ray_trace
 from scene_importer import import_scene
-from writers import write_to_ppm, write_to_png
+from exporter import assert_supported_extension, export
 
 
 if __name__ == "__main__":
 
 	# Default arguments
 	DEFAULT_OUTPUT = "./output.png"
-	DEFAULT_OUTPUT_FORMAT = "png"
 	DEFAULT_WIDTH = 512
 	DEFAULT_HEIGHT = 512
 	DEFAULT_REFLECTION_LIMIT = 10
@@ -33,7 +32,6 @@ if __name__ == "__main__":
 	load_dotenv()
 	env_scene = getenv("scene")
 	env_output = getenv("output", default=DEFAULT_OUTPUT)
-	env_output_format = getenv("output-format", default=DEFAULT_OUTPUT_FORMAT)
 	env_width = getenv("width", default=str(DEFAULT_WIDTH))
 	env_height = getenv("height", default=str(DEFAULT_HEIGHT))
 	env_reflection_limit = getenv("reflection-limit", default=str(DEFAULT_REFLECTION_LIMIT))
@@ -46,9 +44,6 @@ if __name__ == "__main__":
 		default=env_scene, required=env_scene is None)
 	arg.add_argument("-o", "--output", type=str, help="Path to the output file",
 		default=env_output, required=env_output is None)
-	arg.add_argument("-f", "--output-format", type=str, choices=["png", "ppm"],
-		help="Format of the output image", default=env_output_format,
-		required=env_output_format is None)
 	arg.add_argument("-x", "--width", type=int, help="Width of the output image",
 		default=env_width, required=env_width is None)
 	arg.add_argument("-y", "--height", type=int, help="Height of the output image",
@@ -62,11 +57,13 @@ if __name__ == "__main__":
 	parsed = arg.parse_args()
 	scene_file_path = parsed.scene
 	output_file_path = parsed.output
-	output_format = parsed.output_format
 	width = parsed.width
 	height = parsed.height
 	reflection_limit = parsed.reflection_limit
 	progress_bar = parsed.progress_bar
+
+	# Assert the output file extension is supported
+	assert_supported_extension(output_file_path)
 
 	# Import Scene
 	print()
@@ -87,13 +84,10 @@ if __name__ == "__main__":
 	print("> Done")
 	print()
 
-	# Write to file
+	# Export to file
 	print("> Exporting...")
 	start_time = datetime.now()
-	if output_format == "ppm":
-		write_to_ppm(screen, output_file_path, progress_bar)
-	elif output_format == "png":
-		write_to_png(screen, output_file_path, progress_bar)
+	export(screen, output_file_path)
 	time_elapsed = datetime.now() - start_time
 	print(f"Time elapsed: {time_elapsed}")
 	print("> Done")

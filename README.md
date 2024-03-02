@@ -14,6 +14,32 @@ This project abides by [Semantic Versioning](https://semver.org/).
 
 To see a changelog for each update, check the description of [releases on GitHub](https://github.com/JstnMcBrd/ray-tracer/releases).
 
+## Features
+
+This is a simple ray-tracer, so not every possible feature has been implemented.
+
+
+| Feature                   | Implemented |
+| ------------------------- | ----------- |
+| `.json` scene importing   | ✅         |
+| `.obj` object importing   | ❌         |
+| Directional light sources | ✅         |
+| Point/area light sources  | ❌         |
+| Multiple light sources    | ❌         |
+| Spheres                   | ✅         |
+| Planes                    | ✅         |
+| Polygons                  | ✅         |
+| Parameterized surfaces    | ❌         |
+| Phong shading             | ✅         |
+| Shadows                   | ✅         |
+| Reflections               | ✅         |
+| Transparency              | ❌         |
+| Refraction                | ❌         |
+| Anti-aliasing             | ❌         |
+| Texture/normal mapping    | ❌         |
+| Multi-threading           | ✅         |
+| Distributed ray-tracing   | ❌         |
+
 ## Requirements
 
 Install all required packages with:
@@ -27,7 +53,7 @@ pip install --requirements requirements.txt
 You can run the ray tracer with the following command:
 
 ```bash
-python ./src/main.py
+python src/main.py
 ```
 
 The script has many arguments. Use the `--help` command to see a full list. Some have a default values, but you must provide the rest yourself.
@@ -36,11 +62,13 @@ Passing all the arguments through the command line can get tedious, so this proj
 
 Create a new file called `.env` in the root folder and add any arguments you reuse often. These will act as new "default" values. You can find a sample `.env` with all the default values in [`.env.example`](./.env.example).
 
-You may still pass arguments through the command prompt, and your `.env` values will be ignored.
+You may still pass arguments through the command prompt, and your `.env` values will be superseded.
 
 ## Output
 
-This raytracer can output images as `.png` files or `.ppm` files. Transparency is not supported, but is a future goal.
+This raytracer exports images using [Pillow](https://python-pillow.org/). To see the full list of supported file extensions, see the [docs](https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html).
+
+Transparency is not supported, but is a future goal.
 
 ## Scenes
 
