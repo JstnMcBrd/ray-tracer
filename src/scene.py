@@ -5,6 +5,8 @@ Classes that define the scene to be ray traced.
 
 import numpy as np
 
+from objects import Object
+from ray import Ray, RayCollision
 from vector import magnitude, normalized
 
 
@@ -29,7 +31,7 @@ class Scene:
 	""" Defines the entire scene and all objects within it. """
 
 	def __init__(self, camera: Camera, light_direction: np.ndarray, light_color: np.ndarray,
-			ambient_light_color: np.ndarray, background_color: np.ndarray, objects: list):
+			ambient_light_color: np.ndarray, background_color: np.ndarray, objects: list[Object]):
 
 		# Camera
 		self.camera = camera
@@ -42,3 +44,17 @@ class Scene:
 
 		# Objects
 		self.objects = objects
+
+	def cast_ray(self, ray: Ray) -> RayCollision | None:
+		""" Projects the ray into the scene and returns the closest object collision. """
+
+		closest_collision: RayCollision | None = None
+
+		# Find the closest object that intersects with the ray
+		for obj in self.objects:
+			collision = obj.ray_intersection(ray)
+			if collision is not None:
+				if closest_collision is None or collision.distance < closest_collision.distance:
+					closest_collision = collision
+
+		return closest_collision
