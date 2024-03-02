@@ -39,12 +39,13 @@ def write_to_png(screen: np.ndarray, output_file_path: str, progress_bar: bool):
 	width = len(screen)
 	height = len(screen[0])
 
-	screen = (screen * 255).astype(int)
+	screen = screen * 255
 	coords: Iterable = [(x,y) for y in range(height) for x in range(width)]
 	if progress_bar:
 		coords = tqdm(coords)
 
 	image = Image.new('RGB', (width, height))
 	for xy in coords:
-		image.putpixel(xy, tuple(screen[xy]))
+		r, g, b = screen[xy]
+		image.putpixel(xy, (r, g, b))
 	image.save(output_file_path)
