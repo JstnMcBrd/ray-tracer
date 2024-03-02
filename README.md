@@ -185,8 +185,14 @@ class Triangle extends Polygon {
 
 ## Development
 
-To run Pylint, use
+To run the linter, use
 
 ```sh
 pylint src
+```
+
+To run the type-checker, use
+
+```sh
+mypy src/main.py
 ```
