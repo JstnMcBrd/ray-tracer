@@ -40,7 +40,9 @@ You may still pass arguments through the command prompt, and your `.env` values 
 
 ## Output
 
-This raytracer outputs images as `.png` files. Transparency is not supported, but is a future goal.
+This raytracer exports images using [Pillow](https://python-pillow.org/). To see the full list of supported file extensions, see the [docs](https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html).
+
+Transparency is not supported, but is a future goal.
 
 ## Scenes
 

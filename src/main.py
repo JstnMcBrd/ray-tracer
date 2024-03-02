@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 
 from ray_tracer import ray_trace
 from scene_importer import import_scene
-from writers import write_to_png
+from exporter import assert_supported_extension, export
 
 
 if __name__ == "__main__":
@@ -62,6 +62,9 @@ if __name__ == "__main__":
 	reflection_limit = parsed.reflection_limit
 	progress_bar = parsed.progress_bar
 
+	# Assert the output file extension is supported
+	assert_supported_extension(output_file_path)
+
 	# Import Scene
 	print()
 	print("> Importing...")
@@ -81,10 +84,10 @@ if __name__ == "__main__":
 	print("> Done")
 	print()
 
-	# Write to file
+	# Export to file
 	print("> Exporting...")
 	start_time = datetime.now()
-	write_to_png(screen, output_file_path, progress_bar)
+	export(screen, output_file_path)
 	time_elapsed = datetime.now() - start_time
 	print(f"Time elapsed: {time_elapsed}")
 	print("> Done")
