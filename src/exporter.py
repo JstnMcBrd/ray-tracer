@@ -12,6 +12,7 @@ from PIL import Image
 
 def assert_supported_extension(output_file_path: str) -> None:
 	""" Checks whether the file path with the given extension is supported by Pillow. """
+
 	try:
 		Image.new('RGB', (1, 1)).save(output_file_path)
 		remove(output_file_path)
