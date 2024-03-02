@@ -5,3 +5,8 @@ Pillow
 
 # Linting
 pylint
+
+# Typing
+mypy
+types-Pillow
+types-tqdm

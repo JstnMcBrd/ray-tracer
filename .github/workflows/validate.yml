@@ -27,3 +27,6 @@ jobs:
 
       - name: Lint
         run: pylint src
+
+      - name: Typecheck
+        run: mypy **/*.py

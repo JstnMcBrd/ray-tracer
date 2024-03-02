@@ -5,9 +5,10 @@ Add-ons to the builtin `multiprocessing` library.
 
 # This implementation is rather hacked and causes a lot of warnings and errors
 # that are inherent and cannot be resolved. So until I design something better,
-# I will disable linting for this file.
+# I will disable linting and typechecking for this file.
 
 # pylint: disable=all
+# mypy: ignore-errors
 
 from multiprocessing.pool import IMapIterator, Pool, starmapstar
 from typing import Callable

@@ -74,7 +74,7 @@ def _get_color(origin: np.ndarray, direction: np.ndarray, scene: Scene,
 
 	# Initialize and cast the ray
 	ray = Ray(origin, direction)
-	collision = ray.cast(scene)
+	collision = scene.cast_ray(ray)
 
 	# Shade the pixel using the collided object
 	if collision is not None:
@@ -107,7 +107,7 @@ def _is_in_shadow(point: np.ndarray, scene: Scene) -> bool:
 	ray = Ray(point, scene.light_direction)
 	ray.origin += ray.direction * 0.01	# Offset to avoid colliding with the object
 
-	collision = ray.cast(scene)
+	collision = scene.cast_ray(ray)
 	return collision is not None
 
 

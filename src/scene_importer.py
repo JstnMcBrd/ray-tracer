@@ -76,7 +76,9 @@ def _load_from_json(json: dict) -> Scene:
 	return scene
 
 
-def _load_objects(json_value, default: list = None, error_prefix="Objects") -> list:
+def _load_objects(json_value,
+			default: list[Object] | None = None,
+			error_prefix="Objects") -> list[Object]:
 	""" Takes a list of dictionaries and imports each of them as an Object. """
 
 	objects = []
@@ -92,7 +94,7 @@ def _load_objects(json_value, default: list = None, error_prefix="Objects") -> l
 def _load_object(json_value, error_prefix="Object") -> Object:
 	""" Imports a dictionary as an Object. """
 
-	obj = None
+	obj: Object | None = None
 
 	assert json_value is not None, f"{error_prefix} must not be missing"
 	assert isinstance(json_value, dict), f"{error_prefix} must be type dict, not {type(json_value)}"
@@ -114,7 +116,7 @@ def _load_object(json_value, error_prefix="Object") -> Object:
 	elif obj_type == "triangle":
 		obj = _load_triangle(json_value, error_prefix=f"{error_prefix}<Triangle>")
 	else:
-		raise f"{error_prefix} must have valid type, not {obj_type}"
+		raise TypeError(f"{error_prefix} must have valid type, not {obj_type}")
 
 	# Load in universal object values
 	name = json_value.get("name")
@@ -210,7 +212,7 @@ def _load_triangle(json_value, error_prefix="Triangle") -> Triangle:
 
 
 def _validate_position_vector(json_value,
-				default: list = None,
+				default: list[float] | None = None,
 				error_prefix="Position") -> np.ndarray:
 	""" Imports a list as a position vector. """
 
@@ -222,7 +224,7 @@ def _validate_position_vector(json_value,
 
 
 def _validate_direction_vector(json_value,
-				default: list = None,
+				default: list[float] | None = None,
 				error_prefix="Direction") -> np.ndarray:
 	""" Imports a list as a direction vector, verifying it is normalized. """
 
@@ -244,7 +246,7 @@ def _validate_direction_vector(json_value,
 
 
 def _validate_color_vector(json_value,
-				default: list = None,
+				default: list[float] | None = None,
 				error_prefix="Color") -> np.ndarray:
 	""" Imports a list as a color vector, verifying the proper range of values. """
 
@@ -256,8 +258,8 @@ def _validate_color_vector(json_value,
 
 
 def _validate_list(json_value,
-			length: int = None,
-			default: list = None,
+			length: int | None = None,
+			default: list | None = None,
 			error_prefix = "List") -> list:
 	""" Imports a list. """
 
@@ -275,10 +277,10 @@ def _validate_list(json_value,
 
 
 def _validate_number(json_value,
-			_min: float|int = None,
-			_max: float|int = None,
-			default: float|int = None,
-			error_prefix = "Number") -> float|int:
+			_min: float | int | None = None,
+			_max: float | int | None = None,
+			default: float | int | None = None,
+			error_prefix = "Number") -> float | int:
 	""" Imports a number. """
 
 	if json_value is None and default is not None:
