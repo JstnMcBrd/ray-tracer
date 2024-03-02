@@ -27,10 +27,10 @@ class Ray:
 		self.origin = origin
 		self.direction = direction
 
-	def cast(self, scene: Scene) -> RayCollision|None:
+	def cast(self, scene: Scene) -> RayCollision | None:
 		""" Projects the ray into the scene and returns the closest object collision. """
 
-		closest_collision: RayCollision = None
+		closest_collision: RayCollision | None = None
 
 		# Find the closest object that intersects with the ray
 		for obj in scene.objects:

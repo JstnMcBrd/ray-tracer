@@ -50,7 +50,7 @@ class Circle(Object):
 		normal = normalized(normal)
 		self._plane = Plane(position, normal)
 
-	def normal(self, point: np.ndarray = None) -> np.ndarray:
+	def normal(self, point: np.ndarray | None = None) -> np.ndarray:
 		return self._plane.normal(point)
 
 	def ray_intersection(self, ray: Ray) -> RayCollision | None:
@@ -78,7 +78,7 @@ class Plane(Object):
 		self._normal = normalized(normal)
 		self._distance_from_origin = -1 * np.dot(normal, position)
 
-	def normal(self, point: np.ndarray = None) -> np.ndarray:
+	def normal(self, point: np.ndarray | None = None) -> np.ndarray:
 		return self._normal
 
 	def ray_intersection(self, ray: Ray) -> RayCollision | None:
@@ -119,10 +119,10 @@ class Polygon(Object):
 		self._plane_dominant_coord = np.where(np.abs(_normal) == np.max(np.abs(_normal)))[0][0]
 		self._flattened_vertices = [np.delete(v, self._plane_dominant_coord) for v in self._vertices]
 
-	def normal(self, point: np.ndarray = None) -> np.ndarray:
+	def normal(self, point: np.ndarray | None = None) -> np.ndarray:
 		return self._plane.normal(point)
 
-	def ray_intersection(self, ray: Ray) -> RayCollision|None:
+	def ray_intersection(self, ray: Ray) -> RayCollision | None:
 		# See if ray intersects with plane
 		plane_collision = self._plane.ray_intersection(ray)
 		if plane_collision is None:
@@ -183,7 +183,7 @@ class Sphere(Object):
 	def normal(self, point: np.ndarray) -> np.ndarray:
 		return normalized(point - self.position)
 
-	def ray_intersection(self, ray: Ray) -> RayCollision|None:
+	def ray_intersection(self, ray: Ray) -> RayCollision | None:
 		dist = self.position - ray.origin
 		dist_sqr = np.dot(dist, dist)
 		dist_mag = np.sqrt(dist_sqr)
