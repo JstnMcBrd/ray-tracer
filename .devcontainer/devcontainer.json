@@ -13,6 +13,7 @@
 			"extensions": [
 				"ms-python.python",
 				"ms-python.pylint",
+				"ms-python.mypy-type-checker",
 				"github.vscode-github-actions",
 				"ngtystr.ppm-pgm-viewer-for-vscode"
 			]
