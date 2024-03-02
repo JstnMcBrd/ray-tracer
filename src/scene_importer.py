@@ -116,7 +116,7 @@ def _load_object(json_value, error_prefix="Object") -> Object:
 	elif obj_type == "triangle":
 		obj = _load_triangle(json_value, error_prefix=f"{error_prefix}<Triangle>")
 	else:
-		raise f"{error_prefix} must have valid type, not {obj_type}"
+		raise TypeError(f"{error_prefix} must have valid type, not {obj_type}")
 
 	# Load in universal object values
 	name = json_value.get("name")
