@@ -101,7 +101,7 @@ class Plane(Object):
 class Polygon(Object):
 	""" The specific values necessary for Polygons. """
 
-	def __init__(self, vertices: list):
+	def __init__(self, vertices: list[np.ndarray]):
 		super().__init__()
 
 		assert len(vertices) >= 3, "Polygon must have at least 3 vertices"
@@ -215,7 +215,7 @@ class Triangle(Polygon):
  	so 3-sided Polygons will be automatically converted to Triangles.
 	"""
 
-	def __init__(self, vertices: list):
+	def __init__(self, vertices: list[np.ndarray]):
 		super().__init__(vertices)
 
 		assert len(vertices) == 3, "Triangle must have 3 vertices"
