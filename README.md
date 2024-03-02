@@ -40,7 +40,7 @@ You may still pass arguments through the command prompt, and your `.env` values 
 
 ## Output
 
-This raytracer can output images as `.png` files or `.ppm` files. Transparency is not supported, but is a future goal.
+This raytracer outputs images as `.png` files. Transparency is not supported, but is a future goal.
 
 ## Scenes
 
