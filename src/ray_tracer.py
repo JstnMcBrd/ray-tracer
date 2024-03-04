@@ -18,7 +18,7 @@ from vector import normalized
 
 def ray_trace(scene: Scene, width: int, height: int,
 		reflection_limit: int, progress_bar: bool) -> np.ndarray:
-	""" Ray traces the given scene and returns a numpy array of pixel colors. """
+	"Ray traces the given scene and returns a numpy array of pixel colors."
 
 	camera = scene.camera
 
@@ -53,7 +53,7 @@ def ray_trace(scene: Scene, width: int, height: int,
 def _ray_trace_pixel(x: int, y: int, scene: Scene,
 			window_to_viewport_size_ratio: np.ndarray, half_window_size: np.ndarray,
 			reflection_limit: int) -> np.ndarray:
-	""" Retrieves the color for a given pixel. """
+	"Retrieves the color for a given pixel."
 
 	# Find the world point of the pixel, relative to the camera's position
 	viewport_point = np.array([x, y])
@@ -67,7 +67,7 @@ def _ray_trace_pixel(x: int, y: int, scene: Scene,
 
 def _get_color(origin: np.ndarray, direction: np.ndarray, scene: Scene,
 		fade=1, reflections=0, reflection_limit=float("inf")):
-	""" Recursively casts rays to retrieve the color for the original ray collision. """
+	"Recursively casts rays to retrieve the color for the original ray collision."
 
 	if fade <= 0.01 or reflections > reflection_limit:
 		return np.array([0,0,0])
@@ -102,7 +102,7 @@ def _get_color(origin: np.ndarray, direction: np.ndarray, scene: Scene,
 
 
 def _is_in_shadow(point: np.ndarray, scene: Scene) -> bool:
-	""" Casts a ray toward the light source to determine if the point is in shadow. """
+	"Casts a ray toward the light source to determine if the point is in shadow."
 
 	ray = Ray(point, scene.light_direction)
 	ray.origin += ray.direction * 0.01	# Offset to avoid colliding with the object
@@ -114,7 +114,7 @@ def _is_in_shadow(point: np.ndarray, scene: Scene) -> bool:
 def _calculate_window_size(viewport_size: np.ndarray,
 				focal_length: float,
 				field_of_view: float) -> np.ndarray:
-	""" Returns the window size, given the camera properties. """
+	"Returns the window size, given the camera properties."
 
 	x = focal_length * tan(np.deg2rad(field_of_view/2)) * 2
 	y = x * viewport_size[1]/viewport_size[0]
@@ -124,7 +124,7 @@ def _calculate_window_size(viewport_size: np.ndarray,
 def _viewport_to_window(viewport_point: np.ndarray,
 			window_to_viewport_size_ratio: np.ndarray,
 			half_window_size: np.ndarray) -> np.ndarray:
-	""" Converts a point on the viewport to a point on the window. """
+	"Converts a point on the viewport to a point on the window."
 
 	window_point = viewport_point * window_to_viewport_size_ratio - half_window_size
 	# The -1 seems necessary to orient it correctly
@@ -132,7 +132,7 @@ def _viewport_to_window(viewport_point: np.ndarray,
 
 
 def _window_to_relative_world(window_point: np.ndarray, camera: Camera) -> np.ndarray:
-	""" Converts a point on the window to world point (relative to the camera). """
+	"Converts a point on the window to world point (relative to the camera)."
 
 	return camera.relative_look_at \
 		+ window_point[0]*camera.right \

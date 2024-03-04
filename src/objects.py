@@ -1,6 +1,4 @@
-"""
-Definitions for all supported objects and their behavior.
-"""
+"Definitions for all supported objects and their behavior."
 
 
 import numpy as np
@@ -11,7 +9,7 @@ from vector import magnitude, normalized
 
 
 class Object:
-	""" The universal values shared by all objects. """
+	"The universal values shared by all objects."
 
 	def __init__(self):
 		self.name = ""
@@ -30,16 +28,18 @@ class Object:
 		The "up" direction from this point on the object.
 		Assumes the point is actually on the object.
 		"""
+
 		return NotImplemented
 
 	# pylint: disable-next=unused-argument
 	def ray_intersection(self, ray: Ray) -> RayCollision | None:
-		""" Calculates whether the given ray collides with this object. """
+		"Calculates whether the given ray collides with this object."
+
 		return NotImplemented
 
 
 class Circle(Object):
-	""" The specific values necessary for Circles. """
+	"The specific values necessary for Circles."
 
 	def __init__(self, position: np.ndarray, normal: np.ndarray, radius: float):
 		super().__init__()
@@ -70,7 +70,7 @@ class Circle(Object):
 
 
 class Plane(Object):
-	""" The specific values necessary for Planes. """
+	"The specific values necessary for Planes."
 
 	def __init__(self, position: np.ndarray, normal: np.ndarray):
 		super().__init__()
@@ -99,7 +99,7 @@ class Plane(Object):
 
 
 class Polygon(Object):
-	""" The specific values necessary for Polygons. """
+	"The specific values necessary for Polygons."
 
 	def __init__(self, vertices: list[np.ndarray]):
 		super().__init__()
@@ -173,7 +173,7 @@ class Polygon(Object):
 
 
 class Sphere(Object):
-	""" The specific values necessary for Spheres. """
+	"The specific values necessary for Spheres."
 
 	def __init__(self, position: np.ndarray, radius: float):
 		super().__init__()
@@ -248,7 +248,7 @@ class Triangle(Polygon):
 
 	@staticmethod
 	def area(vertices: list):
-		""" Given the three vertices, returns the area of the enclosed triangle. """
+		"Given the three vertices, returns the area of the enclosed triangle."
 
 		assert len(vertices) == 3, "Must have 3 vertices to be a triangle"
 
