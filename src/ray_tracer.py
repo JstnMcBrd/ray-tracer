@@ -31,7 +31,7 @@ def ray_trace(scene: Scene, width: int, height: int,
 
 	# Set up multiprocessing pool and inputs
 	tuple_inputs = [(x, y, scene, window_to_viewport_size_ratio, half_window_size, reflection_limit)
-		for x in range(width) for y in range(height)]
+		for y in range(height) for x in range(width)]
 	outputs = []
 
 	with Pool(cpu_count()) as pool:
@@ -45,7 +45,9 @@ def ray_trace(scene: Scene, width: int, height: int,
 		outputs = list(processes)
 
 	# Shape outputs into a width*height screen
-	screen = np.array(outputs).reshape((width, height, 3))
+	screen = np.array(outputs)
+	_, depth = screen.shape
+	screen.resize((height, width, depth))
 
 	return screen
 

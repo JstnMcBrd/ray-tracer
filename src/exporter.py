@@ -35,16 +35,10 @@ def assert_supported_extension(output_file_path: str) -> None:
 def export(screen: np.ndarray, output_file_path: str) -> None:
 	"Writes the screen to a file using the encoding of the file extension."
 
-	width = len(screen)
-	height = len(screen[0])
+	height, width, depth = screen.shape
 
 	screen = (screen * 255).astype(np.uint8)
-
-	# pylint: disable-next=fixme
-	# FIXME making up for the screen being indexed by [col, row] instead of [row, col]
-	screen = np.array(Image.fromarray(screen).rotate(-90))
-
-	screen.resize((width * height, 3))
+	screen.resize(width * height, depth)
 	data: list = [tuple(pixel) for pixel in screen]
 
 	image = Image.new(COLOR_MODE, (width, height))
