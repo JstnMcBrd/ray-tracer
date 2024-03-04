@@ -17,6 +17,13 @@ from shader import shade
 from vector import normalized
 
 
+FADE_LIMIT = 0.01
+"Fading limit for reflections"
+
+COLLISION_NORMAL_OFFSET = 0.01
+"Offsets collision positions from the surfaces of objects to avoid incorrect shadows"
+
+
 def ray_trace(scene: Scene, width: int, height: int,
 		reflection_limit: int, progress_bar: bool) -> np.ndarray:
 	"Ray traces the given scene and returns a numpy array of pixel colors."
@@ -80,7 +87,7 @@ def _get_color(origin: np.ndarray, direction: np.ndarray, scene: Scene,
 		fade=1, reflections=0, reflection_limit=float("inf")):
 	"Recursively casts rays to retrieve the color for the original ray collision."
 
-	if fade <= 0.01 or reflections > reflection_limit:
+	if fade <= FADE_LIMIT or reflections > reflection_limit:
 		return np.array([0,0,0])
 
 	# Initialize and cast the ray
@@ -93,7 +100,7 @@ def _get_color(origin: np.ndarray, direction: np.ndarray, scene: Scene,
 		normal = collision.obj.normal(collision.position)
 
 		# Avoid getting trapped inside objects
-		collision.position += 0.01*normal
+		collision.position += COLLISION_NORMAL_OFFSET*normal
 
 		shadow = _is_in_shadow(collision.position, scene)
 
@@ -116,7 +123,8 @@ def _is_in_shadow(point: np.ndarray, scene: Scene) -> bool:
 	"Casts a ray toward the light source to determine if the point is in shadow."
 
 	ray = Ray(point, scene.light_direction)
-	ray.origin += ray.direction * 0.01	# Offset to avoid colliding with the object
+	# Offset to avoid colliding with the object
+	ray.origin += COLLISION_NORMAL_OFFSET * ray.direction
 
 	collision = scene.cast_ray(ray)
 	return collision is not None

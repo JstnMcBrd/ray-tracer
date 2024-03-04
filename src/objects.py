@@ -101,6 +101,9 @@ class Plane(Object):
 class Polygon(Object):
 	"The specific values necessary for Polygons."
 
+	X_AXIS_SHIFT = 0.01
+	"To make sure no flattened relative vertices lie on the x-axis."
+
 	def __init__(self, vertices: list[np.ndarray]):
 		super().__init__()
 
@@ -138,7 +141,7 @@ class Polygon(Object):
 		# Make sure no vertices lie on the x-axis
 		for vertex in vertices:
 			if vertex[1] == 0:
-				vertex[1] += 0.01
+				vertex[1] += Polygon.X_AXIS_SHIFT
 
 		# Calculate how many times polygon edges cross the x-axis
 		num_crossings = 0
@@ -215,6 +218,9 @@ class Triangle(Polygon):
  	so 3-sided Polygons will be automatically converted to Triangles.
 	"""
 
+	TOLERANCE = 0.0001
+	"Tolerance for floating-point area calculations."
+
 	def __init__(self, vertices: list[np.ndarray]):
 		super().__init__(vertices)
 
@@ -241,7 +247,7 @@ class Triangle(Polygon):
 			 flattened_intersection])
 
 		# If point is inside triangle, then the area of all sub-triangles will add up to the total area
-		if abs(area_1 + area_2 + area_3 - self._flattened_area) > 0.0001:
+		if abs(area_1 + area_2 + area_3 - self._flattened_area) > Triangle.TOLERANCE:
 			return None
 
 		return RayCollision(self, ray, intersection)
