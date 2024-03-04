@@ -1,6 +1,4 @@
-"""
-Contains methods for shading objects.
-"""
+"Contains methods for shading objects."
 
 
 import numpy as np

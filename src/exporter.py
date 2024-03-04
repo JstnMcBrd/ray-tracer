@@ -1,6 +1,4 @@
-"""
-Contains methods for writing the screen to image files.
-"""
+"Contains methods for writing the screen to image files."
 
 
 from os import remove
@@ -16,13 +14,13 @@ COLOR_MODE = 'RGB'
 
 
 def random_str(length):
-	""" Generates a random string of the given length. """
+	"Generates a random string of the given length."
 
 	return ''.join(choice(ascii_letters) for _ in range(length))
 
 
 def assert_supported_extension(output_file_path: str) -> None:
-	""" Checks whether the file path with the given extension is supported by Pillow. """
+	"Asserts that the file path with the given extension is supported by Pillow."
 
 	extension = output_file_path.split(".")[-1]
 	random_file_name = f"temp_{random_str(10)}.{extension}"
@@ -35,7 +33,7 @@ def assert_supported_extension(output_file_path: str) -> None:
 
 
 def export(screen: np.ndarray, output_file_path: str) -> None:
-	""" Writes the screen to a file using the encoding of the file extension. """
+	"Writes the screen to a file using the encoding of the file extension."
 
 	width = len(screen)
 	height = len(screen[0])

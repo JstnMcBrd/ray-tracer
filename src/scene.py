@@ -1,6 +1,4 @@
-"""
-Classes that define the scene to be ray traced.
-"""
+"Classes that define the scene to be ray traced."
 
 
 import numpy as np
@@ -11,7 +9,7 @@ from vector import magnitude, normalized
 
 
 class Camera:
-	""" Defines the camera position, orientation, and other settings. """
+	"Defines the camera position, orientation, and other settings."
 
 	def __init__(self, camera_look_at: np.ndarray, camera_look_from: np.ndarray,
 			camera_look_up: np.ndarray, field_of_view: float):
@@ -28,7 +26,7 @@ class Camera:
 
 
 class Scene:
-	""" Defines the entire scene and all objects within it. """
+	"Defines the entire scene and all objects within it."
 
 	def __init__(self, camera: Camera, light_direction: np.ndarray, light_color: np.ndarray,
 			ambient_light_color: np.ndarray, background_color: np.ndarray, objects: list[Object]):
@@ -46,7 +44,7 @@ class Scene:
 		self.objects = objects
 
 	def cast_ray(self, ray: Ray) -> RayCollision | None:
-		""" Projects the ray into the scene and returns the closest object collision. """
+		"Projects the ray into the scene and returns the closest object collision."
 
 		closest_collision: RayCollision | None = None
 

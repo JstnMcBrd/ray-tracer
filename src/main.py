@@ -1,8 +1,8 @@
 """
 The main script of the project.
 
-Call it from the command line using `python ./src/main.py [arguments]`.
-To see a full list of arguments, use `python ./src/main.py --help`.
+Call it from the command line using `python src/main.py [arguments]`.
+To see a full list of arguments, use `python src/main.py --help`.
 """
 
 

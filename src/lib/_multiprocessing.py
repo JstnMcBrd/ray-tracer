@@ -1,6 +1,4 @@
-"""
-Add-ons to the builtin `multiprocessing` library.
-"""
+"Add-ons to the builtin `multiprocessing` library."
 
 
 # This implementation is rather hacked and causes a lot of warnings and errors

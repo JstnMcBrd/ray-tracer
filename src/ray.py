@@ -1,6 +1,4 @@
-"""
-Classes to define the properties and behaviors of rays.
-"""
+"Classes to define the properties and behaviors of rays."
 
 
 import numpy as np
@@ -9,7 +7,7 @@ from vector import magnitude
 
 
 class RayCollision:
-	""" Contains information about the collision of a ray with an object. """
+	"Contains information about the collision of a ray with an object."
 
 	def __init__(self, obj, ray, position: np.ndarray):
 		self.obj = obj
@@ -20,7 +18,7 @@ class RayCollision:
 
 
 class Ray:
-	""" Represents a semi-infinite line. """
+	"Represents a semi-infinite line."
 
 	def __init__(self, origin: np.ndarray, direction: np.ndarray):
 		self.origin = origin
