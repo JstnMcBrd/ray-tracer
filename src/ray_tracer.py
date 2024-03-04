@@ -6,10 +6,11 @@ Generates an image from a scene using
 
 from math import tan
 from multiprocessing import cpu_count, Pool
+from typing import Iterable
+
 import numpy as np
 from tqdm import tqdm
 
-from lib._multiprocessing import istarmap
 from ray import Ray
 from scene import Camera, Scene
 from shader import shade
@@ -23,23 +24,22 @@ def ray_trace(scene: Scene, width: int, height: int,
 	camera = scene.camera
 
 	# Save time by pre-calcuating constant values
-	num_pixels = width*height
 	viewport_size = np.array([width, height])
 	window_size = _calculate_window_size(viewport_size, camera.focal_length, camera.field_of_view)
 	window_to_viewport_size_ratio = window_size/viewport_size
 	half_window_size = window_size/2
 
 	# Set up multiprocessing pool and inputs
-	inputs = [(x, y, scene, window_to_viewport_size_ratio, half_window_size, reflection_limit)
+	tuple_inputs = [(x, y, scene, window_to_viewport_size_ratio, half_window_size, reflection_limit)
 		for x in range(width) for y in range(height)]
 	outputs = []
 
 	with Pool(cpu_count()) as pool:
 
 		# Start a process for ray-tracing each pixel
-		processes = istarmap(pool, _ray_trace_pixel, inputs)
+		processes: Iterable = pool.imap(_ray_trace_pixel, tuple_inputs)
 		if progress_bar:
-			processes = tqdm(processes, total=num_pixels)
+			processes = tqdm(processes, total=len(tuple_inputs))
 
 		# Iterate and store the output to allow it to compute
 		outputs = list(processes)
@@ -50,10 +50,19 @@ def ray_trace(scene: Scene, width: int, height: int,
 	return screen
 
 
-def _ray_trace_pixel(x: int, y: int, scene: Scene,
-			window_to_viewport_size_ratio: np.ndarray, half_window_size: np.ndarray,
-			reflection_limit: int) -> np.ndarray:
+def _ray_trace_pixel(tuple_input: tuple[int, int, Scene, np.ndarray, np.ndarray, int]
+					 ) -> np.ndarray:
 	"Retrieves the color for a given pixel."
+
+	# Unpack the input from the pool
+	x: int
+	y: int
+	scene: Scene
+	window_to_viewport_size_ratio: np.ndarray
+	half_window_size: np.ndarray
+	reflection_limit: int
+
+	x, y, scene, window_to_viewport_size_ratio, half_window_size, reflection_limit = tuple_input
 
 	# Find the world point of the pixel, relative to the camera's position
 	viewport_point = np.array([x, y])
