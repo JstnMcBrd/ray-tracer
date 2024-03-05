@@ -46,13 +46,8 @@ class Scene:
 	def cast_ray(self, ray: Ray) -> RayCollision | None:
 		"Projects the ray into the scene and returns the closest object collision."
 
-		closest_collision: RayCollision | None = None
+		collisions = [obj.ray_intersection(ray) for obj in self.objects]
+		real = list(filter(None, collisions))
+		closest = min(real, key=lambda c: c.distance) if real else None
 
-		# Find the closest object that intersects with the ray
-		for obj in self.objects:
-			collision = obj.ray_intersection(ray)
-			if collision is not None:
-				if closest_collision is None or collision.distance < closest_collision.distance:
-					closest_collision = collision
-
-		return closest_collision
+		return closest
