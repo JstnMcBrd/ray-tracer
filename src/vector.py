@@ -7,7 +7,7 @@ import numpy as np
 def magnitude(vector: np.ndarray) -> float:
 	"Returns the scalar length of the vector."
 
-	return np.sqrt(np.dot(vector, vector))
+	return float(np.linalg.norm(vector))
 
 
 def normalized(vector: np.ndarray) -> np.ndarray:
