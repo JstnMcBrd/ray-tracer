@@ -21,12 +21,11 @@ class RayCollision:
 	"Contains information about the collision of a ray with an object."
 
 	# obj: Object # would cause a circular import
-	obj: object
 	ray: Ray
 	position: np.ndarray
 	distance: float
 
-	def __init__(self, obj: object, ray: Ray, position: np.ndarray):
+	def __init__(self, obj, ray: Ray, position: np.ndarray):
 		self.obj = obj
 		self.ray = ray
 		self.position = position
