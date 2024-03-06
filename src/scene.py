@@ -11,6 +11,14 @@ from vector import magnitude, normalized
 class Camera:
 	"Defines the camera position, orientation, and other settings."
 
+	position: np.ndarray
+	field_of_view: float
+	relative_look_at: np.ndarray
+	focal_length: float
+	forward: np.ndarray
+	up: np.ndarray
+	right: np.ndarray
+
 	def __init__(self, camera_look_at: np.ndarray, camera_look_from: np.ndarray,
 			camera_look_up: np.ndarray, field_of_view: float):
 
@@ -27,6 +35,13 @@ class Camera:
 
 class Scene:
 	"Defines the entire scene and all objects within it."
+
+	camera: Camera
+	light_direction: np.ndarray
+	light_color: np.ndarray
+	ambient_light_color: np.ndarray
+	background_color: np.ndarray
+	objects: list[Object]
 
 	def __init__(self, camera: Camera, light_direction: np.ndarray, light_color: np.ndarray,
 			ambient_light_color: np.ndarray, background_color: np.ndarray, objects: list[Object]):
