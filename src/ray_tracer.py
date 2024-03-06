@@ -28,11 +28,10 @@ def ray_trace(scene: Scene, width: int, height: int,
 		reflection_limit: int, progress_bar: bool) -> np.ndarray:
 	"Ray traces the given scene and returns a numpy array of pixel colors."
 
-	camera = scene.camera
-
 	# Save time by pre-calcuating constant values
 	viewport_size = np.array([width, height])
-	window_size = _calculate_window_size(viewport_size, camera.focal_length, camera.field_of_view)
+	window_size = _calculate_window_size(viewport_size,
+						scene.camera.focal_length, scene.camera.field_of_view)
 	window_to_viewport_size_ratio = window_size/viewport_size
 	half_window_size = window_size/2
 
