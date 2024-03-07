@@ -2,6 +2,7 @@
 
 
 import numpy as np
+from numpy.typing import NDArray
 
 from objects import Object
 from ray import Ray, RayCollision
@@ -11,16 +12,16 @@ from vector import magnitude, normalized
 class Camera:
 	"Defines the camera position, orientation, and other settings."
 
-	position: np.ndarray
+	position: NDArray[np.float_]
 	field_of_view: float
-	relative_look_at: np.ndarray
+	relative_look_at: NDArray[np.float_]
 	focal_length: float
-	forward: np.ndarray
-	up: np.ndarray
-	right: np.ndarray
+	forward: NDArray[np.float_]
+	up: NDArray[np.float_]
+	right: NDArray[np.float_]
 
-	def __init__(self, camera_look_at: np.ndarray, camera_look_from: np.ndarray,
-			camera_look_up: np.ndarray, field_of_view: float):
+	def __init__(self, camera_look_at: NDArray[np.float_], camera_look_from: NDArray[np.float_],
+			camera_look_up: NDArray[np.float_], field_of_view: float):
 
 		self.position = camera_look_from
 		self.field_of_view = field_of_view
@@ -37,14 +38,15 @@ class Scene:
 	"Defines the entire scene and all objects within it."
 
 	camera: Camera
-	light_direction: np.ndarray
-	light_color: np.ndarray
-	ambient_light_color: np.ndarray
-	background_color: np.ndarray
+	light_direction: NDArray[np.float_]
+	light_color: NDArray[np.float_]
+	ambient_light_color: NDArray[np.float_]
+	background_color: NDArray[np.float_]
 	objects: list[Object]
 
-	def __init__(self, camera: Camera, light_direction: np.ndarray, light_color: np.ndarray,
-			ambient_light_color: np.ndarray, background_color: np.ndarray, objects: list[Object]):
+	def __init__(self, camera: Camera, light_direction: NDArray[np.float_],
+			light_color: NDArray[np.float_], ambient_light_color: NDArray[np.float_],
+			background_color: NDArray[np.float_], objects: list[Object]):
 
 		# Camera
 		self.camera = camera

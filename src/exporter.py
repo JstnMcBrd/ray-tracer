@@ -7,6 +7,7 @@ import sys
 from string import ascii_letters
 
 import numpy as np
+from numpy.typing import NDArray
 from PIL import Image
 
 
@@ -32,7 +33,7 @@ def assert_supported_extension(output_file_path: str) -> None:
 		sys.exit(1)
 
 
-def export(screen: np.ndarray, output_file_path: str) -> None:
+def export(screen: NDArray[np.float_], output_file_path: str) -> None:
 	"Writes the screen to a file using the encoding of the file extension."
 
 	height, width, depth = screen.shape
