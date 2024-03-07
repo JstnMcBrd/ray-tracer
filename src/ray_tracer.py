@@ -91,22 +91,22 @@ def _get_color(scene: Scene, reflection_limit: int,
 
 	# Shade the pixel using the collided object
 	if collision is not None:
-		view_direction = -1 * ray.direction
+
+		# Shadows
+			# Avoid getting trapped inside objects
 		normal = collision.obj.normal(collision.position)
-
-		# Avoid getting trapped inside objects
 		collision.position += COLLISION_NORMAL_OFFSET*normal
-
 		shadow = _is_in_shadow(scene, collision.position)
 
+		# Reflections (recursive)
 		sight_reflection_direction = ray.direction - 2 * normal * np.dot(ray.direction, normal)
 		# Avoid colliding with the same surface
 		offset_origin = collision.position + 0.01*sight_reflection_direction
-
-		# Get the color from the reflection (recursive)
-		reflected_color = _get_color(scene, reflection_limit, offset_origin,
+		reflected_color = _get_color(scene, reflection_limit, collision.position,
 						sight_reflection_direction, fade*collision.obj.reflectivity, reflections+1)
 
+		# Shading
+		view_direction = -1 * ray.direction
 		return shade(scene, collision.obj, collision.position, view_direction, shadow, reflected_color)
 
 	# If no object collided, use the background
@@ -140,14 +140,13 @@ def _viewport_to_window(viewport_point: NDArray[np.float_],
 
 	window_point = viewport_point * window_to_viewport_size_ratio - half_window_size
 	# The -1 seems necessary to orient it correctly
-	return np.array([window_point[0], window_point[1]*-1, 0])
+	window_point[1] *= -1
+	return np.concatenate([window_point, [0]])
 
 
 def _window_to_relative_world(window_point: NDArray[np.float_], camera: Camera
 	) -> NDArray[np.float_]:
 	"Converts a point on the window to world point (relative to the camera)."
 
-	return camera.relative_look_at \
-		+ window_point[0]*camera.right \
-			+ window_point[1]*camera.up \
-				+ window_point[2]*camera.forward
+	axes = np.array([camera.right, camera.up, camera.forward])
+	return camera.relative_look_at + np.dot(window_point, axes)
