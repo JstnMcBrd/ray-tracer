@@ -83,7 +83,7 @@ def _ray_trace_pixel(tuple_input: tuple[int, int, Scene, np.ndarray, np.ndarray,
 
 
 def _get_color(origin: np.ndarray, direction: np.ndarray, scene: Scene,
-		fade=1, reflections=0, reflection_limit=float("inf")):
+		fade=1, reflections=0, reflection_limit=float("inf")) -> np.ndarray:
 	"Recursively casts rays to retrieve the color for the original ray collision."
 
 	if fade <= FADE_LIMIT or reflections > reflection_limit:

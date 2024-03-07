@@ -13,7 +13,7 @@ from PIL import Image
 COLOR_MODE = 'RGB'
 
 
-def random_str(length):
+def random_str(length: int) -> str:
 	"Generates a random string of the given length."
 
 	return ''.join(choice(ascii_letters) for _ in range(length))
