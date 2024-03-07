@@ -100,8 +100,6 @@ def _get_color(scene: Scene, reflection_limit: int,
 
 		# Reflections (recursive)
 		sight_reflection_direction = ray.direction - 2 * normal * np.dot(ray.direction, normal)
-		# Avoid colliding with the same surface
-		offset_origin = collision.position + 0.01*sight_reflection_direction
 		reflected_color = _get_color(scene, reflection_limit, collision.position,
 						sight_reflection_direction, fade*collision.obj.reflectivity, reflections+1)
 
@@ -117,9 +115,6 @@ def _is_in_shadow(scene: Scene, point: NDArray[np.float_]) -> bool:
 	"Casts a ray toward the light source to determine if the point is in shadow."
 
 	ray = Ray(point, scene.light_direction)
-	# Offset to avoid colliding with the object
-	ray.origin += COLLISION_NORMAL_OFFSET * ray.direction
-
 	collision = scene.cast_ray(ray)
 	return collision is not None
 
