@@ -2,16 +2,17 @@
 
 
 import numpy as np
+from numpy.typing import NDArray
 
 
-def magnitude(vector: np.ndarray) -> float:
+def magnitude(vector: NDArray) -> float:
 	"Returns the scalar length of the vector."
 
 	assert vector.ndim == 1, "A vector must be 1-dimensional"
 	return float(np.linalg.norm(vector))
 
 
-def normalized(vector: np.ndarray) -> np.ndarray:
+def normalized(vector: NDArray) -> NDArray[np.float_]:
 	"Returns a new vector pointing in the same direction but with a length of 1 (or 0)."
 
 	mag = magnitude(vector)

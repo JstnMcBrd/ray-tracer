@@ -9,6 +9,7 @@ from multiprocessing import cpu_count, Pool
 from typing import Iterable
 
 import numpy as np
+from numpy.typing import NDArray
 from tqdm import tqdm
 
 from ray import Ray
@@ -25,18 +26,18 @@ COLLISION_NORMAL_OFFSET = 0.01
 
 
 def ray_trace(scene: Scene, width: int, height: int,
-		reflection_limit: int, progress_bar: bool) -> np.ndarray:
+		reflection_limit: int, progress_bar: bool) -> NDArray[np.float_]:
 	"Ray traces the given scene and returns a numpy array of pixel colors."
 
 	# Save time by pre-calcuating constant values
 	viewport_size = np.array([width, height])
-	window_size = _calculate_window_size(viewport_size,
-						scene.camera.focal_length, scene.camera.field_of_view)
+	window_size = _get_window_size(viewport_size,
+					scene.camera.focal_length, scene.camera.field_of_view)
 	window_to_viewport_size_ratio = window_size/viewport_size
 	half_window_size = window_size/2
 
 	# Set up multiprocessing pool and inputs
-	tuple_inputs = [(x, y, scene, window_to_viewport_size_ratio, half_window_size, reflection_limit)
+	tuple_inputs = [(scene, reflection_limit, x, y, window_to_viewport_size_ratio, half_window_size)
 		for y in range(height) for x in range(width)]
 	outputs = []
 
@@ -58,19 +59,13 @@ def ray_trace(scene: Scene, width: int, height: int,
 	return screen
 
 
-def _ray_trace_pixel(tuple_input: tuple[int, int, Scene, np.ndarray, np.ndarray, int]
-					 ) -> np.ndarray:
+def _ray_trace_pixel(
+		tuple_input: tuple[Scene, int, int, int, NDArray[np.float_], NDArray[np.float_]]
+	) -> NDArray[np.float_]:
 	"Retrieves the color for a given pixel."
 
 	# Unpack the input from the pool
-	x: int
-	y: int
-	scene: Scene
-	window_to_viewport_size_ratio: np.ndarray
-	half_window_size: np.ndarray
-	reflection_limit: int
-
-	x, y, scene, window_to_viewport_size_ratio, half_window_size, reflection_limit = tuple_input
+	scene, reflection_limit, x, y, window_to_viewport_size_ratio, half_window_size = tuple_input
 
 	# Find the world point of the pixel, relative to the camera's position
 	viewport_point = np.array([x, y])
@@ -78,12 +73,13 @@ def _ray_trace_pixel(tuple_input: tuple[int, int, Scene, np.ndarray, np.ndarray,
 	world_point_relative = _window_to_relative_world(window_point, scene.camera)
 
 	# Start sending out rays
-	return _get_color(scene.camera.position, normalized(world_point_relative), scene,
-			reflection_limit=reflection_limit)
+	return _get_color(scene, reflection_limit,
+			scene.camera.position, normalized(world_point_relative))
 
 
-def _get_color(origin: np.ndarray, direction: np.ndarray, scene: Scene,
-		fade=1, reflections=0, reflection_limit=float("inf")):
+def _get_color(scene: Scene, reflection_limit: int,
+		origin: NDArray[np.float_], direction: NDArray[np.float_],
+		fade=1, reflections=0) -> NDArray[np.float_]:
 	"Recursively casts rays to retrieve the color for the original ray collision."
 
 	if fade <= FADE_LIMIT or reflections > reflection_limit:
@@ -95,43 +91,36 @@ def _get_color(origin: np.ndarray, direction: np.ndarray, scene: Scene,
 
 	# Shade the pixel using the collided object
 	if collision is not None:
-		view_direction = -1 * ray.direction
+
+		# Shadows
+			# Avoid getting trapped inside objects
 		normal = collision.obj.normal(collision.position)
-
-		# Avoid getting trapped inside objects
 		collision.position += COLLISION_NORMAL_OFFSET*normal
+		shadow = _is_in_shadow(scene, collision.position)
 
-		shadow = _is_in_shadow(collision.position, scene)
-
+		# Reflections (recursive)
 		sight_reflection_direction = ray.direction - 2 * normal * np.dot(ray.direction, normal)
-		# Avoid colliding with the same surface
-		offset_origin = collision.position + 0.01*sight_reflection_direction
+		reflected_color = _get_color(scene, reflection_limit, collision.position,
+						sight_reflection_direction, fade*collision.obj.reflectivity, reflections+1)
 
-		# Get the color from the reflection (recursive)
-		reflected_color = _get_color(offset_origin, sight_reflection_direction, scene,
-						fade=fade*collision.obj.reflectivity, reflections=reflections+1,
-						reflection_limit=reflection_limit)
-
+		# Shading
+		view_direction = -1 * ray.direction
 		return shade(scene, collision.obj, collision.position, view_direction, shadow, reflected_color)
 
 	# If no object collided, use the background
 	return scene.background_color
 
 
-def _is_in_shadow(point: np.ndarray, scene: Scene) -> bool:
+def _is_in_shadow(scene: Scene, point: NDArray[np.float_]) -> bool:
 	"Casts a ray toward the light source to determine if the point is in shadow."
 
 	ray = Ray(point, scene.light_direction)
-	# Offset to avoid colliding with the object
-	ray.origin += COLLISION_NORMAL_OFFSET * ray.direction
-
 	collision = scene.cast_ray(ray)
 	return collision is not None
 
 
-def _calculate_window_size(viewport_size: np.ndarray,
-				focal_length: float,
-				field_of_view: float) -> np.ndarray:
+def _get_window_size(viewport_size: NDArray[np.int_], focal_length: float, field_of_view: float
+	) -> NDArray[np.float_]:
 	"Returns the window size, given the camera properties."
 
 	x = focal_length * tan(np.deg2rad(field_of_view/2)) * 2
@@ -139,20 +128,20 @@ def _calculate_window_size(viewport_size: np.ndarray,
 	return np.array([x, y])
 
 
-def _viewport_to_window(viewport_point: np.ndarray,
-			window_to_viewport_size_ratio: np.ndarray,
-			half_window_size: np.ndarray) -> np.ndarray:
+def _viewport_to_window(viewport_point: NDArray[np.float_],
+			window_to_viewport_size_ratio: NDArray[np.float_],
+			half_window_size: NDArray[np.float_]) -> NDArray[np.float_]:
 	"Converts a point on the viewport to a point on the window."
 
 	window_point = viewport_point * window_to_viewport_size_ratio - half_window_size
 	# The -1 seems necessary to orient it correctly
-	return np.array([window_point[0], window_point[1]*-1, 0])
+	window_point[1] *= -1
+	return np.concatenate([window_point, [0]])
 
 
-def _window_to_relative_world(window_point: np.ndarray, camera: Camera) -> np.ndarray:
+def _window_to_relative_world(window_point: NDArray[np.float_], camera: Camera
+	) -> NDArray[np.float_]:
 	"Converts a point on the window to world point (relative to the camera)."
 
-	return camera.relative_look_at \
-		+ window_point[0]*camera.right \
-			+ window_point[1]*camera.up \
-				+ window_point[2]*camera.forward
+	axes = np.array([camera.right, camera.up, camera.forward])
+	return camera.relative_look_at + np.dot(window_point, axes)

@@ -2,13 +2,15 @@
 
 
 import numpy as np
+from numpy.typing import NDArray
 
 from objects import Object
 from scene import Scene
 
 
-def shade(scene: Scene, obj: Object, position: np.ndarray, view_direction: np.ndarray,
-		shadow: bool, reflected_color: np.ndarray) -> np.ndarray:
+def shade(scene: Scene, obj: Object, position: NDArray[np.float_],
+		view_direction: NDArray[np.float_], shadow: bool, reflected_color: NDArray[np.float_]
+	) -> NDArray[np.float_]:
 	"""
 	Applies [Phong shading](https://en.wikipedia.org/wiki/Phong_shading)
 	to the given object and returns the color.

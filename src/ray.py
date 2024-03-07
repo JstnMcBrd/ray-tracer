@@ -2,6 +2,7 @@
 
 
 import numpy as np
+from numpy.typing import NDArray
 
 from vector import magnitude
 
@@ -9,10 +10,10 @@ from vector import magnitude
 class Ray:
 	"Represents a semi-infinite line."
 
-	origin: np.ndarray
-	direction: np.ndarray
+	origin: NDArray[np.float_]
+	direction: NDArray[np.float_]
 
-	def __init__(self, origin: np.ndarray, direction: np.ndarray):
+	def __init__(self, origin: NDArray[np.float_], direction: NDArray[np.float_]):
 		self.origin = origin
 		self.direction = direction
 
@@ -22,10 +23,10 @@ class RayCollision:
 
 	# obj: Object # would cause a circular import
 	ray: Ray
-	position: np.ndarray
+	position: NDArray[np.float_]
 	distance: float
 
-	def __init__(self, obj, ray: Ray, position: np.ndarray):
+	def __init__(self, obj, ray: Ray, position: NDArray[np.float_]):
 		self.obj = obj
 		self.ray = ray
 		self.position = position

@@ -5,6 +5,7 @@ from json import loads as json_as_dict
 import sys
 
 import numpy as np
+from numpy.typing import NDArray
 
 from objects import Circle, Object, Plane, Polygon, Sphere, Triangle
 from scene import Camera, Scene
@@ -211,7 +212,7 @@ def _load_triangle(json_value, error_prefix="Triangle") -> Triangle:
 
 def _validate_position_vector(json_value,
 				default: list[float] | None = None,
-				error_prefix="Position") -> np.ndarray:
+				error_prefix="Position") -> NDArray[np.float_]:
 	"Imports a list as a position vector."
 
 	json_value = _validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
@@ -223,7 +224,7 @@ def _validate_position_vector(json_value,
 
 def _validate_direction_vector(json_value,
 				default: list[float] | None = None,
-				error_prefix="Direction") -> np.ndarray:
+				error_prefix="Direction") -> NDArray[np.float_]:
 	"Imports a list as a direction vector, verifying it is normalized."
 
 	json_value = _validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
@@ -245,7 +246,7 @@ def _validate_direction_vector(json_value,
 
 def _validate_color_vector(json_value,
 				default: list[float] | None = None,
-				error_prefix="Color") -> np.ndarray:
+				error_prefix="Color") -> NDArray[np.float_]:
 	"Imports a list as a color vector, verifying the proper range of values."
 
 	json_value = _validate_list(json_value, length=3, default=default, error_prefix=error_prefix)

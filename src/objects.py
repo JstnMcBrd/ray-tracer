@@ -2,6 +2,7 @@
 
 
 import numpy as np
+from numpy.typing import NDArray
 
 from lib._itertools import closed_pairwise
 from ray import Ray, RayCollision
@@ -15,12 +16,12 @@ class Object:
 	ambient_coefficient: float = 0
 	diffuse_coefficient: float = 0
 	specular_coefficient: float = 0
-	diffuse_color: np.ndarray = np.array([0, 0, 0])
-	specular_color: np.ndarray = np.array([0, 0, 0])
+	diffuse_color: NDArray[np.float_] = np.array([0, 0, 0])
+	specular_color: NDArray[np.float_] = np.array([0, 0, 0])
 	gloss_coefficient: float = 0
 	reflectivity: float = 0
 
-	def normal(self, point: np.ndarray) -> np.ndarray:
+	def normal(self, point: NDArray[np.float_]) -> NDArray[np.float_]:
 		"""
 		The "up" direction from this point on the object.
 		Assumes the point is actually on the object.
@@ -37,16 +38,16 @@ class Object:
 class Plane(Object):
 	"The specific values necessary for Planes."
 
-	_normal: np.ndarray
+	_normal: NDArray[np.float_]
 	_distance_from_origin: float
 
-	def __init__(self, position: np.ndarray, normal: np.ndarray):
+	def __init__(self, position: NDArray[np.float_], normal: NDArray[np.float_]):
 		super().__init__()
 
 		self._normal = normalized(normal)
 		self._distance_from_origin = -1 * np.dot(normal, position)
 
-	def normal(self, point: np.ndarray | None = None) -> np.ndarray:
+	def normal(self, point: NDArray[np.float_] | None = None) -> NDArray[np.float_]:
 		return self._normal
 
 	def ray_intersection(self, ray: Ray) -> RayCollision | None:
@@ -69,11 +70,11 @@ class Plane(Object):
 class Circle(Object):
 	"The specific values necessary for Circles."
 
-	position: np.ndarray
+	position: NDArray[np.float_]
 	radius: float
 	_plane: Plane
 
-	def __init__(self, position: np.ndarray, normal: np.ndarray, radius: float):
+	def __init__(self, position: NDArray[np.float_], normal: NDArray[np.float_], radius: float):
 		super().__init__()
 
 		self.position = position
@@ -82,7 +83,7 @@ class Circle(Object):
 		normal = normalized(normal)
 		self._plane = Plane(position, normal)
 
-	def normal(self, point: np.ndarray | None = None) -> np.ndarray:
+	def normal(self, point: NDArray[np.float_] | None = None) -> NDArray[np.float_]:
 		return self._plane.normal(point)
 
 	def ray_intersection(self, ray: Ray) -> RayCollision | None:
@@ -107,12 +108,12 @@ class Polygon(Object):
 	X_AXIS_SHIFT = 0.01
 	"To make sure no flattened relative vertices lie on the x-axis."
 
-	_vertices: list[np.ndarray]
+	_vertices: list[NDArray[np.float_]]
 	_plane: Plane
 	_plane_dominant_coord: int
-	_flattened_vertices: list[np.ndarray]
+	_flattened_vertices: list[NDArray[np.float_]]
 
-	def __init__(self, vertices: list[np.ndarray]):
+	def __init__(self, vertices: list[NDArray[np.float_]]):
 		super().__init__()
 
 		assert len(vertices) >= 3, "Polygon must have at least 3 vertices"
@@ -128,10 +129,10 @@ class Polygon(Object):
 
 		# Project all the vertices onto a 2D plane (for future intersection calculations)
 		self._plane_dominant_coord: int = np.where(np.abs(_normal) == np.max(np.abs(_normal)))[0][0]
-		self._flattened_vertices: list[np.ndarray] = [np.delete(v, self._plane_dominant_coord)
+		self._flattened_vertices = [np.delete(v, self._plane_dominant_coord)
 								for v in self._vertices]
 
-	def normal(self, point: np.ndarray | None = None) -> np.ndarray:
+	def normal(self, point: NDArray[np.float_] | None = None) -> NDArray[np.float_]:
 		return self._plane.normal(point)
 
 	def ray_intersection(self, ray: Ray) -> RayCollision | None:
@@ -187,15 +188,15 @@ class Polygon(Object):
 class Sphere(Object):
 	"The specific values necessary for Spheres."
 
-	position: np.ndarray
+	position: NDArray[np.float_]
 	radius: float
 
-	def __init__(self, position: np.ndarray, radius: float):
+	def __init__(self, position: NDArray[np.float_], radius: float):
 		super().__init__()
 		self.position = position
 		self.radius = radius
 
-	def normal(self, point: np.ndarray) -> np.ndarray:
+	def normal(self, point: NDArray[np.float_]) -> NDArray[np.float_]:
 		return normalized(point - self.position)
 
 	def ray_intersection(self, ray: Ray) -> RayCollision | None:
@@ -235,7 +236,7 @@ class Triangle(Polygon):
 
 	_flattened_area: float
 
-	def __init__(self, vertices: list[np.ndarray]):
+	def __init__(self, vertices: list[NDArray[np.float_]]):
 		super().__init__(vertices)
 
 		assert len(vertices) == 3, "Triangle must have 3 vertices"
@@ -267,7 +268,7 @@ class Triangle(Polygon):
 		return RayCollision(self, ray, intersection)
 
 	@staticmethod
-	def area(vertices: list[np.ndarray]) -> float:
+	def area(vertices: list[NDArray[np.float_]]) -> float:
 		"Given the three vertices, returns the area of the enclosed triangle."
 
 		assert len(vertices) == 3, "Must have 3 vertices to be a triangle"
