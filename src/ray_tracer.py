@@ -27,7 +27,10 @@ COLLISION_NORMAL_OFFSET = 0.01
 
 def ray_trace(scene: Scene, width: int, height: int,
 		reflection_limit: int, progress_bar: bool) -> NDArray[np.float_]:
-	"Ray traces the given scene and returns a numpy array of pixel colors."
+	"""
+	Ray traces the given scene and returns a 3-dimensional array of pixel colors
+	with `shape=(height, width, 3)`.
+	"""
 
 	# Save time by pre-calcuating constant values
 	viewport_size = np.array([width, height])

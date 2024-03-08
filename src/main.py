@@ -1,5 +1,5 @@
 """
-The main script of the project.
+The main script of the system.
 
 Call it from the command line using `python src/main.py [arguments]`.
 To see a full list of arguments, use `python src/main.py --help`.
@@ -13,7 +13,7 @@ from os import getenv
 from dotenv import load_dotenv
 
 from ray_tracer import ray_trace
-from scene_importer import import_scene
+from importer import import_scene
 from exporter import assert_supported_extension, export
 
 
