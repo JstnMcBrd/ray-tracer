@@ -42,6 +42,6 @@ def shade(scene: Scene, obj: Object, position: NDArray[np.float_],
 
 	# Combined color
 	color = ambient + diffuse + specular + reflected
-	color = np.clip(color, 0, 1)
+	np.clip(color, 0, 1, out=color)
 
 	return color
