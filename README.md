@@ -222,5 +222,5 @@ pylint src
 To run the type-checker, use
 
 ```sh
-mypy **/*.py
+mypy src
 ```
