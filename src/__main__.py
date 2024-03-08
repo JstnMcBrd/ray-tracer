@@ -1,8 +1,8 @@
 """
-The main script of the project.
+The main script of the system.
 
-Call it from the command line using `python src/main.py [arguments]`.
-To see a full list of arguments, use `python src/main.py --help`.
+Call it from the command line using `python src [arguments]`.
+To see a full list of arguments, use `python src --help`.
 """
 
 
@@ -13,18 +13,20 @@ from os import getenv
 from dotenv import load_dotenv
 
 from ray_tracer import ray_trace
-from scene_importer import import_scene
+from importer import import_scene
 from exporter import assert_supported_extension, export
 
 
-if __name__ == "__main__":
+# Default arguments
+DEFAULT_OUTPUT = "./output.png"
+DEFAULT_WIDTH = 512
+DEFAULT_HEIGHT = 512
+DEFAULT_REFLECTION_LIMIT = 10
+DEFAULT_PROGRESS_BAR = int(True) # Must be an int because bools cannot be parsed from strings
 
-	# Default arguments
-	DEFAULT_OUTPUT = "./output.png"
-	DEFAULT_WIDTH = 512
-	DEFAULT_HEIGHT = 512
-	DEFAULT_REFLECTION_LIMIT = 10
-	DEFAULT_PROGRESS_BAR = int(True)	# Must be an int because bools cannot be parsed from strings
+
+def parse_arguments() -> tuple[str, str, int, int, int, bool]:
+	"Parses and returns the environment variables and command-line arguments."
 
 	# Retrieve arguments from environment variables
 	#	(All environment variables are imported as strings.
@@ -55,12 +57,19 @@ if __name__ == "__main__":
 
 	# Parse arguments
 	parsed = arg.parse_args()
-	scene_file_path = parsed.scene
-	output_file_path = parsed.output
-	width = parsed.width
-	height = parsed.height
-	reflection_limit = parsed.reflection_limit
-	progress_bar = parsed.progress_bar
+	scene_file_path: str = parsed.scene
+	output_file_path: str = parsed.output
+	width: int = parsed.width
+	height: int = parsed.height
+	reflection_limit: int = parsed.reflection_limit
+	progress_bar: bool = parsed.progress_bar
+
+	return scene_file_path, output_file_path, width, height, reflection_limit, progress_bar
+
+
+def main(scene_file_path: str, output_file_path: str, width: int, height: int,
+	reflection_limit: int, progress_bar: bool):
+	"Imports, ray-traces, and exports."
 
 	# Assert the output file extension is supported
 	assert_supported_extension(output_file_path)
@@ -92,3 +101,7 @@ if __name__ == "__main__":
 	print(f"Time elapsed: {time_elapsed}")
 	print("> Done")
 	print()
+
+
+if __name__ == "__main__":
+	main(*parse_arguments())

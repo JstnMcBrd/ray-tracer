@@ -52,8 +52,8 @@ pip install --requirements requirements.txt
 
 You can run the ray tracer with the following command:
 
-```bash
-python src/main.py
+```sh
+python src
 ```
 
 The script has many arguments. Use the `--help` command to see a full list. Some have a default values, but you must provide the rest yourself.
@@ -222,5 +222,5 @@ pylint src
 To run the type-checker, use
 
 ```sh
-mypy **/*.py
+mypy src
 ```

@@ -27,7 +27,10 @@ COLLISION_NORMAL_OFFSET = 0.01
 
 def ray_trace(scene: Scene, width: int, height: int,
 		reflection_limit: int, progress_bar: bool) -> NDArray[np.float_]:
-	"Ray traces the given scene and returns a numpy array of pixel colors."
+	"""
+	Ray traces the given scene and returns a 3-dimensional array of pixel colors
+	with `shape=(height, width, 3)`.
+	"""
 
 	# Save time by pre-calcuating constant values
 	viewport_size = np.array([width, height])
@@ -44,7 +47,7 @@ def ray_trace(scene: Scene, width: int, height: int,
 	with Pool(cpu_count()) as pool:
 
 		# Start a process for ray-tracing each pixel
-		processes: Iterable = pool.imap(_ray_trace_pixel, tuple_inputs)
+		processes: Iterable = pool.imap(_ray_trace_pixel_tuple, tuple_inputs)
 		if progress_bar:
 			processes = tqdm(processes, total=len(tuple_inputs))
 
@@ -59,13 +62,19 @@ def ray_trace(scene: Scene, width: int, height: int,
 	return screen
 
 
-def _ray_trace_pixel(
+def _ray_trace_pixel_tuple(
 		tuple_input: tuple[Scene, int, int, int, NDArray[np.float_], NDArray[np.float_]]
 	) -> NDArray[np.float_]:
-	"Retrieves the color for a given pixel."
+	"Unpacks the tuple input for _ray_trace_pixel and returns the result."
 
-	# Unpack the input from the pool
-	scene, reflection_limit, x, y, window_to_viewport_size_ratio, half_window_size = tuple_input
+	return _ray_trace_pixel(*tuple_input)
+
+
+def _ray_trace_pixel(
+		scene: Scene, reflection_limit: int, x: int, y: int,
+		window_to_viewport_size_ratio: NDArray[np.float_], half_window_size: NDArray[np.float_]
+	) -> NDArray[np.float_]:
+	"Retrieves the color for a given pixel."
 
 	# Find the world point of the pixel, relative to the camera's position
 	viewport_point = np.array([x, y])
