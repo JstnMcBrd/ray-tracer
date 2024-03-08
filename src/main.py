@@ -24,7 +24,7 @@ if __name__ == "__main__":
 	DEFAULT_WIDTH = 512
 	DEFAULT_HEIGHT = 512
 	DEFAULT_REFLECTION_LIMIT = 10
-	DEFAULT_PROGRESS_BAR = int(True)	# Must be an int because bools cannot be parsed from strings
+	DEFAULT_PROGRESS_BAR = int(True) # Must be an int because bools cannot be parsed from strings
 
 	# Retrieve arguments from environment variables
 	#	(All environment variables are imported as strings.
@@ -55,12 +55,12 @@ if __name__ == "__main__":
 
 	# Parse arguments
 	parsed = arg.parse_args()
-	scene_file_path = parsed.scene
-	output_file_path = parsed.output
-	width = parsed.width
-	height = parsed.height
-	reflection_limit = parsed.reflection_limit
-	progress_bar = parsed.progress_bar
+	scene_file_path: str = parsed.scene
+	output_file_path: str = parsed.output
+	width: int = parsed.width
+	height: int = parsed.height
+	reflection_limit: int = parsed.reflection_limit
+	progress_bar: bool = parsed.progress_bar
 
 	# Assert the output file extension is supported
 	assert_supported_extension(output_file_path)
