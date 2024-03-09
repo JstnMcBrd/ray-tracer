@@ -26,8 +26,7 @@ DEFAULT_PROGRESS_BAR = int(True) # Must be an int because bools cannot be parsed
 
 
 def parse_arguments() -> tuple[str, str, int, int, int, bool]:
-	"Parses and returns the environment variables and command-line arguments."
-
+	"""Parse and return the environment variables and command-line arguments."""
 	# Retrieve arguments from environment variables
 	#	(All environment variables are imported as strings.
 	# 	The ArgumentParser will take care of parsing them.)
@@ -69,8 +68,8 @@ def parse_arguments() -> tuple[str, str, int, int, int, bool]:
 
 def main(scene_file_path: str, output_file_path: str, width: int, height: int,
 	reflection_limit: int, progress_bar: bool):
-	"Imports, ray-traces, and exports."
 
+	"""Import, ray-trace, and export."""
 	# Assert the output file extension is supported
 	assert_supported_extension(output_file_path)
 

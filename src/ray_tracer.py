@@ -1,7 +1,4 @@
-"""
-Generates an image from a scene using
-[ray tracing](https://en.wikipedia.org/wiki/Ray_tracing_(graphics)).
-"""
+"""Generates an image from a scene using [ray tracing](https://en.wikipedia.org/wiki/Ray_tracing_(graphics))."""
 
 
 from math import tan
@@ -27,10 +24,10 @@ COLLISION_NORMAL_OFFSET = 0.01
 def ray_trace(scene: Scene, width: int, height: int,
 		reflection_limit: int, progress_bar: bool) -> NDArray[np.float_]:
 	"""
-	Ray traces the given scene and returns a 3-dimensional array of pixel colors
-	with `shape=(height, width, 3)`.
-	"""
+	Ray traces the given scene.
 
+	Returns a 3-dimensional array of pixel colors with `shape=(height, width, 3)`.
+	"""
 	# Save time by pre-calcuating constant values
 	viewport_size = np.array([width, height])
 	window_size = _get_window_size(viewport_size,
@@ -62,24 +59,22 @@ def ray_trace(scene: Scene, width: int, height: int,
 
 
 def _ray_trace_pixel_tuple(
-	"Unpacks the tuple input for _ray_trace_pixel and returns the result."
-
 		tuple_input: tuple[
 			Scene, int, int, int,
 			NDArray[np.float64],
 			NDArray[np.float64],
 		],
 	) -> NDArray[np.float64]:
+	"""Unpacks the tuple input for _ray_trace_pixel and returns the result."""
 	return _ray_trace_pixel(*tuple_input)
 
 
 def _ray_trace_pixel(
 		scene: Scene, reflection_limit: int, x: int, y: int,
-	"Retrieves the color for a given pixel."
-
 		window_to_viewport_size_ratio: NDArray[np.float64],
 		half_window_size: NDArray[np.float64],
 	) -> NDArray[np.float64]:
+	"""Retrieve the color for a given pixel."""
 	# Find the world point of the pixel, relative to the camera's position
 	viewport_point = np.array([x, y])
 	window_point = _viewport_to_window(viewport_point, window_to_viewport_size_ratio, half_window_size)
@@ -91,10 +86,9 @@ def _ray_trace_pixel(
 
 
 def _get_color(scene: Scene, reflection_limit: int,
-	"Recursively casts rays to retrieve the color for the original ray collision."
-
 		origin: NDArray[np.float64], direction: NDArray[np.float64],
 		fade: float = 1.0, reflections: int = 0) -> NDArray[np.float64]:
+	"""Recursively cast rays to retrieve the color for the original ray collision."""
 	if fade <= FADE_LIMIT or reflections > reflection_limit:
 		return np.array([0,0,0])
 
@@ -124,37 +118,33 @@ def _get_color(scene: Scene, reflection_limit: int,
 	return scene.background_color
 
 
-	"Casts a ray toward the light source to determine if the point is in shadow."
-
 def _is_in_shadow(scene: Scene, point: NDArray[np.float64]) -> bool:
+	"""Casts a ray toward the light source to determine if the point is in shadow."""
 	ray = Ray(point, scene.light_direction)
 	collision = scene.cast_ray(ray)
 	return collision is not None
 
 
-	"Returns the window size, given the camera properties."
-
 def _get_window_size(viewport_size: NDArray[np.int64], focal_length: float,
 	field_of_view: float) -> NDArray[np.float64]:
+	"""Return the window size, given the camera properties."""
 	x = focal_length * tan(np.deg2rad(field_of_view/2)) * 2
 	y = x * viewport_size[1]/viewport_size[0]
 	return np.array([x, y])
 
 
-	"Converts a point on the viewport to a point on the window."
-
 def _viewport_to_window(viewport_point: NDArray[np.float64],
 			window_to_viewport_size_ratio: NDArray[np.float64],
 			half_window_size: NDArray[np.float64]) -> NDArray[np.float64]:
+	"""Convert a point on the viewport to a point on the window."""
 	window_point = viewport_point * window_to_viewport_size_ratio - half_window_size
 	# The -1 seems necessary to orient it correctly
 	window_point[1] *= -1
 	return np.concatenate([window_point, [0]])
 
 
-	"Converts a point on the window to world point (relative to the camera)."
-
 def _window_to_relative_world(window_point: NDArray[np.float64], camera: Camera,
 	) -> NDArray[np.float64]:
+	"""Convert a point on the window to world point (relative to the camera)."""
 	axes = np.array([camera.right, camera.up, camera.forward])
 	return camera.relative_look_at + np.dot(window_point, axes)

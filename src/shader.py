@@ -1,4 +1,4 @@
-"Contains methods for shading objects."
+"""Contains methods for shading objects."""
 
 
 import numpy as np
@@ -7,14 +7,14 @@ from objects import Object
 from scene import Scene
 
 
-	"""
-	Applies [Phong shading](https://en.wikipedia.org/wiki/Phong_shading)
-	to the given object and returns the color.
 def shade(scene: Scene, obj: Object, position: NDArray[np.float64],
 	view_direction: NDArray[np.float64], shadow: bool,
 	reflected_color: NDArray[np.float64]) -> NDArray[np.float64]:
 	"""
+	Apply [Phong shading](https://en.wikipedia.org/wiki/Phong_shading) to the object.
 
+	Returns the color.
+	"""
 	shadow_coefficient = 0 if shadow else 1
 
 	surface_normal = obj.normal(position)

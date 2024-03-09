@@ -1,4 +1,4 @@
-"Classes that define the scene to be ray traced."
+"""Classes that define the scene to be ray traced."""
 
 
 import numpy as np
@@ -9,7 +9,7 @@ from vector import magnitude, normalized
 
 
 class Camera:
-	"Defines the camera position, orientation, and other settings."
+	"""Defines the camera position, orientation, and other settings."""
 
 	position: NDArray[np.float64]
 	field_of_view: float
@@ -34,7 +34,7 @@ class Camera:
 
 
 class Scene:
-	"Defines the entire scene and all objects within it."
+	"""Defines the entire scene and all objects within it."""
 
 	camera: Camera
 	light_direction: NDArray[np.float64]
@@ -59,8 +59,7 @@ class Scene:
 		self.objects = objects
 
 	def cast_ray(self, ray: Ray) -> RayCollision | None:
-		"Projects the ray into the scene and returns the closest object collision."
-
+		"""Projects the ray into the scene and returns the closest object collision."""
 		collisions = [obj.ray_intersection(ray) for obj in self.objects]
 		real = list(filter(None, collisions))
 		closest = min(real, key=lambda c: c.distance) if real else None

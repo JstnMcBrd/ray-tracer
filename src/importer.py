@@ -1,4 +1,4 @@
-"Handles importing scenes from JSON files."
+"""Handles importing scenes from JSON files."""
 
 
 import sys
@@ -14,8 +14,7 @@ from vector import magnitude, normalized
 
 
 def import_scene(file_path: str) -> Scene:
-	"Returns a scene with the values importing from the given file."
-
+	"""Return a scene with the values importing from the given file."""
 	json_str = None
 	try:
 		with open(file_path, "r", encoding="utf8") as json_file:
@@ -42,8 +41,7 @@ def import_scene(file_path: str) -> Scene:
 
 
 def _load_from_json(json: dict) -> Scene:
-	"Imports a scene from a dictionary formatted as a JSON file."
-
+	"""Import a scene from a dictionary formatted as a JSON file."""
 	error_prefix = "Scene"
 
 	# Camera
@@ -79,8 +77,8 @@ def _load_from_json(json: dict) -> Scene:
 def _load_objects(json_value,
 			default: list[Object] | None = None,
 			error_prefix="Objects") -> list[Object]:
-	"Takes a list of dictionaries and imports each of them as an Object."
 
+	"""Take a list of dictionaries and imports each of them as an Object."""
 	objects = []
 
 	json_value = _validate_list(json_value, default=default, error_prefix=error_prefix)
@@ -92,8 +90,8 @@ def _load_objects(json_value,
 
 
 def _load_object(json_value, error_prefix="Object") -> Object:
-	"Imports a dictionary as an Object."
 
+	"""Import a dictionary as an Object."""
 	obj: Object | None = None
 
 	assert json_value is not None, f"{error_prefix} must not be missing"
@@ -143,8 +141,8 @@ def _load_object(json_value, error_prefix="Object") -> Object:
 
 
 def _load_circle(json_value, error_prefix="Circle") -> Circle:
-	"Imports Circle-specific values from a dictionary."
 
+	"""Import Circle-specific values from a dictionary."""
 	position = _validate_position_vector(json_value.get("position"),
 						error_prefix=f"{error_prefix}.position")
 	normal = _validate_direction_vector(json_value.get("normal"), default=[0,0,1],
@@ -156,8 +154,8 @@ def _load_circle(json_value, error_prefix="Circle") -> Circle:
 
 
 def _load_plane(json_value, error_prefix="Plane") -> Plane:
-	"Imports Plane-specific values from a dictionary."
 
+	"""Import Plane-specific values from a dictionary."""
 	position = _validate_position_vector(json_value.get("position"), default=[0,0,0],
 						error_prefix=f"{error_prefix}.position")
 	normal = _validate_direction_vector(json_value.get("normal"),
@@ -167,8 +165,8 @@ def _load_plane(json_value, error_prefix="Plane") -> Plane:
 
 
 def _load_polygon(json_value, error_prefix="Polygon") -> Polygon:
-	"Imports Polygon-specific values from a dictionary."
 
+	"""Import Polygon-specific values from a dictionary."""
 	vertices_numpyified = []
 	vertices = _validate_list(json_value.get("vertices"), error_prefix=f"{error_prefix}.vertices")
 
@@ -186,8 +184,8 @@ def _load_polygon(json_value, error_prefix="Polygon") -> Polygon:
 
 
 def _load_sphere(json_value, error_prefix="Sphere") -> Sphere:
-	"Imports Sphere-specific values from a dictionary."
 
+	"""Import Sphere-specific values from a dictionary."""
 	position = _validate_position_vector(json_value.get("position"),
 						error_prefix=f"{error_prefix}.position")
 	radius = _validate_number(json_value.get("radius"), _min=0,
@@ -197,8 +195,8 @@ def _load_sphere(json_value, error_prefix="Sphere") -> Sphere:
 
 
 def _load_triangle(json_value, error_prefix="Triangle") -> Triangle:
-	"Imports Triangle-specific values from a dictionary."
 
+	"""Import Triangle-specific values from a dictionary."""
 	vertices_numpyified = []
 	vertices = _validate_list(json_value.get("vertices"), error_prefix=f"{error_prefix}.vertices")
 
@@ -214,9 +212,9 @@ def _load_triangle(json_value, error_prefix="Triangle") -> Triangle:
 def _validate_position_vector(json_value,
 				default: list[float] | None = None,
 				error_prefix="Position") -> NDArray[np.float_]:
-	"Imports a list as a position vector."
 
 	json_value = _validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
+	"""Import a list as a position vector."""
 	for element in json_value:
 		_validate_number(element, error_prefix=f"{error_prefix} element")
 
@@ -226,9 +224,9 @@ def _validate_position_vector(json_value,
 def _validate_direction_vector(json_value,
 				default: list[float] | None = None,
 				error_prefix="Direction") -> NDArray[np.float_]:
-	"Imports a list as a direction vector, verifying it is normalized."
 
 	json_value = _validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
+	"""Import a list as a direction vector, verifying it is normalized."""
 	for element in json_value:
 		_validate_number(element, error_prefix=f"{error_prefix} element")
 
@@ -248,9 +246,9 @@ def _validate_direction_vector(json_value,
 def _validate_color_vector(json_value,
 				default: list[float] | None = None,
 				error_prefix="Color") -> NDArray[np.float_]:
-	"Imports a list as a color vector, verifying the proper range of values."
 
 	json_value = _validate_list(json_value, length=3, default=default, error_prefix=error_prefix)
+	"""Import a list as a color vector, verifying the proper range of values."""
 	for element in json_value:
 		_validate_number(element, _min=0, _max=1, error_prefix=f"{error_prefix} element")
 
@@ -261,8 +259,8 @@ def _validate_list(json_value,
 			length: int | None = None,
 			default: list | None = None,
 			error_prefix = "List") -> list:
-	"Imports a list and validates it against certain constraints."
 
+	"""Import a list and validates it against certain constraints."""
 	if json_value is None and default is not None:
 		print(f"WARNING: {error_prefix} is missing, reverting to default value {default}")
 		return default
@@ -281,8 +279,8 @@ def _validate_number(json_value,
 			_max: float | int | None = None,
 			default: float | int | None = None,
 			error_prefix = "Number") -> float | int:
-	"Imports a number and validates it against certain constraints."
 
+	"""Import a number and validates it against certain constraints."""
 	if json_value is None and default is not None:
 		print(f"WARNING: {error_prefix} is missing, reverting to default value {default}")
 		return default

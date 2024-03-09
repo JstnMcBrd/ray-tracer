@@ -1,1 +1,1 @@
-"This folder contains add-ons and patches to other libraries."
+"""Contains add-ons and patches to other libraries."""

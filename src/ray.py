@@ -1,4 +1,4 @@
-"Classes to define the properties and behaviors of rays."
+"""Classes to define the properties and behaviors of rays."""
 
 
 import numpy as np
@@ -7,7 +7,7 @@ from vector import magnitude
 
 
 class Ray:
-	"Represents a semi-infinite line."
+	"""Represents a semi-infinite line."""
 
 	origin: NDArray[np.float64]
 	direction: NDArray[np.float64]
@@ -18,7 +18,7 @@ class Ray:
 
 
 class RayCollision:
-	"Contains information about the collision of a ray with an object."
+	"""Contains information about the collision of a ray with an object."""
 
 	# obj: Object # would cause a circular import
 	ray: Ray

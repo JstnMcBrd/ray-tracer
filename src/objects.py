@@ -1,4 +1,4 @@
-"Definitions for all supported objects and their behavior."
+"""Definitions for all supported objects and their behavior."""
 
 
 import numpy as np
@@ -9,7 +9,7 @@ from vector import magnitude, normalized
 
 
 class Object:
-	"The universal values shared by all objects."
+	"""The universal values shared by all objects."""
 
 	name: str | None = ""
 	ambient_coefficient: float = 0
@@ -22,20 +22,20 @@ class Object:
 
 	def normal(self, point: NDArray[np.float64]) -> NDArray[np.float64]:
 		"""
-		The "up" direction from this point on the object.
+		Return the "up" direction from the point on the object.
+
 		Assumes the point is actually on the object.
 		"""
 
 		raise NotImplementedError()
 
 	def ray_intersection(self, ray: Ray) -> RayCollision | None:
-		"Calculates whether the given ray collides with this object."
-
-		raise NotImplementedError()
+		"""Calculate whether the given ray collides with this object."""
+		raise NotImplementedError
 
 
 class Plane(Object):
-	"The specific values necessary for Planes."
+	"""The specific values necessary for Planes."""
 
 	_normal: NDArray[np.float64]
 	_distance_from_origin: float
@@ -67,7 +67,7 @@ class Plane(Object):
 
 
 class Circle(Object):
-	"The specific values necessary for Circles."
+	"""The specific values necessary for Circles."""
 
 	position: NDArray[np.float_]
 	radius: float
@@ -102,7 +102,7 @@ class Circle(Object):
 
 
 class Polygon(Object):
-	"The specific values necessary for Polygons."
+	"""The specific values necessary for Polygons."""
 
 	X_AXIS_SHIFT = 0.01
 	"To make sure no flattened relative vertices lie on the x-axis."
@@ -185,7 +185,7 @@ class Polygon(Object):
 
 
 class Sphere(Object):
-	"The specific values necessary for Spheres."
+	"""The specific values necessary for Spheres."""
 
 	position: NDArray[np.float64]
 	radius: float
@@ -225,9 +225,10 @@ class Sphere(Object):
 
 class Triangle(Polygon):
 	"""
-	The specific values necessary for Triangles. 
+	The specific values necessary for Triangles.
+
 	The algorithm for Triangle intersections is slightly faster than Polygons,
- 	so 3-sided Polygons will be automatically converted to Triangles.
+	so 3-sided Polygons will be automatically converted to Triangles.
 	"""
 
 	TOLERANCE = 0.0001
