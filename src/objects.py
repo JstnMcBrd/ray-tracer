@@ -112,6 +112,8 @@ class Circle(Object):
 class Polygon(Object):
 	"""The specific values necessary for Polygons."""
 
+	MIN_VERTICES = 3
+
 	X_AXIS_SHIFT = 0.01
 	"To make sure no flattened relative vertices lie on the x-axis."
 
@@ -248,6 +250,8 @@ class Triangle(Polygon):
 	The algorithm for Triangle intersections is slightly faster than Polygons,
 	so 3-sided Polygons will be automatically converted to Triangles.
 	"""
+
+	REQUIRED_VERTICES = 3
 
 	TOLERANCE = 0.0001
 	"Tolerance for floating-point area calculations."
