@@ -11,6 +11,8 @@ ignore = [
 	"EM101",	# Convenience - https://docs.astral.sh/ruff/rules/raw-string-in-exception/
 	"EM102",	# Convenience - https://docs.astral.sh/ruff/rules/f-string-in-exception/
 	"ERA001",	# False positives - https://docs.astral.sh/ruff/rules/commented-out-code/
+	"EXE001",	# Causes problems during CI/CD - https://docs.astral.sh/ruff/rules/shebang-not-executable/
+	"EXE002",	# Causes problems during CI/CD - https://docs.astral.sh/ruff/rules/shebang-missing-executable-file/
 	"FBT001",	# We use positional boolean args - https://docs.astral.sh/ruff/rules/boolean-type-hint-positional-argument/
 	"INP001",	# This project is a command-line script, not a package - https://docs.astral.sh/ruff/rules/implicit-namespace-package/
 	"PLR0913",	# Convenience - https://docs.astral.sh/ruff/rules/too-many-arguments/

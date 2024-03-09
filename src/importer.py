@@ -30,14 +30,14 @@ def import_scene(file_path: str) -> Scene:
 	json_data: dict
 	try:
 		json_data = json_as_dict(json_str)
-	except (ValueError, TypeError) as err:
+	except (TypeError, ValueError) as err:
 		print(f'"{file_path}" is not a valid json file\n\t{err}')
 		sys.exit(1)
 
 	scene: Scene
 	try:
 		scene = _load_from_json(json_data)
-	except (AssertionError, TypeError, ValueError) as err:
+	except (TypeError, ValueError) as err:
 		print(f'"{file_path}" is improperly formatted\n\t{err}')
 		sys.exit(1)
 
