@@ -22,7 +22,7 @@ COLLISION_NORMAL_OFFSET = 0.01
 
 
 def ray_trace(scene: Scene, width: int, height: int,
-		reflection_limit: int, progress_bar: bool) -> NDArray[np.float_]:
+		reflection_limit: int, progress_bar: bool) -> NDArray[np.float64]:
 	"""
 	Ray traces the given scene.
 

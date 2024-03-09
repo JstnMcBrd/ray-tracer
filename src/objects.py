@@ -41,15 +41,19 @@ class Plane(Object):
 	_distance_from_origin: float
 
 	def __init__(self, position: NDArray[np.float64], normal: NDArray[np.float64],
+		) -> None:
+		"""Initialize an instance of Plane."""
 		super().__init__()
 
 		self._normal = normalized(normal)
 		self._distance_from_origin = -1 * np.dot(normal, position)
 
 	def normal(self, point: NDArray[np.float64] | None = None) -> NDArray[np.float64]: # noqa: ARG002
+		"""Return the "up" direction, which is the same for every point."""
 		return self._normal
 
 	def ray_intersection(self, ray: Ray) -> RayCollision | None:
+		"""Calculate whether the given ray collides with this object."""
 		v_d = np.dot(self._normal, ray.direction)
 
 		if v_d == 0:
@@ -74,6 +78,7 @@ class Circle(Object):
 	_plane: Plane
 
 	def __init__(self, position: NDArray[np.float64], normal: NDArray[np.float64],
+		"""Initialize an instance of Circle."""
 		super().__init__()
 
 		self.position = position
@@ -83,9 +88,11 @@ class Circle(Object):
 		self._plane = Plane(position, normal)
 
 	def normal(self, point: NDArray[np.float64] | None = None) -> NDArray[np.float64]:
+		"""Return the "up" direction, which is the same for every point."""
 		return self._plane.normal(point)
 
 	def ray_intersection(self, ray: Ray) -> RayCollision | None:
+		"""Calculate whether the given ray collides with this object."""
 		# See if ray intersects with plane
 		plane_collision = self._plane.ray_intersection(ray)
 		if plane_collision is None:
@@ -113,6 +120,7 @@ class Polygon(Object):
 	_flattened_vertices: list[NDArray[np.float64]]
 
 	def __init__(self, vertices: list[NDArray[np.float64]]) -> None:
+		"""Initialize an instance of Polygon."""
 		super().__init__()
 
 		assert len(vertices) >= 3, "Polygon must have at least 3 vertices"
@@ -132,9 +140,11 @@ class Polygon(Object):
 								for v in self._vertices]
 
 	def normal(self, point: NDArray[np.float64] | None = None) -> NDArray[np.float64]:
+		"""Return the "up" direction, which is the same for every point."""
 		return self._plane.normal(point)
 
 	def ray_intersection(self, ray: Ray) -> RayCollision | None:
+		"""Calculate whether the given ray collides with this object."""
 		# See if ray intersects with plane
 		plane_collision = self._plane.ray_intersection(ray)
 		if plane_collision is None:
@@ -191,14 +201,17 @@ class Sphere(Object):
 	radius: float
 
 	def __init__(self, position: NDArray[np.float64], radius: float) -> None:
+		"""Initialize an instance of Sphere."""
 		super().__init__()
 		self.position = position
 		self.radius = radius
 
 	def normal(self, point: NDArray[np.float64]) -> NDArray[np.float64]:
+		"""Return the "up" direction from the point on the object."""
 		return normalized(point - self.position)
 
 	def ray_intersection(self, ray: Ray) -> RayCollision | None:
+		"""Calculate whether the given ray collides with this object."""
 		dist = self.position - ray.origin
 		dist_sqr = np.dot(dist, dist)
 		dist_mag = np.sqrt(dist_sqr)
@@ -237,6 +250,7 @@ class Triangle(Polygon):
 	_flattened_area: float
 
 	def __init__(self, vertices: list[NDArray[np.float64]]) -> None:
+		"""Initialize an instance of Triangle."""
 		super().__init__(vertices)
 
 		assert len(vertices) == 3, "Triangle must have 3 vertices"

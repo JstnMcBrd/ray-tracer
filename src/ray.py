@@ -13,6 +13,7 @@ class Ray:
 	direction: NDArray[np.float64]
 
 	def __init__(self, origin: NDArray[np.float64], direction: NDArray[np.float64],
+		"""Initialize an instance of Ray."""
 		self.origin = origin
 		self.direction = direction
 
@@ -26,6 +27,7 @@ class RayCollision:
 	distance: float
 
 	def __init__(self, obj, ray: Ray, position: NDArray[np.float64]) -> None:  # noqa: ANN001
+		"""Initialize an instance of RayCollision."""
 		self.obj = obj
 		self.ray = ray
 		self.position = position
