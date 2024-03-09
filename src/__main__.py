@@ -67,8 +67,7 @@ def parse_arguments() -> tuple[str, str, int, int, int, bool]:
 
 
 def main(scene_file_path: str, output_file_path: str, width: int, height: int,
-	reflection_limit: int, progress_bar: bool):
-
+	reflection_limit: int, progress_bar: bool) -> None:
 	"""Import, ray-trace, and export."""
 	# Assert the output file extension is supported
 	assert_supported_extension(output_file_path)

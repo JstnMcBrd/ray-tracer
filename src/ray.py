@@ -13,6 +13,7 @@ class Ray:
 	direction: NDArray[np.float64]
 
 	def __init__(self, origin: NDArray[np.float64], direction: NDArray[np.float64],
+		) -> None:
 		"""Initialize an instance of Ray."""
 		self.origin = origin
 		self.direction = direction

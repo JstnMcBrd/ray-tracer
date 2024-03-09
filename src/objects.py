@@ -73,11 +73,12 @@ class Plane(Object):
 class Circle(Object):
 	"""The specific values necessary for Circles."""
 
-	position: NDArray[np.float_]
+	position: NDArray[np.float64]
 	radius: float
 	_plane: Plane
 
 	def __init__(self, position: NDArray[np.float64], normal: NDArray[np.float64],
+		radius: float) -> None:
 		"""Initialize an instance of Circle."""
 		super().__init__()
 
@@ -282,10 +283,10 @@ class Triangle(Polygon):
 		return RayCollision(self, ray, intersection)
 
 	@staticmethod
-		"Given the three vertices, returns the area of the enclosed triangle."
 
 		assert len(vertices) == 3, "Must have 3 vertices to be a triangle"
 	def area(vertices: list[NDArray[np.float64]]) -> float:
+		"""Given the three vertices, return the area of the enclosed triangle."""
 
 		area: float = (vertices[0][0] * (vertices[1][1] - vertices[2][1]) \
 			+ vertices[1][0] * (vertices[2][1] - vertices[0][1]) \
