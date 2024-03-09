@@ -33,7 +33,7 @@ def import_scene(file_path: str) -> Scene:
 	scene: Scene
 	try:
 		scene = _load_from_json(json_data)
-	except AssertionError as err:
+	except (AssertionError, TypeError, ValueError) as err:
 		print(f'"{file_path}" is improperly formatted\n\t{err}')
 		sys.exit(1)
 
@@ -93,12 +93,17 @@ def _load_object(json_value: Any | None, error_prefix: str = "Object") -> Object
 	"""Import a dictionary as an Object."""
 	obj: Object | None = None
 
-	assert json_value is not None, f"{error_prefix} must not be missing"
-	assert isinstance(json_value, dict), f"{error_prefix} must be type dict, not {type(json_value)}"
+	if json_value is None:
+		raise ValueError(f"{error_prefix} must not be missing")
+	if not isinstance(json_value, dict):
+		raise TypeError(f"{error_prefix} must be type dict, not {type(json_value)}")
 
 	obj_type = json_value.get("type")
-	assert obj_type is not None, f"{error_prefix}.type must not be missing"
-	assert isinstance(obj_type, str), f"{error_prefix}.type must be type string, not {type(obj_type)}"
+	if obj_type is None:
+		raise ValueError(f"{error_prefix}.type must not be missing")
+	if not isinstance(obj_type, str):
+		raise TypeError(f"{error_prefix}.type must be type string, \
+			not {type(obj_type)}")
 	obj_type = obj_type.lower()
 
 	# Load in object-type-specific values
@@ -117,8 +122,8 @@ def _load_object(json_value: Any | None, error_prefix: str = "Object") -> Object
 
 	# Load in universal object values
 	name = json_value.get("name")
-	if name is not None:
-		assert isinstance(name, str), f"{error_prefix}.name must be type string, not {type(name)}"
+	if name is not None and not isinstance(name, str):
+		raise TypeError(f"{error_prefix}.name must be type string, not {type(name)}")
 	obj.name = name
 
 	obj.ambient_coefficient = _validate_number(json_value.get("ambient_coefficient"), default=0,
@@ -166,10 +171,12 @@ def _load_polygon(json_value: dict, error_prefix: str = "Polygon") -> Polygon:
 	vertices_numpyified = []
 	vertices = _validate_list(json_value.get("vertices"), error_prefix=f"{error_prefix}.vertices")
 
-	assert len(vertices) >= 3, f"{error_prefix}.vertices must have at least 3 vertices"
+	if len(vertices) < Polygon.MIN_VERTICES:
+		raise ValueError(f"{error_prefix}.vertices must have at least 3 vertices")
 
-	if len(vertices) == 3:
-		print(f"WARNING: {error_prefix} only has 3 vertices, automatically converting to Triangle")
+	if len(vertices) == Triangle.REQUIRED_VERTICES:
+		print(f"WARNING: {error_prefix} only has 3 vertices, \
+			automatically converting to Triangle")
 		return _load_triangle(json_value, error_prefix)
 
 	for count, element in enumerate(vertices):
@@ -194,7 +201,8 @@ def _load_triangle(json_value: dict, error_prefix: str = "Triangle") -> Triangle
 	vertices_numpyified = []
 	vertices = _validate_list(json_value.get("vertices"), error_prefix=f"{error_prefix}.vertices")
 
-	assert len(vertices) == 3, f"{error_prefix}.vertices must have 3 vertices"
+	if len(vertices) != Triangle.REQUIRED_VERTICES:
+		raise ValueError(f"{error_prefix}.vertices must have 3 vertices")
 
 	for count, element in enumerate(vertices):
 		vertex = _validate_position_vector(element, error_prefix=f"{error_prefix}.vertices[{count}]")
@@ -258,11 +266,13 @@ def _validate_list(json_value: Any | None,
 		print(f"WARNING: {error_prefix} is missing, reverting to default value {default}")
 		return default
 
-	assert json_value is not None, f"{error_prefix} must not be missing"
-	assert isinstance(json_value, list), f"{error_prefix} must be type list, not {type(json_value)}"
-	if length is not None:
-		assert len(json_value) == length, \
-			f"{error_prefix} must have {length} elements, not {len(json_value)}"
+	if json_value is None:
+		raise ValueError(f"{error_prefix} must not be missing")
+	if not isinstance(json_value, list):
+		raise TypeError(f"{error_prefix} must be type list, not {type(json_value)}")
+	if length is not None and len(json_value) != length:
+		raise ValueError(f"{error_prefix} must have {length} elements, \
+			not {len(json_value)}")
 
 	return json_value
 
@@ -277,12 +287,15 @@ def _validate_number(json_value: Any | None,
 		print(f"WARNING: {error_prefix} is missing, reverting to default value {default}")
 		return default
 
-	assert json_value is not None, f"{error_prefix} must not be missing"
-	assert isinstance(json_value, (float, int)), \
-		f"{error_prefix} must be type float or int, not {type(json_value)}"
-	if _min is not None:
-		assert json_value >= _min, f"{error_prefix} must be greater than {_min}, not {json_value}"
-	if _max is not None:
-		assert json_value <= _max, f"{error_prefix} must be less than {_max}, not {json_value}"
+	if json_value is None:
+		raise ValueError(f"{error_prefix} must not be missing")
+	if not isinstance(json_value, float | int):
+		raise TypeError(f"{error_prefix} must be type float or int, \
+			not {type(json_value)}")
+	if _min is not None and json_value < _min:
+		raise ValueError(f"{error_prefix} must be greater than {_min}, \
+			not {json_value}")
+	if _max is not None and json_value > _max:
+		raise ValueError(f"{error_prefix} must be less than {_max}, not {json_value}")
 
 	return json_value

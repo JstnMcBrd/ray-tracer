@@ -6,9 +6,10 @@ from numpy.typing import NDArray
 
 
 def magnitude(vector: NDArray) -> float:
-
-	assert vector.ndim == 1, f"A vector must be 1-dimensional, not {vector.ndim}-dimensional"
 	"""Return the scalar length of the vector."""
+	if vector.ndim != 1:
+		raise ValueError(f"A vector must be 1-dimensional, \
+			not {vector.ndim}-dimensional")
 	return float(np.linalg.norm(vector))
 
 

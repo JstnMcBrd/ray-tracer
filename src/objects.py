@@ -124,7 +124,8 @@ class Polygon(Object):
 		"""Initialize an instance of Polygon."""
 		super().__init__()
 
-		assert len(vertices) >= 3, "Polygon must have at least 3 vertices"
+		if len(vertices) < Polygon.MIN_VERTICES:
+			raise ValueError("Polygon must have at least 3 vertices")
 
 		self._vertices = vertices
 
@@ -254,7 +255,9 @@ class Triangle(Polygon):
 		"""Initialize an instance of Triangle."""
 		super().__init__(vertices)
 
-		assert len(vertices) == 3, "Triangle must have 3 vertices"
+		if len(vertices) != Triangle.REQUIRED_VERTICES:
+			raise ValueError(f"Triangle must have \
+				{Triangle.REQUIRED_VERTICES} vertices")
 
 		self._flattened_area = Triangle.area(self._flattened_vertices)
 
@@ -283,10 +286,11 @@ class Triangle(Polygon):
 		return RayCollision(self, ray, intersection)
 
 	@staticmethod
-
-		assert len(vertices) == 3, "Must have 3 vertices to be a triangle"
 	def area(vertices: list[NDArray[np.float64]]) -> float:
 		"""Given the three vertices, return the area of the enclosed triangle."""
+		if len(vertices) != Triangle.REQUIRED_VERTICES:
+			raise ValueError(f"Triangle must have \
+				{Triangle.REQUIRED_VERTICES} vertices")
 
 		area: float = (vertices[0][0] * (vertices[1][1] - vertices[2][1]) \
 			+ vertices[1][0] * (vertices[2][1] - vertices[0][1]) \
