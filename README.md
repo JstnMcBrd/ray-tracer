@@ -1,6 +1,6 @@
 # ray-tracer
 
-[![linting: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/pylint-dev/pylint)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
 <br />
 [![Validate](https://img.shields.io/github/actions/workflow/status/JstnMcBrd/ray-tracer/validate.yml?logo=github&label=Validate)](https://github.com/JstnMcBrd/ray-tracer/actions/workflows/validate.yml)
@@ -223,11 +223,11 @@ class Triangle extends Polygon {
 To run the linter, use
 
 ```sh
-pylint src
+ruff check
 ```
 
 To run the type-checker, use
 
 ```sh
-mypy src
+mypy .
 ```

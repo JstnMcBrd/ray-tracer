@@ -1,7 +1,7 @@
 {
 	"recommendations": [
 		"ms-python.python",
-		"ms-python.pylint",
+		"charliermarsh.ruff",
 		"ms-python.mypy-type-checker",
 		"github.vscode-github-actions",
 	]

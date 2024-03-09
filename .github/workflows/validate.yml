@@ -25,7 +25,7 @@ jobs:
         run: pip install --requirement requirements.txt
 
       - name: Lint
-        run: pylint src
+        run: ruff check
 
       - name: Typecheck
-        run: mypy src
+        run: mypy .
