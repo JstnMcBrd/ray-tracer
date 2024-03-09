@@ -24,7 +24,7 @@ def assert_supported_extension(output_file_path: str) -> None:
 	random_file_name = f"temp_{random_str(10)}.{extension}"
 	try:
 		Image.new(COLOR_MODE, (1, 1)).save(random_file_name)
-		remove(random_file_name)
+		Path(random_file_name).unlink()
 	except ValueError:
 		print(f"Output file extension is not supported: {extension}")
 		sys.exit(1)

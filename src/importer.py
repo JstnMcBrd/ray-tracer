@@ -17,7 +17,7 @@ def import_scene(file_path: str) -> Scene:
 	"""Return a scene with the values importing from the given file."""
 	json_str = None
 	try:
-		with open(file_path, "r", encoding="utf8") as json_file:
+		with Path(file_path).open(encoding="utf8") as json_file:
 			json_str = json_file.read()
 	except OSError as err:
 		print(f'"{file_path}" is not a valid path\n\t{err}')
