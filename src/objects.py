@@ -11,7 +11,7 @@ from vector import magnitude, normalized
 class Object:
 	"""The universal values shared by all objects."""
 
-	name: str | None = ""
+	name: str | None
 	ambient_coefficient: float = 0
 	diffuse_coefficient: float = 0
 	specular_coefficient: float = 0
@@ -26,8 +26,7 @@ class Object:
 
 		Assumes the point is actually on the object.
 		"""
-
-		raise NotImplementedError()
+		raise NotImplementedError
 
 	def ray_intersection(self, ray: Ray) -> RayCollision | None:
 		"""Calculate whether the given ray collides with this object."""

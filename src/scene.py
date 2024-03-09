@@ -64,6 +64,4 @@ class Scene:
 		"""Projects the ray into the scene and returns the closest object collision."""
 		collisions = [obj.ray_intersection(ray) for obj in self.objects]
 		real = list(filter(None, collisions))
-		closest = min(real, key=lambda c: c.distance) if real else None
-
-		return closest
+		return min(real, key=lambda c: c.distance) if real else None

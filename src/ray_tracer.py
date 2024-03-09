@@ -13,6 +13,8 @@ from shader import shade
 from tqdm import tqdm
 from vector import normalized
 
+if TYPE_CHECKING:
+	from collections.abc import Iterable
 
 FADE_LIMIT = 0.01
 "Fading limit for reflections"
