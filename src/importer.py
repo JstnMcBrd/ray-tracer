@@ -1,6 +1,10 @@
 """Handles importing scenes from JSON files."""
 
 
+# Any types are necessary for dict.get method
+# ruff: noqa: ANN401
+
+
 import sys
 from json import loads as json_as_dict
 from pathlib import Path
