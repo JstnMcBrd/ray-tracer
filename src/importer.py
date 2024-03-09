@@ -1,12 +1,13 @@
 "Handles importing scenes from JSON files."
 
 
-from json import loads as json_as_dict
 import sys
+from json import loads as json_as_dict
+from pathlib import Path
+from typing import Any
 
 import numpy as np
 from numpy.typing import NDArray
-
 from objects import Circle, Object, Plane, Polygon, Sphere, Triangle
 from scene import Camera, Scene
 from vector import magnitude, normalized

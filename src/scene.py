@@ -3,7 +3,6 @@
 
 import numpy as np
 from numpy.typing import NDArray
-
 from objects import Object
 from ray import Ray, RayCollision
 from vector import magnitude, normalized

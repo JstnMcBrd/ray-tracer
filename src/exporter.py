@@ -1,9 +1,9 @@
 "Contains methods for writing the screen to image files."
 
 
-from os import remove
-from random import choice
 import sys
+from pathlib import Path
+from secrets import choice
 from string import ascii_letters
 
 import numpy as np

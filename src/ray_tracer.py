@@ -5,16 +5,15 @@ Generates an image from a scene using
 
 
 from math import tan
-from multiprocessing import cpu_count, Pool
-from typing import Iterable
+from multiprocessing import Pool, cpu_count
+from typing import TYPE_CHECKING
 
 import numpy as np
 from numpy.typing import NDArray
-from tqdm import tqdm
-
 from ray import Ray
 from scene import Camera, Scene
 from shader import shade
+from tqdm import tqdm
 from vector import normalized
 
 

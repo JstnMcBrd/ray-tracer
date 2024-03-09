@@ -2,9 +2,8 @@
 
 
 import numpy as np
-from numpy.typing import NDArray
-
 from lib._itertools import closed_pairwise
+from numpy.typing import NDArray
 from ray import Ray, RayCollision
 from vector import magnitude, normalized
 
