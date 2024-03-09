@@ -12,8 +12,8 @@ def magnitude(vector: NDArray) -> float:
 	return float(np.linalg.norm(vector))
 
 
-def normalized(vector: NDArray) -> NDArray[np.float_]:
 	"Returns a new vector pointing in the same direction but with a length of 1 (or 0)."
 
+def normalized(vector: NDArray) -> NDArray[np.float64]:
 	mag = magnitude(vector)
 	return vector / mag if mag != 0 else vector

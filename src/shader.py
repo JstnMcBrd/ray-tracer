@@ -7,12 +7,12 @@ from objects import Object
 from scene import Scene
 
 
-def shade(scene: Scene, obj: Object, position: NDArray[np.float_],
-		view_direction: NDArray[np.float_], shadow: bool, reflected_color: NDArray[np.float_]
-	) -> NDArray[np.float_]:
 	"""
 	Applies [Phong shading](https://en.wikipedia.org/wiki/Phong_shading)
 	to the given object and returns the color.
+def shade(scene: Scene, obj: Object, position: NDArray[np.float64],
+	view_direction: NDArray[np.float64], shadow: bool,
+	reflected_color: NDArray[np.float64]) -> NDArray[np.float64]:
 	"""
 
 	shadow_coefficient = 0 if shadow else 1

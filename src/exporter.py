@@ -33,9 +33,9 @@ def assert_supported_extension(output_file_path: str) -> None:
 		sys.exit(1)
 
 
-def export(screen: NDArray[np.float_], output_file_path: str) -> None:
 	"Writes the screen to a file using the encoding of the file extension."
 
+def export(screen: NDArray[np.float64], output_file_path: str) -> None:
 	height, width, depth = screen.shape
 
 	screen = (screen * 255).astype(np.uint8)
