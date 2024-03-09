@@ -1,28 +1,28 @@
-"Classes that define the scene to be ray traced."
+"""Classes that define the scene to be ray traced."""
 
 
 import numpy as np
 from numpy.typing import NDArray
-
 from objects import Object
 from ray import Ray, RayCollision
 from vector import magnitude, normalized
 
 
 class Camera:
-	"Defines the camera position, orientation, and other settings."
+	"""Defines the camera position, orientation, and other settings."""
 
-	position: NDArray[np.float_]
+	position: NDArray[np.float64]
 	field_of_view: float
-	relative_look_at: NDArray[np.float_]
+	relative_look_at: NDArray[np.float64]
 	focal_length: float
-	forward: NDArray[np.float_]
-	up: NDArray[np.float_]
-	right: NDArray[np.float_]
+	forward: NDArray[np.float64]
+	up: NDArray[np.float64]
+	right: NDArray[np.float64]
 
-	def __init__(self, camera_look_at: NDArray[np.float_], camera_look_from: NDArray[np.float_],
-			camera_look_up: NDArray[np.float_], field_of_view: float):
-
+	def __init__(self, camera_look_at: NDArray[np.float64],
+		camera_look_from: NDArray[np.float64], camera_look_up: NDArray[np.float64],
+		field_of_view: float) -> None:
+		"""Initialize an instance of Camera."""
 		self.position = camera_look_from
 		self.field_of_view = field_of_view
 
@@ -35,19 +35,19 @@ class Camera:
 
 
 class Scene:
-	"Defines the entire scene and all objects within it."
+	"""Defines the entire scene and all objects within it."""
 
 	camera: Camera
-	light_direction: NDArray[np.float_]
-	light_color: NDArray[np.float_]
-	ambient_light_color: NDArray[np.float_]
-	background_color: NDArray[np.float_]
+	light_direction: NDArray[np.float64]
+	light_color: NDArray[np.float64]
+	ambient_light_color: NDArray[np.float64]
+	background_color: NDArray[np.float64]
 	objects: list[Object]
 
-	def __init__(self, camera: Camera, light_direction: NDArray[np.float_],
-			light_color: NDArray[np.float_], ambient_light_color: NDArray[np.float_],
-			background_color: NDArray[np.float_], objects: list[Object]):
-
+	def __init__(self, camera: Camera, light_direction: NDArray[np.float64],
+		light_color: NDArray[np.float64], ambient_light_color: NDArray[np.float64],
+		background_color: NDArray[np.float64], objects: list[Object]) -> None:
+		"""Initialize an instance of Scene."""
 		# Camera
 		self.camera = camera
 
@@ -61,10 +61,7 @@ class Scene:
 		self.objects = objects
 
 	def cast_ray(self, ray: Ray) -> RayCollision | None:
-		"Projects the ray into the scene and returns the closest object collision."
-
+		"""Projects the ray into the scene and returns the closest object collision."""
 		collisions = [obj.ray_intersection(ray) for obj in self.objects]
 		real = list(filter(None, collisions))
-		closest = min(real, key=lambda c: c.distance) if real else None
-
-		return closest
+		return min(real, key=lambda c: c.distance) if real else None

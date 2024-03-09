@@ -4,7 +4,7 @@ tqdm
 Pillow
 
 # Linting
-pylint
+ruff
 
 # Typing
 mypy

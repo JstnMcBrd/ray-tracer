@@ -1,0 +1,28 @@
+# Assume Python 3.12
+target-version = "py312"
+
+[lint]
+select = ["ALL"]
+ignore = [
+	"ANN101",	# Will likely be removed in future update - https://docs.astral.sh/ruff/rules/missing-type-self/
+	"D203",		# Conflicts with D211 - https://docs.astral.sh/ruff/rules/one-blank-line-before-class/
+	"D206",		# Using tabs - https://docs.astral.sh/ruff/rules/indent-with-spaces/
+	"D212",		# Conflicts with D213 - https://docs.astral.sh/ruff/rules/multi-line-summary-first-line/
+	"EM101",	# Convenience - https://docs.astral.sh/ruff/rules/raw-string-in-exception/
+	"EM102",	# Convenience - https://docs.astral.sh/ruff/rules/f-string-in-exception/
+	"ERA001",	# False positives - https://docs.astral.sh/ruff/rules/commented-out-code/
+	"EXE001",	# Causes problems during CI/CD - https://docs.astral.sh/ruff/rules/shebang-not-executable/
+	"EXE002",	# Causes problems during CI/CD - https://docs.astral.sh/ruff/rules/shebang-missing-executable-file/
+	"FBT001",	# We use positional boolean args - https://docs.astral.sh/ruff/rules/boolean-type-hint-positional-argument/
+	"INP001",	# This project is a command-line script, not a package - https://docs.astral.sh/ruff/rules/implicit-namespace-package/
+	"PLR0913",	# Convenience - https://docs.astral.sh/ruff/rules/too-many-arguments/
+	"SIM112",	# Same capitalizatioin of ENV variables as internal variables - https://docs.astral.sh/ruff/rules/uncapitalized-environment-variables/
+	"T201",		# Command-line scripts need to communicate with the user - https://docs.astral.sh/ruff/rules/print/
+	"TRY003",	# Convenience - https://docs.astral.sh/ruff/rules/raise-vanilla-args/
+	"W191",		# Using tabs - https://docs.astral.sh/ruff/rules/tab-indentation/
+]
+
+[format]
+indent-style = "tab"
+
+docstring-code-format = true
