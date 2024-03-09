@@ -1,5 +1,8 @@
 # ray-tracer
 
+[![linting: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/pylint-dev/pylint)
+[![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
+<br />
 [![Validate](https://img.shields.io/github/actions/workflow/status/JstnMcBrd/ray-tracer/validate.yml?logo=github&label=Validate)](https://github.com/JstnMcBrd/ray-tracer/actions/workflows/validate.yml)
 
 ## About
