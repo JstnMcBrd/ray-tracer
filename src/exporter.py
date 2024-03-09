@@ -10,14 +10,12 @@ import numpy as np
 from numpy.typing import NDArray
 from PIL import Image
 
-
-COLOR_MODE = 'RGB'
+COLOR_MODE = "RGB"
 
 
 def random_str(length: int) -> str:
-
-	return ''.join(choice(ascii_letters) for _ in range(length))
 	"""Generate a random string of the given length."""
+	return "".join(choice(ascii_letters) for _ in range(length))
 
 
 def assert_supported_extension(output_file_path: str) -> None:

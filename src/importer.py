@@ -20,21 +20,21 @@ def import_scene(file_path: str) -> Scene:
 		with open(file_path, "r", encoding="utf8") as json_file:
 			json_str = json_file.read()
 	except OSError as err:
-		print(f"\"{file_path}\" is not a valid path\n\t{err}")
+		print(f'"{file_path}" is not a valid path\n\t{err}')
 		sys.exit(1)
 
 	json_data: dict
 	try:
 		json_data = json_as_dict(json_str)
 	except (ValueError, TypeError) as err:
-		print(f"\"{file_path}\" is not a valid json file\n\t{err}")
+		print(f'"{file_path}" is not a valid json file\n\t{err}')
 		sys.exit(1)
 
 	scene: Scene
 	try:
 		scene = _load_from_json(json_data)
 	except AssertionError as err:
-		print(f"\"{file_path}\" is improperly formatted\n\t{err}")
+		print(f'"{file_path}" is improperly formatted\n\t{err}')
 		sys.exit(1)
 
 	return scene
