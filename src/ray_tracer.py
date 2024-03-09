@@ -36,8 +36,14 @@ def ray_trace(scene: Scene, width: int, height: int,
 	half_window_size = window_size/2
 
 	# Set up multiprocessing pool and inputs
-	tuple_inputs = [(scene, reflection_limit, x, y, window_to_viewport_size_ratio, half_window_size)
-		for y in range(height) for x in range(width)]
+	tuple_inputs = [
+		(
+			scene, reflection_limit, x, y,
+			window_to_viewport_size_ratio,
+			half_window_size,
+		)
+		for y in range(height) for x in range(width)
+	]
 	outputs = []
 
 	with Pool(cpu_count()) as pool:
@@ -77,7 +83,8 @@ def _ray_trace_pixel(
 	"""Retrieve the color for a given pixel."""
 	# Find the world point of the pixel, relative to the camera's position
 	viewport_point = np.array([x, y])
-	window_point = _viewport_to_window(viewport_point, window_to_viewport_size_ratio, half_window_size)
+	window_point = _viewport_to_window(viewport_point, window_to_viewport_size_ratio,
+		half_window_size)
 	world_point_relative = _window_to_relative_world(window_point, scene.camera)
 
 	# Start sending out rays
@@ -106,13 +113,16 @@ def _get_color(scene: Scene, reflection_limit: int,
 		shadow = _is_in_shadow(scene, collision.position)
 
 		# Reflections (recursive)
-		sight_reflection_direction = ray.direction - 2 * normal * np.dot(ray.direction, normal)
+		sight_reflection_direction = \
+			ray.direction - 2 * normal * np.dot(ray.direction, normal)
 		reflected_color = _get_color(scene, reflection_limit, collision.position,
-						sight_reflection_direction, fade*collision.obj.reflectivity, reflections+1)
+						sight_reflection_direction, fade*collision.obj.reflectivity,
+						reflections+1)
 
 		# Shading
 		view_direction = -1 * ray.direction
-		return shade(scene, collision.obj, collision.position, view_direction, shadow, reflected_color)
+		return shade(scene, collision.obj, collision.position, view_direction, shadow,
+			reflected_color)
 
 	# If no object collided, use the background
 	return scene.background_color

@@ -136,8 +136,10 @@ class Polygon(Object):
 
 		self._plane = Plane(vertices[0], _normal)
 
-		# Project all the vertices onto a 2D plane (for future intersection calculations)
-		self._plane_dominant_coord: int = np.where(np.abs(_normal) == np.max(np.abs(_normal)))[0][0]
+		# Project all the vertices onto a 2D plane for future intersection calculations
+		self._plane_dominant_coord: int = np.where(
+			np.abs(_normal) == np.max(np.abs(_normal)),
+		)[0][0]
 		self._flattened_vertices = [np.delete(v, self._plane_dominant_coord)
 								for v in self._vertices]
 
@@ -225,7 +227,8 @@ class Sphere(Object):
 		if closest_approach < 0 and outside:
 			return None
 
-		closest_approach_dist_to_surface_sqr = self.radius**2 - dist_sqr + closest_approach**2
+		closest_approach_dist_to_surface_sqr = \
+			self.radius**2 - dist_sqr + closest_approach**2
 
 		if closest_approach_dist_to_surface_sqr < 0:
 			return None
@@ -262,6 +265,7 @@ class Triangle(Polygon):
 		self._flattened_area = Triangle.area(self._flattened_vertices)
 
 	def ray_intersection(self, ray: Ray) -> RayCollision | None:
+		"""Calculate whether the given ray collides with this object."""
 		# See if ray intersects with plane
 		plane_collision = self._plane.ray_intersection(ray)
 		if plane_collision is None:
@@ -272,14 +276,24 @@ class Triangle(Polygon):
 		flattened_intersection = np.delete(intersection, self._plane_dominant_coord)
 
 		# Calculate areas
-		area_1 = Triangle.area([self._flattened_vertices[0], self._flattened_vertices[1],
-			 flattened_intersection])
-		area_2 = Triangle.area([self._flattened_vertices[0], self._flattened_vertices[2],
-			 flattened_intersection])
-		area_3 = Triangle.area([self._flattened_vertices[1], self._flattened_vertices[2],
-			 flattened_intersection])
+		area_1 = Triangle.area([
+			self._flattened_vertices[0],
+			self._flattened_vertices[1],
+			flattened_intersection,
+		])
+		area_2 = Triangle.area([
+			self._flattened_vertices[0],
+			self._flattened_vertices[2],
+			flattened_intersection,
+		])
+		area_3 = Triangle.area([
+			self._flattened_vertices[1],
+			self._flattened_vertices[2],
+			flattened_intersection,
+		])
 
-		# If point is inside triangle, then the area of all sub-triangles will add up to the total area
+		# If point is inside triangle, then the area of all sub-triangles
+		# will add up to the total area
 		if abs(area_1 + area_2 + area_3 - self._flattened_area) > Triangle.TOLERANCE:
 			return None
 

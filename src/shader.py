@@ -19,7 +19,8 @@ def shade(scene: Scene, obj: Object, position: NDArray[np.float64],
 
 	surface_normal = obj.normal(position)
 	normal_dot_light = np.dot(surface_normal, scene.light_direction)
-	light_reflection_direction = 2 * surface_normal * normal_dot_light - scene.light_direction
+	light_reflection_direction \
+		= 2 * surface_normal * normal_dot_light - scene.light_direction
 	view_dot_light = np.dot(view_direction, light_reflection_direction)
 
 	# Ambient lighting
@@ -32,7 +33,8 @@ def shade(scene: Scene, obj: Object, position: NDArray[np.float64],
 	diffuse *= shadow_coefficient
 
 	# Specular lighting
-	specular = scene.light_color * obj.specular_color * max(0, view_dot_light)**obj.gloss_coefficient
+	specular = scene.light_color * obj.specular_color \
+		* max(0, view_dot_light)**obj.gloss_coefficient
 	specular *= obj.specular_coefficient
 	specular *= shadow_coefficient
 
