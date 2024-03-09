@@ -1,5 +1,12 @@
 # ray-tracer
 
+[![linting: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/pylint-dev/pylint)
+[![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
+<br />
+[![Validate](https://img.shields.io/github/actions/workflow/status/JstnMcBrd/ray-tracer/validate.yml?logo=github&label=Validate)](https://github.com/JstnMcBrd/ray-tracer/actions/workflows/validate.yml)
+
+## About
+
 A simple [ray tracer](https://en.wikipedia.org/wiki/Ray_tracing_(graphics)) written in [Python](https://www.python.org/).
 
 ![program-6-scene-3](https://user-images.githubusercontent.com/28303477/224002637-4f6d5e4d-c5f9-428f-9237-80e46799bcb7.png)
