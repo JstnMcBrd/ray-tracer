@@ -195,6 +195,21 @@ def _load_object(json_value: Any | None, error_prefix: str = "Object") -> Object
 	return obj
 
 
+def _load_plane(json_value: dict, error_prefix: str = "Plane") -> Plane:
+	"""Import Plane-specific values from a dictionary."""
+	position = _validate_position_vector(
+		json_value.get("position"),
+		default=[0,0,0],
+		error_prefix=f"{error_prefix}.position",
+	)
+	normal = _validate_direction_vector(
+		json_value.get("normal"),
+		error_prefix=f"{error_prefix}.normal",
+	)
+
+	return Plane(position, normal)
+
+
 def _load_circle(json_value: dict, error_prefix: str = "Circle") -> Circle:
 	"""Import Circle-specific values from a dictionary."""
 	position = _validate_position_vector(
@@ -213,21 +228,6 @@ def _load_circle(json_value: dict, error_prefix: str = "Circle") -> Circle:
 	)
 
 	return Circle(position, normal, radius)
-
-
-def _load_plane(json_value: dict, error_prefix: str = "Plane") -> Plane:
-	"""Import Plane-specific values from a dictionary."""
-	position = _validate_position_vector(
-		json_value.get("position"),
-		default=[0,0,0],
-		error_prefix=f"{error_prefix}.position",
-	)
-	normal = _validate_direction_vector(
-		json_value.get("normal"),
-		error_prefix=f"{error_prefix}.normal",
-	)
-
-	return Plane(position, normal)
 
 
 def _load_polygon(json_value: dict, error_prefix: str = "Polygon") -> Polygon:
@@ -255,21 +255,6 @@ def _load_polygon(json_value: dict, error_prefix: str = "Polygon") -> Polygon:
 	return Polygon(vertices_numpyified)
 
 
-def _load_sphere(json_value: dict, error_prefix: str = "Sphere") -> Sphere:
-	"""Import Sphere-specific values from a dictionary."""
-	position = _validate_position_vector(
-		json_value.get("position"),
-		error_prefix=f"{error_prefix}.position",
-	)
-	radius = _validate_number(
-		json_value.get("radius"),
-		_min=0,
-		error_prefix=f"{error_prefix}.radius",
-	)
-
-	return Sphere(position, radius)
-
-
 def _load_triangle(json_value: dict, error_prefix: str = "Triangle") -> Triangle:
 	"""Import Triangle-specific values from a dictionary."""
 	vertices_numpyified = []
@@ -289,6 +274,21 @@ def _load_triangle(json_value: dict, error_prefix: str = "Triangle") -> Triangle
 		vertices_numpyified.append(vertex)
 
 	return Triangle(vertices_numpyified)
+
+
+def _load_sphere(json_value: dict, error_prefix: str = "Sphere") -> Sphere:
+	"""Import Sphere-specific values from a dictionary."""
+	position = _validate_position_vector(
+		json_value.get("position"),
+		error_prefix=f"{error_prefix}.position",
+	)
+	radius = _validate_number(
+		json_value.get("radius"),
+		_min=0,
+		error_prefix=f"{error_prefix}.radius",
+	)
+
+	return Sphere(position, radius)
 
 
 def _validate_position_vector(

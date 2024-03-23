@@ -193,48 +193,6 @@ class Polygon(Object):
 		return RayCollision(self, ray, intersection)
 
 
-class Sphere(Object):
-	"""The specific values necessary for Spheres."""
-
-	position: NDArray[np.float64]
-	radius: float
-
-	def __init__(self, position: NDArray[np.float64], radius: float) -> None:
-		"""Initialize an instance of Sphere."""
-		super().__init__()
-		self.position = position
-		self.radius = radius
-
-	def normal(self, point: NDArray[np.float64]) -> NDArray[np.float64]:
-		"""Return the "up" direction from the point on the object."""
-		return normalized(point - self.position)
-
-	def ray_intersection(self, ray: Ray) -> RayCollision | None:
-		"""Calculate whether the given ray collides with this object."""
-		relative_position = self.position - ray.origin
-		distance_sqr = np.dot(relative_position, relative_position)
-		distance = distance_sqr**0.5
-
-		origin_outside = distance >= self.radius
-
-		closest_approach = np.dot(ray.direction, relative_position)
-
-		if closest_approach < 0 and origin_outside:
-			return None
-
-		closest_approach_dist_to_surface_sqr = self.radius**2 - distance_sqr + closest_approach**2
-
-		if closest_approach_dist_to_surface_sqr < 0:
-			return None
-
-		closest_approach_dist_to_surface = closest_approach_dist_to_surface_sqr**0.5
-
-		t = (closest_approach - closest_approach_dist_to_surface) if origin_outside \
-			else (closest_approach + closest_approach_dist_to_surface)
-
-		return RayCollision(self, ray, ray.origin + ray.direction*t)
-
-
 class Triangle(Polygon):
 	"""
 	The specific values necessary for Triangles.
@@ -305,3 +263,45 @@ class Triangle(Polygon):
 			+ vertices[1][0] * (vertices[2][1] - vertices[0][1]) \
 				+ vertices[2][0] * (vertices[0][1] - vertices[1][1])) / 2.0
 		return abs(area)
+
+
+class Sphere(Object):
+	"""The specific values necessary for Spheres."""
+
+	position: NDArray[np.float64]
+	radius: float
+
+	def __init__(self, position: NDArray[np.float64], radius: float) -> None:
+		"""Initialize an instance of Sphere."""
+		super().__init__()
+		self.position = position
+		self.radius = radius
+
+	def normal(self, point: NDArray[np.float64]) -> NDArray[np.float64]:
+		"""Return the "up" direction from the point on the object."""
+		return normalized(point - self.position)
+
+	def ray_intersection(self, ray: Ray) -> RayCollision | None:
+		"""Calculate whether the given ray collides with this object."""
+		relative_position = self.position - ray.origin
+		distance_sqr = np.dot(relative_position, relative_position)
+		distance = distance_sqr**0.5
+
+		origin_outside = distance >= self.radius
+
+		closest_approach = np.dot(ray.direction, relative_position)
+
+		if closest_approach < 0 and origin_outside:
+			return None
+
+		closest_approach_dist_to_surface_sqr = self.radius**2 - distance_sqr + closest_approach**2
+
+		if closest_approach_dist_to_surface_sqr < 0:
+			return None
+
+		closest_approach_dist_to_surface = closest_approach_dist_to_surface_sqr**0.5
+
+		t = (closest_approach - closest_approach_dist_to_surface) if origin_outside \
+			else (closest_approach + closest_approach_dist_to_surface)
+
+		return RayCollision(self, ray, ray.origin + ray.direction*t)
