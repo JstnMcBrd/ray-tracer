@@ -211,25 +211,25 @@ class Sphere(Object):
 
 	def ray_intersection(self, ray: Ray) -> RayCollision | None:
 		"""Calculate whether the given ray collides with this object."""
-		dist = self.position - ray.origin
-		dist_sqr = np.dot(dist, dist)
-		dist_mag = np.sqrt(dist_sqr)
+		relative_position = self.position - ray.origin
+		distance_sqr = np.dot(relative_position, relative_position)
+		distance = distance_sqr**0.5
 
-		outside = dist_mag >= self.radius
+		origin_outside = distance >= self.radius
 
-		closest_approach = np.dot(ray.direction, dist)
+		closest_approach = np.dot(ray.direction, relative_position)
 
-		if closest_approach < 0 and outside:
+		if closest_approach < 0 and origin_outside:
 			return None
 
-		closest_approach_dist_to_surface_sqr = self.radius**2 - dist_sqr + closest_approach**2
+		closest_approach_dist_to_surface_sqr = self.radius**2 - distance_sqr + closest_approach**2
 
 		if closest_approach_dist_to_surface_sqr < 0:
 			return None
 
 		closest_approach_dist_to_surface = closest_approach_dist_to_surface_sqr**0.5
 
-		t = (closest_approach - closest_approach_dist_to_surface) if outside \
+		t = (closest_approach - closest_approach_dist_to_surface) if origin_outside \
 			else (closest_approach + closest_approach_dist_to_surface)
 
 		return RayCollision(self, ray, ray.origin + ray.direction*t)

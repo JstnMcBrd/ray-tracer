@@ -47,7 +47,6 @@ def ray_trace(scene: Scene, width: int, height: int, reflection_limit: int, prog
 	outputs = []
 
 	with Pool(cpu_count()) as pool:
-
 		# Start a process for ray-tracing each pixel
 		processes: Iterable = pool.imap(_ray_trace_pixel_tuple, tuple_inputs)
 		if progress_bar:
