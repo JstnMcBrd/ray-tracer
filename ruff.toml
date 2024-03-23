@@ -8,6 +8,7 @@ ignore = [
 	"D203",		# Conflicts with D211 - https://docs.astral.sh/ruff/rules/one-blank-line-before-class/
 	"D206",		# Using tabs - https://docs.astral.sh/ruff/rules/indent-with-spaces/
 	"D212",		# Conflicts with D213 - https://docs.astral.sh/ruff/rules/multi-line-summary-first-line/
+	"E501",		# Makes code messy - https://docs.astral.sh/ruff/rules/line-too-long/
 	"EM101",	# Convenience - https://docs.astral.sh/ruff/rules/raw-string-in-exception/
 	"EM102",	# Convenience - https://docs.astral.sh/ruff/rules/f-string-in-exception/
 	"ERA001",	# False positives - https://docs.astral.sh/ruff/rules/commented-out-code/

@@ -33,16 +33,11 @@ def parse_arguments() -> tuple[str, str, int, int, int, bool]:
 	# The ArgumentParser will take care of parsing them.)
 	load_dotenv()
 	env_scene = getenv("scene")
-	env_output = getenv("output",
-		default=DEFAULT_OUTPUT)
-	env_width = getenv("width",
-		default=str(DEFAULT_WIDTH))
-	env_height = getenv("height",
-		default=str(DEFAULT_HEIGHT))
-	env_reflection_limit = getenv("reflection-limit",
-		default=str(DEFAULT_REFLECTION_LIMIT))
-	env_progress_bar = getenv("progress-bar",
-		default=str(DEFAULT_PROGRESS_BAR))
+	env_output = getenv("output", default=DEFAULT_OUTPUT)
+	env_width = getenv("width", default=str(DEFAULT_WIDTH))
+	env_height = getenv("height", default=str(DEFAULT_HEIGHT))
+	env_reflection_limit = getenv("reflection-limit", default=str(DEFAULT_REFLECTION_LIMIT))
+	env_progress_bar = getenv("progress-bar", default=str(DEFAULT_PROGRESS_BAR))
 
 	# Retrieve arguments overrides from command line
 	# (A command line argument is only required if the environment variable is missing.)
@@ -75,12 +70,10 @@ def parse_arguments() -> tuple[str, str, int, int, int, bool]:
 	reflection_limit: int = parsed.reflection_limit
 	progress_bar: bool = parsed.progress_bar
 
-	return scene_file_path, output_file_path, width, height, \
-		reflection_limit, progress_bar
+	return scene_file_path, output_file_path, width, height, reflection_limit, progress_bar
 
 
-def main(scene_file_path: str, output_file_path: str, width: int, height: int,
-	reflection_limit: int, progress_bar: bool) -> None:
+def main(scene_file_path: str, output_file_path: str, width: int, height: int, reflection_limit: int, progress_bar: bool) -> None:
 	"""Import, ray-trace, and export."""
 	# Assert the output file extension is supported
 	assert_supported_extension(output_file_path)

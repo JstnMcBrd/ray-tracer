@@ -39,8 +39,7 @@ class Plane(Object):
 	_normal: NDArray[np.float64]
 	_distance_from_origin: float
 
-	def __init__(self, position: NDArray[np.float64], normal: NDArray[np.float64],
-		) -> None:
+	def __init__(self, position: NDArray[np.float64], normal: NDArray[np.float64]) -> None:
 		"""Initialize an instance of Plane."""
 		super().__init__()
 
@@ -54,14 +53,12 @@ class Plane(Object):
 	def ray_intersection(self, ray: Ray) -> RayCollision | None:
 		"""Calculate whether the given ray collides with this object."""
 		v_d = np.dot(self._normal, ray.direction)
-
 		if v_d == 0:
 			# Ray is parallel to plane
 			return None
 
-		v_o = -1 * (np.dot(self._normal, ray.origin) + self._distance_from_origin)
+		v_o = -np.dot(self._normal, ray.origin) - self._distance_from_origin
 		t = v_o / v_d
-
 		if t <= 0:
 			# Intersection point is behind the ray
 			return None
@@ -76,8 +73,7 @@ class Circle(Object):
 	radius: float
 	_plane: Plane
 
-	def __init__(self, position: NDArray[np.float64], normal: NDArray[np.float64],
-		radius: float) -> None:
+	def __init__(self, position: NDArray[np.float64], normal: NDArray[np.float64], radius: float) -> None:
 		"""Initialize an instance of Circle."""
 		super().__init__()
 
@@ -134,15 +130,13 @@ class Polygon(Object):
 		vector_2 = normalized(vertices[2] - vertices[1])
 
 		_normal = normalized(np.cross(vector_1, vector_2))
-
-		self._plane = Plane(vertices[0], _normal)
+		self._plane = Plane(self._vertices[0], _normal)
 
 		# Project all the vertices onto a 2D plane for future intersection calculations
 		self._plane_dominant_coord: int = np.where(
 			np.abs(_normal) == np.max(np.abs(_normal)),
 		)[0][0]
-		self._flattened_vertices = [np.delete(v, self._plane_dominant_coord)
-								for v in self._vertices]
+		self._flattened_vertices = [np.delete(v, self._plane_dominant_coord) for v in self._vertices]
 
 	def normal(self, point: NDArray[np.float64] | None = None) -> NDArray[np.float64]:
 		"""Return the "up" direction, which is the same for every point."""
@@ -228,16 +222,15 @@ class Sphere(Object):
 		if closest_approach < 0 and outside:
 			return None
 
-		closest_approach_dist_to_surface_sqr = \
-			self.radius**2 - dist_sqr + closest_approach**2
+		closest_approach_dist_to_surface_sqr = self.radius**2 - dist_sqr + closest_approach**2
 
 		if closest_approach_dist_to_surface_sqr < 0:
 			return None
 
 		closest_approach_dist_to_surface = closest_approach_dist_to_surface_sqr**0.5
 
-		t = closest_approach - closest_approach_dist_to_surface if outside \
-			else closest_approach + closest_approach_dist_to_surface
+		t = (closest_approach - closest_approach_dist_to_surface) if outside \
+			else (closest_approach + closest_approach_dist_to_surface)
 
 		return RayCollision(self, ray, ray.origin + ray.direction*t)
 
@@ -262,8 +255,7 @@ class Triangle(Polygon):
 		super().__init__(vertices)
 
 		if len(vertices) != Triangle.REQUIRED_VERTICES:
-			raise ValueError(f"Triangle must have \
-				{Triangle.REQUIRED_VERTICES} vertices")
+			raise ValueError(f"Triangle must have {Triangle.REQUIRED_VERTICES} vertices")
 
 		self._flattened_area = Triangle.area(self._flattened_vertices)
 
