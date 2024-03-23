@@ -234,3 +234,5 @@ To run the type-checker, use
 ```sh
 mypy .
 ```
+
+The linter and type-checker will run automatically on pull requests, and success is required to merge.
