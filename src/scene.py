@@ -19,9 +19,13 @@ class Camera:
 	up: NDArray[np.float64]
 	right: NDArray[np.float64]
 
-	def __init__(self, camera_look_at: NDArray[np.float64],
-		camera_look_from: NDArray[np.float64], camera_look_up: NDArray[np.float64],
-		field_of_view: float) -> None:
+	def __init__(
+		self,
+		camera_look_at: NDArray[np.float64],
+		camera_look_from: NDArray[np.float64],
+		camera_look_up: NDArray[np.float64],
+		field_of_view: float,
+	) -> None:
 		"""Initialize an instance of Camera."""
 		self.position = camera_look_from
 		self.field_of_view = field_of_view
@@ -44,9 +48,15 @@ class Scene:
 	background_color: NDArray[np.float64]
 	objects: list[Object]
 
-	def __init__(self, camera: Camera, light_direction: NDArray[np.float64],
-		light_color: NDArray[np.float64], ambient_light_color: NDArray[np.float64],
-		background_color: NDArray[np.float64], objects: list[Object]) -> None:
+	def __init__(
+		self,
+		camera: Camera,
+		light_direction: NDArray[np.float64],
+		light_color: NDArray[np.float64],
+		ambient_light_color: NDArray[np.float64],
+		background_color: NDArray[np.float64],
+		objects: list[Object],
+	) -> None:
 		"""Initialize an instance of Scene."""
 		# Camera
 		self.camera = camera

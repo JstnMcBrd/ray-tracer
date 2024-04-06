@@ -157,6 +157,18 @@ class Object {
 	reflectivity?: number = 0;
 };
 
+/** The specific values necessary for Planes. */
+class Plane extends Object {
+	/** Defines this object as a Plane. */
+	type: string = "plane";
+
+	/** Any position on the plane. */
+	position: Position = [0, 0, 0];
+
+	/** The direction the plane faces. */
+	normal: Direction;
+};
+
 /** The specific values necessary for Circles. */
 class Circle extends Object {
 	/** Defines this object as a Circle. */
@@ -172,18 +184,6 @@ class Circle extends Object {
 	radius: number;
 };
 
-/** The specific values necessary for Planes. */
-class Plane extends Object {
-	/** Defines this object as a Plane. */
-	type: string = "plane";
-
-	/** Any position on the plane. */
-	position: Position = [0, 0, 0];
-
-	/** The direction the plane faces. */
-	normal: Direction;
-};
-
 /** The specific values necessary for Polygons. */
 class Polygon extends Object {
 	/** Defines this object as a Polygon. */
@@ -191,18 +191,6 @@ class Polygon extends Object {
 
 	/** A list of vertices in counterclockwise order. Must have at least 3. */
 	vertices: Array<Position>;
-};
-
-/** The specific values necessary for Spheres. */
-class Sphere extends Object {
-	/** Defines this object as a Sphere. */
-	type: string = "sphere";
-
-	/** The center of the Sphere. */
-	position: Position;
-
-	/** The radius of the Sphere. Must be greater than 0. */
-	radius: number;
 };
 
 /**
@@ -215,6 +203,18 @@ class Triangle extends Polygon {
 	type: string = "triangle";
 
 	/** The number of vertices must be ONLY 3. */
+};
+
+/** The specific values necessary for Spheres. */
+class Sphere extends Object {
+	/** Defines this object as a Sphere. */
+	type: string = "sphere";
+
+	/** The center of the Sphere. */
+	position: Position;
+
+	/** The radius of the Sphere. Must be greater than 0. */
+	radius: number;
 };
 
 // More types of objects can be added later.
@@ -234,3 +234,5 @@ To run the type-checker, use
 ```sh
 mypy .
 ```
+
+The linter and type-checker will run automatically on pull requests, and success is required to merge.
