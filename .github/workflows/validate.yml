@@ -27,5 +27,5 @@ jobs:
       - name: Lint
         run: ruff check
 
-      - name: Typecheck
+      - name: Type check
         run: mypy .
