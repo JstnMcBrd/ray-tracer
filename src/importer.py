@@ -12,6 +12,7 @@ from typing import Any
 
 import numpy as np
 from numpy.typing import NDArray
+
 from objects import Circle, Object, Plane, Polygon, Sphere, Triangle
 from scene import Camera, Scene
 from vector import magnitude, normalized

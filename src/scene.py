@@ -3,6 +3,7 @@
 
 import numpy as np
 from numpy.typing import NDArray
+
 from objects import Object
 from ray import Ray, RayCollision
 from vector import magnitude, normalized
@@ -15,9 +16,9 @@ class Camera:
 	field_of_view: float
 	relative_look_at: NDArray[np.float64]
 	focal_length: float
-	forward: NDArray[np.float64]
-	up: NDArray[np.float64]
-	right: NDArray[np.float64]
+	forward: NDArray[np.floating]
+	up: NDArray[np.floating]
+	right: NDArray[np.floating]
 
 	def __init__(
 		self,

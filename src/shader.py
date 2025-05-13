@@ -3,6 +3,7 @@
 
 import numpy as np
 from numpy.typing import NDArray
+
 from objects import Object
 from scene import Scene
 

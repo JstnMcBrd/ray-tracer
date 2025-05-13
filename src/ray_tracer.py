@@ -7,10 +7,11 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 from numpy.typing import NDArray
+from tqdm import tqdm
+
 from ray import Ray
 from scene import Camera, Scene
 from shader import shade
-from tqdm import tqdm
 from vector import normalized
 
 if TYPE_CHECKING:
