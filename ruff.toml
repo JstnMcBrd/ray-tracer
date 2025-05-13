@@ -4,7 +4,6 @@ target-version = "py312"
 [lint]
 select = ["ALL"]
 ignore = [
-	"ANN101",	# Will likely be removed in future update - https://docs.astral.sh/ruff/rules/missing-type-self/
 	"D203",		# Conflicts with D211 - https://docs.astral.sh/ruff/rules/one-blank-line-before-class/
 	"D206",		# Using tabs - https://docs.astral.sh/ruff/rules/indent-with-spaces/
 	"D212",		# Conflicts with D213 - https://docs.astral.sh/ruff/rules/multi-line-summary-first-line/
