@@ -1,5 +1,5 @@
 name: Validate
-# Lints and typechecks the project whenever a pull request is opened or merged
+description: Lints and typechecks the project whenever a pull request is opened or merged
 
 on:
   pull_request:
