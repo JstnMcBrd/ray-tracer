@@ -1,4 +1,4 @@
-name: Validate
+name: CI
 description: Lints and type-checks the project whenever a pull request is opened or merged
 
 on:
@@ -12,6 +12,8 @@ permissions: {}
 
 jobs:
   lint:
+    name: Lint
+
     runs-on: ubuntu-latest
 
     permissions:
@@ -33,6 +35,8 @@ jobs:
         run: ruff check
 
   type-check:
+    name: Type check
+
     runs-on: ubuntu-latest
 
     permissions:
