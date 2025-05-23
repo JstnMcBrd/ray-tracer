@@ -3,7 +3,7 @@
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
 <br />
-[![Validate](https://img.shields.io/github/actions/workflow/status/JstnMcBrd/ray-tracer/validate.yml?logo=github&label=Validate)](https://github.com/JstnMcBrd/ray-tracer/actions/workflows/validate.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/JstnMcBrd/ray-tracer/ci.yml?logo=github&label=CI)](https://github.com/JstnMcBrd/ray-tracer/actions/workflows/ci.yml)
 
 ## About
 

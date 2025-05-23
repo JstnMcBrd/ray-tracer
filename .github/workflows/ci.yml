@@ -1,5 +1,5 @@
-name: Validate
-# Lints and typechecks the project whenever a pull request is opened or merged
+name: CI
+description: Lints and type-checks the project whenever a pull request is opened or merged
 
 on:
   pull_request:
@@ -11,7 +11,9 @@ on:
 permissions: {}
 
 jobs:
-  validate:
+  lint:
+    name: Lint
+
     runs-on: ubuntu-latest
 
     permissions:
@@ -24,13 +26,33 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v5
         with:
-          cache: 'pip'
+          cache: pip
 
       - name: Install dependencies
         run: pip install --requirement requirements.txt
 
       - name: Lint
         run: ruff check
+
+  type-check:
+    name: Type check
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read # Required for actions/checkout
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install --requirement requirements.txt
 
       - name: Type check
         run: mypy .
