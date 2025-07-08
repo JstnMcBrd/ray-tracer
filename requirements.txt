@@ -4,7 +4,7 @@ tqdm == 4.67.1
 Pillow == 11.3.0
 
 # Linting
-ruff == 0.12.1
+ruff == 0.12.2
 
 # Typing
 mypy == 1.16.1
