@@ -9,4 +9,4 @@ ruff == 0.12.7
 # Typing
 mypy == 1.17.1
 types-Pillow == 10.2.0.20240822
-types-tqdm == 4.67.0.20250516
+types-tqdm == 4.67.0.20250809
