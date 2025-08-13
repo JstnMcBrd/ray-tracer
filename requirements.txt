@@ -4,9 +4,9 @@ tqdm == 4.67.1
 Pillow == 11.3.0
 
 # Linting
-ruff == 0.12.7
+ruff == 0.12.8
 
 # Typing
 mypy == 1.17.1
 types-Pillow == 10.2.0.20240822
-types-tqdm == 4.67.0.20250516
+types-tqdm == 4.67.0.20250809
