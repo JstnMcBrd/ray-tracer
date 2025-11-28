@@ -236,3 +236,5 @@ mypy .
 ```
 
 The linter and type-checker will run automatically on pull requests, and success is required to merge.
+
+This project abides by [Semantic Versioning](https://semver.org/) and [Keep A Changelog](https://keepachangelog.com/).
