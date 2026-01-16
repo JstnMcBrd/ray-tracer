@@ -18,16 +18,9 @@ Please see [GitHub's guide on licensing](https://docs.github.com/en/repositories
 
 For legal reasons, if you choose to contribute to this project, you agree to give up your copyright and hand over full rights to your contribution. However, you will still be attributed for your work on GitHub. Thank you!
 
-## Versioning
-
-This project abides by [Semantic Versioning](https://semver.org/).
-
-To see a changelog for each update, check the description of [releases on GitHub](https://github.com/JstnMcBrd/ray-tracer/releases).
-
 ## Features
 
 This is a simple ray-tracer, so not every possible feature has been implemented.
-
 
 | Feature                   | Implemented |
 | ------------------------- | ----------- |
@@ -76,7 +69,7 @@ You may still pass arguments through the command prompt, and your `.env` values 
 
 ## Output
 
-This raytracer exports images using [Pillow](https://python-pillow.org/). To see the full list of supported file extensions, see the [docs](https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html).
+This raytracer exports images using [Pillow](https://python-pillow.org/). To see the full list of supported file extensions, see the [documentation](https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html).
 
 Transparency is not supported, but is a future goal.
 
