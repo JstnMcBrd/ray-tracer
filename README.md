@@ -232,7 +232,7 @@ ruff check
 To run the type-checker, use
 
 ```sh
-mypy .
+ty check --venv $(command -v python)
 ```
 
 The linter and type-checker will run automatically on pull requests, and success is required to merge.

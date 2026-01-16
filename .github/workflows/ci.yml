@@ -55,4 +55,4 @@ jobs:
         run: pip install --requirement requirements.txt
 
       - name: Type check
-        run: mypy .
+        run: ty check --venv $(command -v python)
