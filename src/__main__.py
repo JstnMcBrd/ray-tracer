@@ -10,8 +10,9 @@ To see a full list of arguments, use `python src --help`.
 
 
 from argparse import ArgumentParser
-from datetime import UTC, datetime
+from datetime import timedelta
 from os import getenv
+from time import perf_counter
 
 from dotenv import load_dotenv
 
@@ -82,28 +83,28 @@ def main(scene_file_path: str, output_file_path: str, width: int, height: int, r
 	# Import Scene
 	print()
 	print("> Importing...")
-	start_time = datetime.now(UTC)
+	start_time = perf_counter()
 	scene = import_scene(scene_file_path)
-	time_elapsed = datetime.now(UTC) - start_time
-	print(f"Time elapsed: {time_elapsed}")
+	time_elapsed = perf_counter() - start_time
+	print(f"Time elapsed: {timedelta(seconds=time_elapsed)}")
 	print("> Done")
 	print()
 
 	# Raytrace
 	print("> Ray tracing...")
-	start_time = datetime.now(UTC)
+	start_time = perf_counter()
 	screen = ray_trace(scene, width, height, reflection_limit, progress_bar)
-	time_elapsed = datetime.now(UTC) - start_time
-	print(f"Time elapsed: {time_elapsed}")
+	time_elapsed = perf_counter() - start_time
+	print(f"Time elapsed: {timedelta(seconds=time_elapsed)}")
 	print("> Done")
 	print()
 
 	# Export to file
 	print("> Exporting...")
-	start_time = datetime.now(UTC)
+	start_time = perf_counter()
 	export(screen, output_file_path)
-	time_elapsed = datetime.now(UTC) - start_time
-	print(f"Time elapsed: {time_elapsed}")
+	time_elapsed = perf_counter() - start_time
+	print(f"Time elapsed: {timedelta(seconds=time_elapsed)}")
 	print("> Done")
 	print()
 
