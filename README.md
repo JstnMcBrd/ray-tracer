@@ -1,9 +1,8 @@
 # ray-tracer
 
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-[![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
-<br />
-[![CI](https://img.shields.io/github/actions/workflow/status/JstnMcBrd/ray-tracer/ci.yml?logo=github&label=CI)](https://github.com/JstnMcBrd/ray-tracer/actions/workflows/ci.yml)
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+[![ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![ty](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ty/main/assets/badge/v0.json)](https://github.com/astral-sh/ty)
 
 ## About
 
@@ -18,16 +17,9 @@ Please see [GitHub's guide on licensing](https://docs.github.com/en/repositories
 
 For legal reasons, if you choose to contribute to this project, you agree to give up your copyright and hand over full rights to your contribution. However, you will still be attributed for your work on GitHub. Thank you!
 
-## Versioning
-
-This project abides by [Semantic Versioning](https://semver.org/).
-
-To see a changelog for each update, check the description of [releases on GitHub](https://github.com/JstnMcBrd/ray-tracer/releases).
-
 ## Features
 
 This is a simple ray-tracer, so not every possible feature has been implemented.
-
 
 | Feature                   | Implemented |
 | ------------------------- | ----------- |
@@ -52,18 +44,16 @@ This is a simple ray-tracer, so not every possible feature has been implemented.
 
 ## Requirements
 
-Install all required packages with:
+This project is managed with [uv](https://astral.sh/uv/), which automatically handles Python and dependency version management.
 
-```sh
-pip install --requirements requirements.txt
-```
+Follow the [documentation](https://docs.astral.sh/uv/getting-started/installation/) to install uv.
 
 ## Running
 
 You can run the ray tracer with the following command:
 
 ```sh
-python src
+uv run src
 ```
 
 The script has many arguments. Use the `--help` command to see a full list. Some have a default values, but you must provide the rest yourself.
@@ -76,7 +66,7 @@ You may still pass arguments through the command prompt, and your `.env` values 
 
 ## Output
 
-This raytracer exports images using [Pillow](https://python-pillow.org/). To see the full list of supported file extensions, see the [docs](https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html).
+This raytracer exports images using [Pillow](https://python-pillow.org/). To see the full list of supported file extensions, see the [documentation](https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html).
 
 Transparency is not supported, but is a future goal.
 
@@ -226,13 +216,13 @@ class Sphere extends Object {
 To run the linter, use
 
 ```sh
-ruff check
+uv run ruff check
 ```
 
 To run the type-checker, use
 
 ```sh
-ty check --venv $(command -v python)
+uv run ty check
 ```
 
 The linter and type-checker will run automatically on pull requests, and success is required to merge.

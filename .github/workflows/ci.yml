@@ -23,16 +23,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Setup python
-        uses: actions/setup-python@v6
-        with:
-          cache: pip
-
-      - name: Install dependencies
-        run: pip install --requirement requirements.txt
+      - name: Setup uv
+        uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7
 
       - name: Lint
-        run: ruff check
+        run: uv run ruff check
 
   format:
     name: Format
@@ -46,16 +41,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Setup python
-        uses: actions/setup-python@v6
-        with:
-          cache: pip
-
-      - name: Install dependencies
-        run: pip install --requirement requirements.txt
+      - name: Setup uv
+        uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7
 
       - name: Format
-        run: ruff format --check
+        run: uv run ruff format --check
 
   type-check:
     name: Type check
@@ -69,13 +59,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Setup python
-        uses: actions/setup-python@v6
-        with:
-          cache: pip
-
-      - name: Install dependencies
-        run: pip install --requirement requirements.txt
+      - name: Setup uv
+        uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7
 
       - name: Type check
-        run: ty check --venv $(command -v python)
+        run: uv run ty check

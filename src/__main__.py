@@ -1,11 +1,8 @@
-#!/usr/bin/python
-
-
 """
 The main script of the system.
 
-Call it from the command line using `python src [arguments]`.
-To see a full list of arguments, use `python src --help`.
+Call it from the command line using `uv run src [arguments]`.
+To see a full list of arguments, use `uv run src --help`.
 """
 
 from argparse import ArgumentParser
