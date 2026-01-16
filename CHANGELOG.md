@@ -17,10 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Vectorize some calculations with numpy ([#19](https://github.com/JstnMcBrd/ray-tracer/pull/19))
 - Use standardized `__main__.py` entrypoint ([#20](https://github.com/JstnMcBrd/ray-tracer/pull/20))
 - Clip color in-place to save memory ([#20](https://github.com/JstnMcBrd/ray-tracer/pull/20))
-- Reformat code with ruff instead of PyLint ([#22](https://github.com/JstnMcBrd/ray-tracer/pull/22))
+- Lint code with ruff instead of PyLint ([#22](https://github.com/JstnMcBrd/ray-tracer/pull/22))
 - Type-check code with ty instead of mypy ([#84](https://github.com/JstnMcBrd/ray-tracer/pull/84))
 - Use `time.perf_counter` instead of `datetime.now` ([#85](https://github.com/JstnMcBrd/ray-tracer/pull/85))
 - Upgrade to Python 3.14 ([#86](https://github.com/JstnMcBrd/ray-tracer/pull/86))
+- Format code with ruff ([#87](https://github.com/JstnMcBrd/ray-tracer/pull/87))
 
 ### Added
 

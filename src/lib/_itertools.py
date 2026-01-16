@@ -1,6 +1,5 @@
 """Add-ons to the builtin `itertools` library."""
 
-
 import itertools
 
 

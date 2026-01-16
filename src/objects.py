@@ -1,6 +1,5 @@
 """Definitions for all supported objects and their behavior."""
 
-
 import numpy as np
 from numpy.typing import NDArray
 
@@ -40,14 +39,16 @@ class Plane(Object):
 	_normal: NDArray[np.float64]
 	_distance_from_origin: float
 
-	def __init__(self, position: NDArray[np.float64], normal: NDArray[np.float64]) -> None:
+	def __init__(
+		self, position: NDArray[np.float64], normal: NDArray[np.float64]
+	) -> None:
 		"""Initialize an instance of Plane."""
 		super().__init__()
 
 		self._normal = normalized(normal)
 		self._distance_from_origin = -1 * np.dot(normal, position)
 
-	def normal(self, point: NDArray[np.float64] | None = None) -> NDArray[np.float64]: # noqa: ARG002
+	def normal(self, point: NDArray[np.float64] | None = None) -> NDArray[np.float64]:
 		"""Return the "up" direction, which is the same for every point."""
 		return self._normal
 
@@ -64,7 +65,7 @@ class Plane(Object):
 			# Intersection point is behind the ray
 			return None
 
-		return RayCollision(self, ray, ray.origin + ray.direction*t)
+		return RayCollision(self, ray, ray.origin + ray.direction * t)
 
 
 class Circle(Object):
@@ -74,7 +75,9 @@ class Circle(Object):
 	radius: float
 	_plane: Plane
 
-	def __init__(self, position: NDArray[np.float64], normal: NDArray[np.float64], radius: float) -> None:
+	def __init__(
+		self, position: NDArray[np.float64], normal: NDArray[np.float64], radius: float
+	) -> None:
 		"""Initialize an instance of Circle."""
 		super().__init__()
 
@@ -137,7 +140,9 @@ class Polygon(Object):
 		self._plane_dominant_coord: int = np.where(
 			np.abs(_normal) == np.max(np.abs(_normal)),
 		)[0][0]
-		self._flattened_vertices = [np.delete(v, self._plane_dominant_coord) for v in self._vertices]
+		self._flattened_vertices = [
+			np.delete(v, self._plane_dominant_coord) for v in self._vertices
+		]
 
 	def normal(self, point: NDArray[np.float64] | None = None) -> NDArray[np.float64]:
 		"""Return the "up" direction, which is the same for every point."""
@@ -214,7 +219,9 @@ class Triangle(Polygon):
 		super().__init__(vertices)
 
 		if len(vertices) != Triangle.REQUIRED_VERTICES:
-			raise ValueError(f"Triangle must have {Triangle.REQUIRED_VERTICES} vertices")
+			raise ValueError(
+				f"Triangle must have {Triangle.REQUIRED_VERTICES} vertices"
+			)
 
 		self._flattened_area = Triangle.area(self._flattened_vertices)
 
@@ -230,21 +237,27 @@ class Triangle(Polygon):
 		flattened_intersection = np.delete(intersection, self._plane_dominant_coord)
 
 		# Calculate areas
-		area_1 = Triangle.area([
-			self._flattened_vertices[0],
-			self._flattened_vertices[1],
-			flattened_intersection,
-		])
-		area_2 = Triangle.area([
-			self._flattened_vertices[0],
-			self._flattened_vertices[2],
-			flattened_intersection,
-		])
-		area_3 = Triangle.area([
-			self._flattened_vertices[1],
-			self._flattened_vertices[2],
-			flattened_intersection,
-		])
+		area_1 = Triangle.area(
+			[
+				self._flattened_vertices[0],
+				self._flattened_vertices[1],
+				flattened_intersection,
+			]
+		)
+		area_2 = Triangle.area(
+			[
+				self._flattened_vertices[0],
+				self._flattened_vertices[2],
+				flattened_intersection,
+			]
+		)
+		area_3 = Triangle.area(
+			[
+				self._flattened_vertices[1],
+				self._flattened_vertices[2],
+				flattened_intersection,
+			]
+		)
 
 		# If point is inside triangle, then the area of all sub-triangles
 		# will add up to the total area
@@ -257,12 +270,16 @@ class Triangle(Polygon):
 	def area(vertices: list[NDArray[np.float64]]) -> float:
 		"""Given the three vertices, return the area of the enclosed triangle."""
 		if len(vertices) != Triangle.REQUIRED_VERTICES:
-			raise ValueError(f"Triangle must have \
-				{Triangle.REQUIRED_VERTICES} vertices")
+			raise ValueError(
+				f"Triangle must have \
+				{Triangle.REQUIRED_VERTICES} vertices"
+			)
 
-		area: float = (vertices[0][0] * (vertices[1][1] - vertices[2][1]) \
-			+ vertices[1][0] * (vertices[2][1] - vertices[0][1]) \
-				+ vertices[2][0] * (vertices[0][1] - vertices[1][1])) / 2.0
+		area: float = (
+			vertices[0][0] * (vertices[1][1] - vertices[2][1])
+			+ vertices[1][0] * (vertices[2][1] - vertices[0][1])
+			+ vertices[2][0] * (vertices[0][1] - vertices[1][1])
+		) / 2.0
 		return abs(area)
 
 
@@ -295,14 +312,19 @@ class Sphere(Object):
 		if closest_approach < 0 and origin_outside:
 			return None
 
-		closest_approach_dist_to_surface_sqr = self.radius**2 - distance_sqr + closest_approach**2
+		closest_approach_dist_to_surface_sqr = (
+			self.radius**2 - distance_sqr + closest_approach**2
+		)
 
 		if closest_approach_dist_to_surface_sqr < 0:
 			return None
 
 		closest_approach_dist_to_surface = closest_approach_dist_to_surface_sqr**0.5
 
-		t = (closest_approach - closest_approach_dist_to_surface) if origin_outside \
+		t = (
+			(closest_approach - closest_approach_dist_to_surface)
+			if origin_outside
 			else (closest_approach + closest_approach_dist_to_surface)
+		)
 
-		return RayCollision(self, ray, ray.origin + ray.direction*t)
+		return RayCollision(self, ray, ray.origin + ray.direction * t)
