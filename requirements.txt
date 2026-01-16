@@ -4,7 +4,7 @@ tqdm == 4.67.1
 Pillow == 12.1.0
 
 # Linting
-ruff == 0.14.0
+ruff == 0.14.13
 
 # Typing
 ty == 0.0.12
