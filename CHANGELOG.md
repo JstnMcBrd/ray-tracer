@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add badges to README ([#21](https://github.com/JstnMcBrd/ray-tracer/pull/21))
 - Add a `.python-version` file ([#22](https://github.com/JstnMcBrd/ray-tracer/pull/22))
 - Add contributing agreement to README ([#23](https://github.com/JstnMcBrd/ray-tracer/pull/23))
-- Add a `CHANGELOG.md` file ([#?](https://github.com/JstnMcBrd/ray-tracer/pull/?))
+- Add a `CHANGELOG.md` file ([#73](https://github.com/JstnMcBrd/ray-tracer/pull/73))
 
 ### Removed
 
