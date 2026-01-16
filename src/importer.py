@@ -1,9 +1,5 @@
 """Handles importing scenes from JSON files."""
 
-
-# Any types are necessary for dict.get method
-# ruff: noqa: ANN401
-
 import sys
 from json import loads as json_as_dict
 from pathlib import Path
@@ -129,7 +125,7 @@ def _load_objects(
 	return objects
 
 
-def _load_object(json_value: Any | None, error_prefix: str = "Object") -> Object:  # noqa: C901
+def _load_object(json_value: Any | None, error_prefix: str = "Object") -> Object:
 	"""Import a dictionary as an Object."""
 	obj: Object | None = None
 

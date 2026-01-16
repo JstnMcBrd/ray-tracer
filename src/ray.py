@@ -29,7 +29,7 @@ class RayCollision:
 	distance: float
 
 	# obj: Object would cause a circular import
-	def __init__(self, obj, ray: Ray, position: NDArray[np.float64]) -> None:  # noqa: ANN001
+	def __init__(self, obj, ray: Ray, position: NDArray[np.float64]) -> None:
 		"""Initialize an instance of RayCollision."""
 		self.obj = obj
 		self.ray = ray

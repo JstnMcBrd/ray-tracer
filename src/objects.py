@@ -48,7 +48,7 @@ class Plane(Object):
 		self._normal = normalized(normal)
 		self._distance_from_origin = -1 * np.dot(normal, position)
 
-	def normal(self, point: NDArray[np.float64] | None = None) -> NDArray[np.float64]:  # noqa: ARG002
+	def normal(self, point: NDArray[np.float64] | None = None) -> NDArray[np.float64]:
 		"""Return the "up" direction, which is the same for every point."""
 		return self._normal
 
