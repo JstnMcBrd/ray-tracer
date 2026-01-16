@@ -22,10 +22,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use `time.perf_counter` instead of `datetime.now` ([#85](https://github.com/JstnMcBrd/ray-tracer/pull/85))
 - Upgrade to Python 3.14 ([#86](https://github.com/JstnMcBrd/ray-tracer/pull/86))
 - Format code with ruff ([#87](https://github.com/JstnMcBrd/ray-tracer/pull/87))
+- **Breaking:** manage project with uv ([#88](https://github.com/JstnMcBrd/ray-tracer/pull/88))
 
 ### Added
 
-- Add pip `requirements.txt` file ([#10](https://github.com/JstnMcBrd/ray-tracer/pull/10), [#29](https://github.com/JstnMcBrd/ray-tracer/pull/29))
 - Add section on Development to README ([#12](https://github.com/JstnMcBrd/ray-tracer/pull/12), [#14](https://github.com/JstnMcBrd/ray-tracer/pull/14))
 - Add badges to README ([#21](https://github.com/JstnMcBrd/ray-tracer/pull/21))
 - Add a `.python-version` file ([#22](https://github.com/JstnMcBrd/ray-tracer/pull/22))

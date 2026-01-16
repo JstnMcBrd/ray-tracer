@@ -45,18 +45,16 @@ This is a simple ray-tracer, so not every possible feature has been implemented.
 
 ## Requirements
 
-Install all required packages with:
+This project is managed with [uv](https://astral.sh/uv/), which automatically handles Python and dependency version management.
 
-```sh
-pip install --requirements requirements.txt
-```
+Follow the [documentation](https://docs.astral.sh/uv/getting-started/installation/) to install uv.
 
 ## Running
 
 You can run the ray tracer with the following command:
 
 ```sh
-python src
+uv run src
 ```
 
 The script has many arguments. Use the `--help` command to see a full list. Some have a default values, but you must provide the rest yourself.
@@ -219,13 +217,13 @@ class Sphere extends Object {
 To run the linter, use
 
 ```sh
-ruff check
+uv run ruff check
 ```
 
 To run the type-checker, use
 
 ```sh
-ty check --venv $(command -v python)
+uv run ty check
 ```
 
 The linter and type-checker will run automatically on pull requests, and success is required to merge.

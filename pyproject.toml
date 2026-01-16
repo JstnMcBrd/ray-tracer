@@ -1,0 +1,17 @@
+[project]
+name = "ray-tracer"
+version = "5.0.0-beta"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy==2.4.1",
+    "pillow==12.1.0",
+    "python-dotenv==1.2.1",
+    "tqdm==4.67.1",
+]
+
+[dependency-groups]
+dev = [
+    "ruff==0.14.13",
+    "ty==0.0.12",
+    "types-tqdm==4.67.0.20250809",
+]
