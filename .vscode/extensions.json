@@ -2,7 +2,7 @@
 	"recommendations": [
 		"ms-python.python",
 		"charliermarsh.ruff",
-		"ms-python.mypy-type-checker",
+		"astral-sh.ty",
 		"github.vscode-github-actions",
 	]
 }
