@@ -1,6 +1,5 @@
 """Contains useful methods for manipulating numpy arrays as vectors."""
 
-
 import numpy as np
 from numpy.typing import NDArray
 
@@ -8,7 +7,9 @@ from numpy.typing import NDArray
 def magnitude(vector: NDArray) -> float:
 	"""Return the scalar length of the vector."""
 	if vector.ndim != 1:
-		raise ValueError(f"A vector must be 1-dimensional, not {vector.ndim}-dimensional")
+		raise ValueError(
+			f"A vector must be 1-dimensional, not {vector.ndim}-dimensional"
+		)
 	return float(np.linalg.norm(vector))
 
 

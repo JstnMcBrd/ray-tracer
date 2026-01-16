@@ -1,6 +1,5 @@
 """Classes that define the scene to be ray traced."""
 
-
 import numpy as np
 from numpy.typing import NDArray
 

@@ -1,6 +1,5 @@
 """Contains methods for writing the screen to image files."""
 
-
 import sys
 from pathlib import Path
 from secrets import choice

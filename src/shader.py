@@ -1,6 +1,5 @@
 """Contains methods for shading objects."""
 
-
 import numpy as np
 from numpy.typing import NDArray
 
@@ -12,7 +11,8 @@ def shade(
 	scene: Scene,
 	obj: Object,
 	position: NDArray[np.float64],
-	view_direction: NDArray[np.float64], shadow: bool,
+	view_direction: NDArray[np.float64],
+	shadow: bool,
 	reflected_color: NDArray[np.float64],
 ) -> NDArray[np.float64]:
 	"""
@@ -24,7 +24,9 @@ def shade(
 
 	surface_normal = obj.normal(position)
 	normal_dot_light = np.dot(surface_normal, scene.light_direction)
-	light_reflection_direction = 2 * surface_normal * normal_dot_light - scene.light_direction
+	light_reflection_direction = (
+		2 * surface_normal * normal_dot_light - scene.light_direction
+	)
 	view_dot_light = np.dot(view_direction, light_reflection_direction)
 
 	# Ambient lighting
@@ -37,7 +39,11 @@ def shade(
 	diffuse *= shadow_coefficient
 
 	# Specular lighting
-	specular = scene.light_color * obj.specular_color * max(0, view_dot_light)**obj.gloss_coefficient
+	specular = (
+		scene.light_color
+		* obj.specular_color
+		* max(0, view_dot_light) ** obj.gloss_coefficient
+	)
 	specular *= obj.specular_coefficient
 	specular *= shadow_coefficient
 

@@ -4,7 +4,6 @@
 # Any types are necessary for dict.get method
 # ruff: noqa: ANN401
 
-
 import sys
 from json import loads as json_as_dict
 from pathlib import Path
@@ -52,21 +51,23 @@ def _load_from_json(json: dict) -> Scene:
 	# Camera
 	camera_look_at = _validate_position_vector(
 		json.get("camera_look_at"),
-		default=[0,0,0],
+		default=[0, 0, 0],
 		error_prefix=f"{error_prefix}.camera_look_at",
 	)
 	camera_look_from = _validate_position_vector(
 		json.get("camera_look_from"),
-		default=[0,0,1],
+		default=[0, 0, 1],
 		error_prefix=f"{error_prefix}.camera_look_from",
 	)
 	camera_look_up = _validate_direction_vector(
 		json.get("camera_look_up"),
-		default=[0,1,0],
+		default=[0, 1, 0],
 		error_prefix=f"{error_prefix}.camera_look_up",
 	)
 	field_of_view = _validate_number(
-		json.get("field_of_view"), _min=0, _max=359,
+		json.get("field_of_view"),
+		_min=0,
+		_max=359,
 		default=90,
 		error_prefix=f"{error_prefix}.field_of_view",
 	)
@@ -76,22 +77,22 @@ def _load_from_json(json: dict) -> Scene:
 	# Lighting
 	light_direction = _validate_direction_vector(
 		json.get("light_direction"),
-		default=[0,1,0],
+		default=[0, 1, 0],
 		error_prefix=f"{error_prefix}.light_direction",
 	)
 	light_color = _validate_color_vector(
 		json.get("light_color"),
-		default=[1,1,1],
+		default=[1, 1, 1],
 		error_prefix=f"{error_prefix}.light_color",
 	)
 	ambient_light_color = _validate_color_vector(
 		json.get("ambient_light_color"),
-		default=[1,1,1],
+		default=[1, 1, 1],
 		error_prefix=f"{error_prefix}.ambient_light_color",
 	)
 	background_color = _validate_color_vector(
 		json.get("background_color"),
-		default=[0,0,0],
+		default=[0, 0, 0],
 		error_prefix=f"{error_prefix}.background_color",
 	)
 
@@ -102,7 +103,14 @@ def _load_from_json(json: dict) -> Scene:
 		error_prefix=f"{error_prefix}.objects",
 	)
 
-	return Scene(camera, light_direction, light_color, ambient_light_color, background_color, objects)
+	return Scene(
+		camera,
+		light_direction,
+		light_color,
+		ambient_light_color,
+		background_color,
+		objects,
+	)
 
 
 def _load_objects(
@@ -121,7 +129,7 @@ def _load_objects(
 	return objects
 
 
-def _load_object(json_value: Any | None, error_prefix: str = "Object") -> Object: # noqa: C901
+def _load_object(json_value: Any | None, error_prefix: str = "Object") -> Object:  # noqa: C901
 	"""Import a dictionary as an Object."""
 	obj: Object | None = None
 
@@ -134,7 +142,9 @@ def _load_object(json_value: Any | None, error_prefix: str = "Object") -> Object
 	if obj_type is None:
 		raise ValueError(f"{error_prefix}.type must not be missing")
 	if not isinstance(obj_type, str):
-		raise TypeError(f"{error_prefix}.type must be type string, not {type(obj_type)}")
+		raise TypeError(
+			f"{error_prefix}.type must be type string, not {type(obj_type)}"
+		)
 	obj_type = obj_type.lower()
 
 	# Load in object-type-specific values
@@ -174,12 +184,12 @@ def _load_object(json_value: Any | None, error_prefix: str = "Object") -> Object
 	)
 	obj.diffuse_color = _validate_color_vector(
 		json_value.get("diffuse_color"),
-		default=[1,1,1],
+		default=[1, 1, 1],
 		error_prefix=f"{error_prefix}.diffuse_color",
 	)
 	obj.specular_color = _validate_color_vector(
 		json_value.get("specular_color"),
-		default=[1,1,1],
+		default=[1, 1, 1],
 		error_prefix=f"{error_prefix}.specular_color",
 	)
 	obj.gloss_coefficient = _validate_number(
@@ -200,7 +210,7 @@ def _load_plane(json_value: dict, error_prefix: str = "Plane") -> Plane:
 	"""Import Plane-specific values from a dictionary."""
 	position = _validate_position_vector(
 		json_value.get("position"),
-		default=[0,0,0],
+		default=[0, 0, 0],
 		error_prefix=f"{error_prefix}.position",
 	)
 	normal = _validate_direction_vector(
@@ -219,7 +229,7 @@ def _load_circle(json_value: dict, error_prefix: str = "Circle") -> Circle:
 	)
 	normal = _validate_direction_vector(
 		json_value.get("normal"),
-		default=[0,0,1],
+		default=[0, 0, 1],
 		error_prefix=f"{error_prefix}.normal",
 	)
 	radius = _validate_number(
@@ -243,7 +253,9 @@ def _load_polygon(json_value: dict, error_prefix: str = "Polygon") -> Polygon:
 		raise ValueError(f"{error_prefix}.vertices must have at least 3 vertices")
 
 	if len(vertices) == Triangle.REQUIRED_VERTICES:
-		print(f"WARNING: {error_prefix} only has 3 vertices, automatically converting to Triangle")
+		print(
+			f"WARNING: {error_prefix} only has 3 vertices, automatically converting to Triangle"
+		)
 		return _load_triangle(json_value, error_prefix)
 
 	for count, element in enumerate(vertices):
@@ -337,9 +349,13 @@ def _validate_direction_vector(
 	# Make sure the vector is normalized
 	mag = magnitude(vector)
 	if mag not in (0, 1):
-		print(f"WARNING: {error_prefix} is not normalized, performing auto-normalization")
+		print(
+			f"WARNING: {error_prefix} is not normalized, performing auto-normalization"
+		)
 		vector = normalized(vector)
-		print(f"WARNING: {error_prefix} has been normalized to [{vector[0]}, {vector[1]}, {vector[2]}]")
+		print(
+			f"WARNING: {error_prefix} has been normalized to [{vector[0]}, {vector[1]}, {vector[2]}]"
+		)
 
 	return vector
 
@@ -375,7 +391,9 @@ def _validate_list(
 ) -> list:
 	"""Import a list and validates it against certain constraints."""
 	if json_value is None and default is not None:
-		print(f"WARNING: {error_prefix} is missing, reverting to default value {default}")
+		print(
+			f"WARNING: {error_prefix} is missing, reverting to default value {default}"
+		)
 		return default
 
 	if json_value is None:
@@ -383,7 +401,9 @@ def _validate_list(
 	if not isinstance(json_value, list):
 		raise TypeError(f"{error_prefix} must be type list, not {type(json_value)}")
 	if length is not None and len(json_value) != length:
-		raise ValueError(f"{error_prefix} must have {length} elements, not {len(json_value)}")
+		raise ValueError(
+			f"{error_prefix} must have {length} elements, not {len(json_value)}"
+		)
 
 	return json_value
 
@@ -397,15 +417,21 @@ def _validate_number(
 ) -> float | int:
 	"""Import a number and validates it against certain constraints."""
 	if json_value is None and default is not None:
-		print(f"WARNING: {error_prefix} is missing, reverting to default value {default}")
+		print(
+			f"WARNING: {error_prefix} is missing, reverting to default value {default}"
+		)
 		return default
 
 	if json_value is None:
 		raise ValueError(f"{error_prefix} must not be missing")
 	if not isinstance(json_value, float | int):
-		raise TypeError(f"{error_prefix} must be type float or int, not {type(json_value)}")
+		raise TypeError(
+			f"{error_prefix} must be type float or int, not {type(json_value)}"
+		)
 	if _min is not None and json_value < _min:
-		raise ValueError(f"{error_prefix} must be greater than {_min}, not {json_value}")
+		raise ValueError(
+			f"{error_prefix} must be greater than {_min}, not {json_value}"
+		)
 	if _max is not None and json_value > _max:
 		raise ValueError(f"{error_prefix} must be less than {_max}, not {json_value}")
 
