@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Breaking:** remove `output-format` argument ([#15](https://github.com/JstnMcBrd/ray-tracer/pull/15))
 - Remove multiprocessing library patch ([#17](https://github.com/JstnMcBrd/ray-tracer/pull/17))
 - Remove position offsets when checking shadows/reflections ([#19](https://github.com/JstnMcBrd/ray-tracer/pull/19))
+- Remove Docker configuration ([#88](https://github.com/JstnMcBrd/ray-tracer/pull/88))
 
 ### Fixed
 
