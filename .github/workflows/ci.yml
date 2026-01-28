@@ -1,5 +1,5 @@
 name: CI
-description: Lints and type-checks the project whenever a pull request is opened or merged
+# Lints and type-checks the project whenever a pull request is opened or merged
 
 on:
   pull_request:
