@@ -12,6 +12,6 @@ dependencies = [
 [dependency-groups]
 dev = [
     "ruff==0.14.13",
-    "ty==0.0.12",
+    "ty==0.0.14",
     "types-tqdm==4.67.0.20250809",
 ]
