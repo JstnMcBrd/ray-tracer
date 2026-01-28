@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Type-check code with ty instead of mypy ([#84](https://github.com/JstnMcBrd/ray-tracer/pull/84))
 - Use `time.perf_counter` instead of `datetime.now` ([#85](https://github.com/JstnMcBrd/ray-tracer/pull/85))
 - Upgrade to Python 3.14 ([#86](https://github.com/JstnMcBrd/ray-tracer/pull/86))
-- Format code with ruff ([#87](https://github.com/JstnMcBrd/ray-tracer/pull/87))
+- Format code with ruff ([#87](https://github.com/JstnMcBrd/ray-tracer/pull/87), [#91](https://github.com/JstnMcBrd/ray-tracer/pull/91))
 - **Breaking:** manage project with uv ([#88](https://github.com/JstnMcBrd/ray-tracer/pull/88))
 
 ### Added

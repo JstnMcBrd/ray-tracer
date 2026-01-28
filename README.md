@@ -219,12 +219,18 @@ To run the linter, use
 uv run ruff check
 ```
 
+To run the formatter, use
+
+```sh
+uv run ruff format
+```
+
 To run the type-checker, use
 
 ```sh
 uv run ty check
 ```
 
-The linter and type-checker will run automatically on pull requests, and success is required to merge.
+Linting, formatting, and type-checking will run automatically on pull requests, and success is required to merge.
 
 This project abides by [Semantic Versioning](https://semver.org/) and [Keep A Changelog](https://keepachangelog.com/).
