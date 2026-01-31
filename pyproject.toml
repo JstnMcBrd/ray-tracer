@@ -6,7 +6,7 @@ dependencies = [
     "numpy==2.4.1",
     "pillow==12.1.0",
     "python-dotenv==1.2.1",
-    "tqdm==4.67.1",
+    "tqdm==4.67.2",
 ]
 
 [dependency-groups]
