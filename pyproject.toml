@@ -13,5 +13,5 @@ dependencies = [
 dev = [
     "ruff==0.15.0",
     "ty==0.0.15",
-    "types-tqdm==4.67.0.20250809",
+    "types-tqdm==4.67.3.20260205",
 ]
