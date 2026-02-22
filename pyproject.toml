@@ -3,7 +3,7 @@ name = "ray-tracer"
 version = "5.0.0-beta"
 requires-python = ">=3.11"
 dependencies = [
-    "numpy==2.4.1",
+    "numpy==2.4.2",
     "pillow==12.1.1",
     "python-dotenv==1.2.1",
     "tqdm==4.67.1",
