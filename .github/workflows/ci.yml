@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Setup uv
-        uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57 # v8.0.0
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
 
       - name: Lint
         run: uv run ruff check
@@ -42,7 +42,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Setup uv
-        uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57 # v8.0.0
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
 
       - name: Format
         run: uv run ruff format --check
@@ -60,7 +60,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Setup uv
-        uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57 # v8.0.0
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
 
       - name: Type check
         run: uv run ty check
