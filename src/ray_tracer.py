@@ -31,7 +31,7 @@ def ray_trace(
 
 	Returns a 3-dimensional array of pixel colors with `shape=(height, width, 3)`.
 	"""
-	# Save time by pre-calcuating constant values
+	# Save time by pre-calculating constant values
 	viewport_size = np.array([width, height])
 	window_size = _get_window_size(
 		viewport_size, scene.camera.focal_length, scene.camera.field_of_view

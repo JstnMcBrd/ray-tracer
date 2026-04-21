@@ -66,7 +66,7 @@ You may still pass arguments through the command prompt, and your `.env` values 
 
 ## Output
 
-This raytracer exports images using [Pillow](https://python-pillow.org/). To see the full list of supported file extensions, see the [documentation](https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html).
+This ray-tracer exports images using [Pillow](https://python-pillow.org/). To see the full list of supported file extensions, see the [documentation](https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html).
 
 Transparency is not supported, but is a future goal.
 
