@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Index screen by row,col instead of col,row ([#17](https://github.com/JstnMcBrd/ray-tracer/pull/17))
+- Fix typos ([#135](https://github.com/JstnMcBrd/ray-tracer/pull/135))
 
 ## [4.0.0] - 2023-06-26
 
