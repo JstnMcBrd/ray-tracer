@@ -66,9 +66,8 @@ def ray_trace(
 	# Shape outputs into a width*height screen
 	screen = np.array(outputs)
 	_, depth = screen.shape
-	screen.resize((height, width, depth))
 
-	return screen
+	return screen.reshape((height, width, depth))
 
 
 def _ray_trace_pixel_tuple(
