@@ -33,9 +33,8 @@ def export(screen: NDArray[np.float64], output_file_path: str) -> None:
 	"""Write the screen to a file using the encoding of the file extension."""
 	height, width, depth = screen.shape
 
-	screen = (screen * 255).astype(np.uint8)
-	screen.resize(width * height, depth)
-	data: list = [tuple(pixel) for pixel in screen]
+	pixels = (screen * 255).astype(np.uint8).reshape(width * height, depth)
+	data: list = [tuple(pixel) for pixel in pixels]
 
 	image = Image.new(COLOR_MODE, (width, height))
 	image.putdata(data)
