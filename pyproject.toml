@@ -1,7 +1,7 @@
 [project]
 name = "ray-tracer"
 version = "5.0.0-beta"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = [
     "numpy==2.4.1",
     "pillow==12.3.0",
